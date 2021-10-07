@@ -1,14 +1,22 @@
 import React from 'react';
-import {
-  Text,
-  View,
-} from 'react-native';
+import {StatusBar, View} from 'react-native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {homeRoute, routes} from './app.routes';
+import {NavigationContainer} from '@react-navigation/native';
+
+const Stack = createStackNavigator();
 
 const App = () => {
-
   return (
-    <View style={{height: '100%', alignItems: 'center', justifyContent: 'center'}}>
-      <Text style={{fontSize: 48, fontWeight: '100'}}>OBE</Text>
+    <View style={{backgroundColor: '#eee', height: '100%'}}>
+      <StatusBar backgroundColor="#50d" />
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName={homeRoute.name}>
+          {routes.stackNav.map(r => (
+            <Stack.Screen component={r.component} name={r.name} key={r.id} />
+          ))}
+        </Stack.Navigator>
+      </NavigationContainer>
     </View>
   );
 };
