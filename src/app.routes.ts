@@ -1,4 +1,4 @@
-import React from 'react';
+import {AddCourseScreen} from '@app/screens/courses/add-course.screen';
 import {Home} from '@app/screens/home';
 
 // TYPES
@@ -26,7 +26,13 @@ export const homeRoute: RouteType = {
   options: {headerShown: false},
 };
 
+export const addCourseRoute: RouteType = {
+  id: 'add-course',
+  name: 'Add Course',
+  component: AddCourseScreen,
+};
+
 export const routes: RoutesType = {
   bottomNav: [],
-  stackNav: [homeRoute],
+  stackNav: [homeRoute, addCourseRoute],
 };
