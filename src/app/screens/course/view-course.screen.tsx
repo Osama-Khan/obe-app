@@ -19,7 +19,6 @@ export const ViewCourseScreen = () => {
   return (
     <FlatList
       data={data}
-      ListHeaderComponent={() => <Title>Courses</Title>}
       renderItem={info => (
         <Card style={{margin: 4, padding: 4}} key={info.index}>
           <Text>{info.item.name}</Text>

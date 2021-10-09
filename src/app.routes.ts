@@ -1,5 +1,4 @@
-import {AddCourseScreen} from '@app/screens/courses/add-course.screen';
-import {ViewCourseScreen} from '@app/screens/courses/view-course.screen';
+import {AddCourseScreen, ViewCourseScreen} from '@app/screens/course/';
 import {Home} from '@app/screens/home';
 
 // TYPES
