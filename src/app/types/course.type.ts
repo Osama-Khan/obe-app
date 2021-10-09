@@ -3,6 +3,7 @@ import ProgramType from './program.type';
 
 type CourseType = DbEntity & {
   title: string;
+  code: string;
   programs?: ProgramType[];
 };
 
