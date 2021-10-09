@@ -3,7 +3,12 @@ import {NavigationProp} from '@react-navigation/core';
 import React from 'react';
 import {ScrollView} from 'react-native';
 import {List} from 'react-native-paper';
-import {addCourseRoute, viewCourseRoute} from 'src/app.routes';
+import {
+  addCourseRoute,
+  addUserRoute,
+  viewCourseRoute,
+  viewUsersRoute,
+} from 'src/app.routes';
 
 type P = {navigation: NavigationProp<any>};
 export const Home = (props: P) => (
@@ -28,8 +33,16 @@ export const Home = (props: P) => (
         <List.Item title="View" left={() => <List.Icon icon="eye" />} />
       </List.Section>
       <List.Section title="Teachers">
-        <List.Item title="Add" left={() => <List.Icon icon="plus" />} />
-        <List.Item title="View" left={() => <List.Icon icon="eye" />} />
+        <List.Item
+          title="Add"
+          left={() => <List.Icon icon="plus" />}
+          onPress={() => props.navigation.navigate(addUserRoute.name)}
+        />
+        <List.Item
+          title="View"
+          left={() => <List.Icon icon="eye" />}
+          onPress={() => props.navigation.navigate(viewUsersRoute.name)}
+        />
       </List.Section>
     </ScrollView>
   </>

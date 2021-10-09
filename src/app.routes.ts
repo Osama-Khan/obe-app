@@ -1,5 +1,6 @@
 import {AddCourseScreen, ViewCourseScreen} from '@app/screens/course/';
 import {Home} from '@app/screens/home';
+import {AddUserScreen, ViewUserScreen} from '@app/screens/user/';
 
 // TYPES
 export type RouteType = {
@@ -38,7 +39,25 @@ export const viewCourseRoute: RouteType = {
   component: ViewCourseScreen,
 };
 
+export const addUserRoute: RouteType = {
+  id: 'add-user',
+  name: 'Add User',
+  component: AddUserScreen,
+};
+
+export const viewUsersRoute: RouteType = {
+  id: 'view-users',
+  name: 'View Users',
+  component: ViewUserScreen,
+};
+
 export const routes: RoutesType = {
   bottomNav: [],
-  stackNav: [homeRoute, addCourseRoute, viewCourseRoute],
+  stackNav: [
+    homeRoute,
+    addCourseRoute,
+    viewCourseRoute,
+    addUserRoute,
+    viewUsersRoute,
+  ],
 };
