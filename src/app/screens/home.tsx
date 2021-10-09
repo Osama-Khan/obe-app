@@ -5,8 +5,10 @@ import {ScrollView} from 'react-native';
 import {List} from 'react-native-paper';
 import {
   addCourseRoute,
+  addProgramRoute,
   addUserRoute,
   viewCourseRoute,
+  viewProgramRoute,
   viewUsersRoute,
 } from 'src/app.routes';
 
@@ -29,8 +31,16 @@ export const Home = (props: P) => (
         <List.Item title="Allocate" left={() => <List.Icon icon="sitemap" />} />
       </List.Section>
       <List.Section title="Programs">
-        <List.Item title="Add" left={() => <List.Icon icon="plus" />} />
-        <List.Item title="View" left={() => <List.Icon icon="eye" />} />
+        <List.Item
+          title="Add"
+          left={() => <List.Icon icon="plus" />}
+          onPress={() => props.navigation.navigate(addProgramRoute.name)}
+        />
+        <List.Item
+          title="View"
+          left={() => <List.Icon icon="eye" />}
+          onPress={() => props.navigation.navigate(viewProgramRoute.name)}
+        />
       </List.Section>
       <List.Section title="Teachers">
         <List.Item
