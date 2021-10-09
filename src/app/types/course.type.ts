@@ -2,7 +2,7 @@ import DbEntity from './db-entity.type';
 import ProgramType from './program.type';
 
 type CourseType = DbEntity & {
-  name: string;
+  title: string;
   programs?: ProgramType[];
 };
 

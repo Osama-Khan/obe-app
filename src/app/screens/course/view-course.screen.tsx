@@ -21,7 +21,7 @@ export const ViewCourseScreen = () => {
       data={data}
       renderItem={info => (
         <Card style={{margin: 4, padding: 4}} key={info.index}>
-          <Text>{info.item.name}</Text>
+          <Text>{info.item.title}</Text>
           <Caption>{info.item.id}</Caption>
         </Card>
       )}

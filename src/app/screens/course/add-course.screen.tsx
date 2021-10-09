@@ -7,7 +7,7 @@ export const AddCourseScreen = () => (
   <View style={{height: '100%'}}>
     <Formik
       initialValues={{
-        name: '',
+        title: '',
         program: '',
       }}
       onSubmit={v => {
@@ -24,8 +24,8 @@ export const AddCourseScreen = () => (
           <TextInput
             label="Name"
             mode="outlined"
-            value={values.name}
-            onChangeText={handleChange('name')}
+            value={values.title}
+            onChangeText={handleChange('title')}
             style={{marginVertical: 4}}
           />
           <TextInput
