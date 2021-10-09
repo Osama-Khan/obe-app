@@ -1,6 +1,8 @@
+import courseService from '@app/services/course.service';
+import CourseType from '@app/types/course.type';
 import {Formik} from 'formik';
 import React from 'react';
-import {View} from 'react-native';
+import {ToastAndroid, View} from 'react-native';
 import {Button, Card, TextInput} from 'react-native-paper';
 
 export const AddCourseScreen = () => (
@@ -8,11 +10,9 @@ export const AddCourseScreen = () => (
     <Formik
       initialValues={{
         title: '',
-        program: '',
+        code: '',
       }}
-      onSubmit={v => {
-        console.log(v);
-      }}
+      onSubmit={handleSubmit}
       children={({handleChange, handleSubmit, values}) => (
         <Card
           style={{
@@ -29,10 +29,10 @@ export const AddCourseScreen = () => (
             style={{marginVertical: 4}}
           />
           <TextInput
-            label="Program"
+            label="Code"
             mode="outlined"
-            value={values.program}
-            onChangeText={handleChange('program')}
+            value={values.code}
+            onChangeText={handleChange('code')}
             style={{marginVertical: 4}}
           />
           <Button
@@ -47,3 +47,19 @@ export const AddCourseScreen = () => (
     />
   </View>
 );
+
+const isInvalid = (data: Partial<CourseType>) => !data.code || !data.title;
+const handleSubmit = (data: Partial<CourseType>) => {
+  if (isInvalid(data)) {
+    ToastAndroid.show('Invalid data', ToastAndroid.SHORT);
+    return;
+  }
+  courseService
+    .insert(data)
+    .then(res => {
+      ToastAndroid.show('Inserted with ID: ' + res.data.id, ToastAndroid.SHORT);
+    })
+    .catch(e => {
+      ToastAndroid.show('Failed to insert!', ToastAndroid.SHORT);
+    });
+};

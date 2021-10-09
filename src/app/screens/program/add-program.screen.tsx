@@ -1,6 +1,8 @@
+import programService from '@app/services/program.service';
+import ProgramType from '@app/types/program.type';
 import {Formik} from 'formik';
 import React from 'react';
-import {View} from 'react-native';
+import {ToastAndroid, View} from 'react-native';
 import {Button, Card, TextInput} from 'react-native-paper';
 
 export const AddProgramScreen = () => (
@@ -9,9 +11,7 @@ export const AddProgramScreen = () => (
       initialValues={{
         title: '',
       }}
-      onSubmit={v => {
-        console.log(v);
-      }}
+      onSubmit={handleSubmit}
       children={({handleChange, handleSubmit, values}) => (
         <Card
           style={{
@@ -39,3 +39,19 @@ export const AddProgramScreen = () => (
     />
   </View>
 );
+
+const isInvalid = (data: Partial<ProgramType>) => !data.title;
+const handleSubmit = (data: Partial<ProgramType>) => {
+  if (isInvalid(data)) {
+    ToastAndroid.show('Invalid data', ToastAndroid.SHORT);
+    return;
+  }
+  programService
+    .insert(data)
+    .then(res => {
+      ToastAndroid.show('Inserted with ID: ' + res.data.id, ToastAndroid.SHORT);
+    })
+    .catch(e => {
+      ToastAndroid.show('Failed to insert!', ToastAndroid.SHORT);
+    });
+};

@@ -1,7 +1,14 @@
+import userService from '@app/services/user.service';
+import UserType from '@app/types/user.type';
 import {Formik} from 'formik';
 import React from 'react';
-import {View} from 'react-native';
+import {ToastAndroid, View} from 'react-native';
 import {Button, Card, TextInput} from 'react-native-paper';
+
+type FormDataType = Omit<Partial<UserType>, 'dateOfBirth'> & {
+  dateOfBirth: string;
+  password: string;
+};
 
 export const AddUserScreen = () => (
   <View style={{height: '100%'}}>
@@ -12,9 +19,7 @@ export const AddUserScreen = () => (
         password: '',
         dateOfBirth: '',
       }}
-      onSubmit={v => {
-        console.log(v);
-      }}
+      onSubmit={handleSubmit}
       children={({handleChange, handleSubmit, values}) => (
         <Card
           style={{
@@ -66,3 +71,19 @@ export const AddUserScreen = () => (
     />
   </View>
 );
+
+const isInvalid = (data: FormDataType) =>
+  !data.username || !data.email || !data.password || !data.dateOfBirth;
+const handleSubmit = (data: FormDataType) => {
+  if (isInvalid(data)) {
+    ToastAndroid.show('Invalid data', ToastAndroid.SHORT);
+    return;
+  }
+  const submission: Partial<UserType> = {
+    ...data,
+    dateOfBirth: new Date(data.dateOfBirth),
+  };
+  userService.insert(submission).then(res => {
+    ToastAndroid.show('Inserted with ID: ' + res.data.id, ToastAndroid.SHORT);
+  });
+};
