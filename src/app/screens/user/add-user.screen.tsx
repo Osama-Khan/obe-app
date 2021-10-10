@@ -1,3 +1,4 @@
+import {DatePickerInputFormik} from '@app/components/pickers';
 import userService from '@app/services/user.service';
 import UserType from '@app/types/user.type';
 import {Formik} from 'formik';
@@ -5,8 +6,7 @@ import React from 'react';
 import {ToastAndroid, View} from 'react-native';
 import {Button, Card, TextInput} from 'react-native-paper';
 
-type FormDataType = Omit<Partial<UserType>, 'dateOfBirth'> & {
-  dateOfBirth: string;
+type FormDataType = Partial<UserType> & {
   password: string;
 };
 
@@ -17,7 +17,7 @@ export const AddUserScreen = () => (
         username: '',
         email: '',
         password: '',
-        dateOfBirth: '',
+        dateOfBirth: undefined,
       }}
       onSubmit={handleSubmit}
       children={({handleChange, handleSubmit, values}) => (
@@ -51,13 +51,13 @@ export const AddUserScreen = () => (
             onChangeText={handleChange('password')}
             style={{marginVertical: 4}}
           />
-          <TextInput
-            label="Date of Birth"
+          <DatePickerInputFormik
+            propKey="dateOfBirth"
             mode="outlined"
-            value={values.dateOfBirth}
-            placeholder="yyyy/mm/dd"
-            onChangeText={handleChange('dateOfBirth')}
-            style={{marginVertical: 4}}
+            label="Date of birth"
+            datePickerProps={{
+              maxDate: new Date(),
+            }}
           />
           <Button
             mode="contained"
@@ -79,11 +79,7 @@ const handleSubmit = (data: FormDataType) => {
     ToastAndroid.show('Invalid data', ToastAndroid.SHORT);
     return;
   }
-  const submission: Partial<UserType> = {
-    ...data,
-    dateOfBirth: new Date(data.dateOfBirth),
-  };
-  userService.insert(submission).then(res => {
+  userService.insert(data).then(res => {
     ToastAndroid.show('Inserted with ID: ' + res.data.id, ToastAndroid.SHORT);
   });
 };
