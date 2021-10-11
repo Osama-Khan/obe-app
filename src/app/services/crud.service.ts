@@ -4,7 +4,7 @@ import ApiService from './api.service';
 /** Provides basic CRUD API methods */
 export default abstract class CrudService<Model> extends ApiService {
   /** @param endpoint The API endpoint of the entity */
-  constructor(private endpoint: string) {
+  constructor(protected endpoint: string) {
     super();
     this.endpoint = [this.domain, this.endpoint].join('/');
   }
