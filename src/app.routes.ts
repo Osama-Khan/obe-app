@@ -1,3 +1,4 @@
+import {LoginScreen} from '@app/screens/auth/login.screen';
 import {AddCourseScreen, ViewCourseScreen} from '@app/screens/course';
 import {Home} from '@app/screens/home';
 import {AddProgramScreen, ViewProgramScreen} from '@app/screens/program';
@@ -21,6 +22,12 @@ type RoutesType = {
 };
 
 // STACK NAV ROUTES
+export const loginRoute: RouteType = {
+  id: 'login',
+  name: 'Login',
+  component: LoginScreen,
+  options: {headerShown: false},
+};
 export const homeRoute: RouteType = {
   id: 'home',
   name: 'Home',
@@ -67,6 +74,7 @@ export const viewUsersRoute: RouteType = {
 export const routes: RoutesType = {
   bottomNav: [],
   stackNav: [
+    loginRoute,
     homeRoute,
     addCourseRoute,
     viewCourseRoute,
