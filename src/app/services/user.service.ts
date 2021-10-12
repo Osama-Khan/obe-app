@@ -7,8 +7,12 @@ class UserService extends CrudService<UserType> {
     super('user');
   }
 
-  login(data: {username: string; password: string}) {
-    return axios.post(this.endpoint + '/login', data);
+  login(data: {username: string; password: string; remember?: boolean}) {
+    const {remember, ...user} = data;
+    if (remember) {
+      //TODO: Store token
+    }
+    return axios.post(this.endpoint + '/login', user);
   }
 }
 
