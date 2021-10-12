@@ -1,7 +1,8 @@
 import userService from '@app/services/user.service';
 import {NavigationProp} from '@react-navigation/core';
 import React, {useState} from 'react';
-import {ToastAndroid, View} from 'react-native';
+import {useDispatch} from 'react-redux';
+import {Switch, ToastAndroid, View} from 'react-native';
 import {
   Caption,
   Card,
@@ -9,15 +10,20 @@ import {
   Title,
   TextInput,
   Button,
+  Text,
 } from 'react-native-paper';
 import {homeRoute} from 'src/app.routes';
+import userActions from '@app/store/actions/user.actions';
 
 type P = {navigation: NavigationProp<any>};
 
 export const LoginScreen = ({navigation}: P) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
 
   return (
     <View style={{justifyContent: 'center', flexGrow: 1}}>
@@ -25,12 +31,26 @@ export const LoginScreen = ({navigation}: P) => {
         <Title style={{fontWeight: 'bold'}}>Login</Title>
         <Caption>Enter your details</Caption>
         <Divider style={{marginVertical: 4}} />
-        <TextInput label="Username" onChangeText={setUsername} />
         <TextInput
+          mode="outlined"
+          label="Username"
+          onChangeText={setUsername}
+        />
+        <TextInput
+          mode="outlined"
           label="Password"
           onChangeText={setPassword}
           secureTextEntry
         />
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+          }}>
+          <Text>Remember me</Text>
+          <Switch value={remember} onValueChange={setRemember} />
+        </View>
         <Divider style={{marginVertical: 4}} />
         <Button
           icon="login"
@@ -41,9 +61,12 @@ export const LoginScreen = ({navigation}: P) => {
           onPress={() => {
             setLoading(true);
             userService
-              .login({username, password})
-              .then(res => {
-                // TODO: Add res.data.token to store
+              .login({username, password, remember})
+              .then((res: any) => {
+                const {token, ...userData} = res.data;
+                dispatch(
+                  userActions.setUser({token, userData, restoringState: false}),
+                );
                 navigation.navigate(homeRoute.name);
               })
               .catch(e => {
