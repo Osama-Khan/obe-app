@@ -3,16 +3,17 @@ import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {Provider as ReduxProvider} from 'react-redux';
 import {StatusBar} from 'react-native';
-import {DefaultTheme, Provider} from 'react-native-paper';
+import {Provider} from 'react-native-paper';
 import {routes} from './app.routes';
 import store from '@app/store';
+import {DefaultNavTheme, DefaultTheme} from '@app/styles';
 
 const {Navigator, Screen} = createStackNavigator();
 const App = () => {
   return (
     <ReduxProvider store={store}>
       <Provider theme={DefaultTheme}>
-        <NavigationContainer>
+        <NavigationContainer theme={DefaultNavTheme}>
           <StatusBar backgroundColor="#50d" />
           <Navigator>
             {routes.stackNav.map(r => (
