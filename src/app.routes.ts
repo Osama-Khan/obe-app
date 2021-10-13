@@ -26,7 +26,6 @@ export const loginRoute: RouteType = {
   id: 'login',
   name: 'Login',
   component: LoginScreen,
-  options: {headerShown: false},
 };
 export const homeRoute: RouteType = {
   id: 'home',
