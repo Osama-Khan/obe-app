@@ -1,30 +1,27 @@
+import {FetchingCardList} from '@app/components/listing';
 import programService from '@app/services/program.service';
 import ProgramType from '@app/types/program.type';
-import React, {useEffect, useState} from 'react';
-import {FlatList} from 'react-native';
-import {Caption, Card, Text, Title} from 'react-native-paper';
+import {NavigationProp} from '@react-navigation/core';
+import React from 'react';
+import {Button} from 'react-native-paper';
+import {addProgramRoute} from 'src/app.routes';
 
-export const ViewProgramScreen = () => {
-  const [data, setData] = useState<ProgramType[]>();
-  useEffect(() => {
-    programService
-      .get()
-      .then(res => {
-        setData(res.data);
-      })
-      .catch(e => {
-        console.error(e);
-      });
-  }, []);
+type P = {navigation: NavigationProp<any>};
+export const ViewProgramScreen = ({navigation}: P) => {
   return (
-    <FlatList
-      data={data}
-      renderItem={info => (
-        <Card style={{margin: 4, padding: 4}} key={info.index}>
-          <Text>{info.item.title}</Text>
-          <Caption>{info.item.id}</Caption>
-        </Card>
-      )}
-    />
+    <>
+      <Button
+        icon="plus"
+        style={{margin: 8, marginLeft: 'auto'}}
+        mode="contained"
+        onPress={() => navigation.navigate(addProgramRoute.name)}>
+        Add
+      </Button>
+      <FetchingCardList<ProgramType>
+        fetchMethod={() => programService.get()}
+        title={item => item.title}
+        description={item => item.id}
+      />
+    </>
   );
 };
