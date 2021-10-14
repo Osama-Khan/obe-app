@@ -3,13 +3,14 @@ import {AddCourseScreen, ViewCourseScreen} from '@app/screens/course';
 import {Home} from '@app/screens/home';
 import {AddProgramScreen, ViewProgramScreen} from '@app/screens/program';
 import {AddUserScreen, ViewUserScreen} from '@app/screens/user';
+import {StackNavigationOptions} from '@react-navigation/stack';
 
 // TYPES
 export type RouteType = {
   id: string;
   name: string;
   component: React.ComponentType<any>;
-  options?: any;
+  options?: StackNavigationOptions;
 };
 
 export type BottomNavRouteType = RouteType & {
@@ -31,7 +32,6 @@ export const homeRoute: RouteType = {
   id: 'home',
   name: 'Home',
   component: Home,
-  options: {headerShown: false},
 };
 
 export const addCourseRoute: RouteType = {
