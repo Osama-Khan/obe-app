@@ -1,3 +1,4 @@
+import RoleType from '@app/types/role.type';
 import UserType from '@app/types/user.type';
 
 export default class UserModel implements UserType {
@@ -5,6 +6,7 @@ export default class UserModel implements UserType {
   username: string;
   email: string;
   dateOfBirth: Date;
+  role?: RoleType;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;
@@ -14,6 +16,7 @@ export default class UserModel implements UserType {
     this.username = data.username;
     this.email = data.email;
     this.dateOfBirth = data.dateOfBirth;
+    this.role = data.role;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
     this.deletedAt = data.deletedAt;
