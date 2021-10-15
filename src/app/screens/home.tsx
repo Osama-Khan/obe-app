@@ -27,9 +27,6 @@ type P = {navigation: NavigationProp<any>};
 export const Home = (props: P) => {
   const user = useSelector((state: AppStateType) => state.user.userData);
   const dispatch = useDispatch();
-  if (!user) {
-    props.navigation.dispatch(StackActions.replace(loginRoute.name));
-  }
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     props.navigation.setOptions({
@@ -74,6 +71,7 @@ export const Home = (props: P) => {
             left={() => <List.Icon icon="logout" color="#f22" />}
             onPress={() => {
               dispatch(userActions.clearUser());
+              props.navigation.dispatch(StackActions.replace(loginRoute.name));
             }}
           />
         </View>
