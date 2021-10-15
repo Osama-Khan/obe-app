@@ -1,24 +1,51 @@
 import {NavigationProp} from '@react-navigation/core';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
-import {Card, Title} from 'react-native-paper';
 import {
+  Caption,
+  Card,
+  Divider,
+  IconButton,
+  List,
+  Title,
+} from 'react-native-paper';
+import {
+  loginRoute,
   viewCourseRoute,
   viewProgramRoute,
   viewUsersRoute,
 } from 'src/app.routes';
 import Icon from '@app/components/icon';
+import Modal from '@app/components/modal';
+import {useDispatch, useSelector} from 'react-redux';
+import {AppStateType} from '@app/store/state';
+import {userActions} from '@app/store/actions';
+import {StackActions} from '@react-navigation/native';
 
 type P = {navigation: NavigationProp<any>};
+
 export const Home = (props: P) => {
+  const user = useSelector((state: AppStateType) => state.user.userData);
+  const dispatch = useDispatch();
+  if (!user) {
+    props.navigation.dispatch(StackActions.replace(loginRoute.name));
+  }
+  const [visible, setVisible] = useState(false);
   useEffect(() => {
     props.navigation.setOptions({
       headerTitleAlign: 'center',
       headerTitleAllowFontScaling: true,
+      headerRight: () => (
+        <IconButton
+          icon="account"
+          onPress={() => setVisible(true)}
+          color="#fff"
+        />
+      ),
     });
   }, []);
   const goto = (r: string) => props.navigation.navigate(r);
-  return (
+  return user ? (
     <>
       <IconCard
         icon="book"
@@ -35,7 +62,25 @@ export const Home = (props: P) => {
         title="Users"
         onPress={() => goto(viewUsersRoute.name)}
       />
+      <Modal visible={visible} onDismiss={() => setVisible(false)}>
+        <View style={{padding: 8}}>
+          <Title>{user.username}</Title>
+          <Caption>{user.role?.name}</Caption>
+          <Divider style={{marginVertical: 8}} />
+          <List.Item
+            title="Log out"
+            titleStyle={{color: '#f22'}}
+            description="Hold to logout"
+            left={() => <List.Icon icon="logout" color="#f22" />}
+            onPress={() => {
+              dispatch(userActions.clearUser());
+            }}
+          />
+        </View>
+      </Modal>
     </>
+  ) : (
+    <></>
   );
 };
 
