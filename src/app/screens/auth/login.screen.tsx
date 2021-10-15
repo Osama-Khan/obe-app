@@ -1,5 +1,5 @@
 import userService from '@app/services/user.service';
-import {NavigationProp} from '@react-navigation/core';
+import {NavigationProp, StackActions} from '@react-navigation/core';
 import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {Switch, ToastAndroid, View} from 'react-native';
@@ -67,7 +67,7 @@ export const LoginScreen = ({navigation}: P) => {
                 dispatch(
                   userActions.setUser({token, userData, restoringState: false}),
                 );
-                navigation.navigate(homeRoute.name);
+                navigation.dispatch(StackActions.replace(homeRoute.name));
               })
               .catch(e => {
                 if (e.response.status === 400) {
