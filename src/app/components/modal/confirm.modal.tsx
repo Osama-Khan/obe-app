@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleProp, TextStyle, View} from 'react-native';
 import {Divider, Title, Text, Button} from 'react-native-paper';
-import Modal from '.';
+import Modal from './modal';
 import {ModalPropType} from './modal-prop-type';
 
 type ModalButtonType = {
