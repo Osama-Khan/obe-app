@@ -2,10 +2,11 @@ import CourseType from './course.type';
 import DbEntity from './db-entity.type';
 import PLOType from './plo.type';
 
-type ProgramType = DbEntity & {
+type CLOType = DbEntity & {
   title: string;
-  courses?: CourseType[];
+  description: string;
   plos?: PLOType[];
+  course?: CourseType;
 };
 
-export default ProgramType;
+export default CLOType;
