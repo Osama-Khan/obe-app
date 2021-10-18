@@ -24,12 +24,12 @@ export type CardListProps<T> = Omit<FlatListProps<T>, 'renderItem'> & {
   /** Method called when edit icon is pressed.
    * Does not work if right prop is present.
    */
-  handleEdit?: () => void;
+  handleEdit?: (item: T) => void;
 
   /** Method called when delete icon is pressed
    * Does not work if right prop is present.
    */
-  handleDelete?: () => void;
+  handleDelete?: (item: T) => void;
 };
 
 /** Generic card listing component built over FlatList
@@ -43,21 +43,24 @@ export default class CardList<ItemType> extends React.Component<
     return (
       <FlatList
         data={data}
-        renderItem={info => (
+        renderItem={({item, index}) => (
           <Card style={{margin: 4}}>
             <List.Item
-              key={info.item.id || info.index}
-              title={this.props.title(info.item)}
+              key={item.id || index}
+              title={this.props.title(item)}
               right={() =>
                 this.props.right ? (
-                  this.props.right(info.item)
+                  this.props.right(item)
                 ) : (
                   <View style={{flexDirection: 'row'}}>
                     {this.props.handleEdit ? (
                       <IconButton
                         icon="pencil"
                         color="#07f"
-                        onPress={this.props.handleEdit}
+                        onPress={() => {
+                          if (this.props.handleEdit)
+                            this.props.handleEdit(item);
+                        }}
                       />
                     ) : (
                       <></>
@@ -66,7 +69,10 @@ export default class CardList<ItemType> extends React.Component<
                       <IconButton
                         icon="delete"
                         color="#f22"
-                        onPress={this.props.handleDelete}
+                        onPress={() => {
+                          if (this.props.handleDelete)
+                            this.props.handleDelete(item);
+                        }}
                       />
                     ) : (
                       <></>
@@ -74,10 +80,8 @@ export default class CardList<ItemType> extends React.Component<
                   </View>
                 )
               }
-              left={
-                this.props.left ? () => this.props.left!(info.item) : undefined
-              }
-              description={this.props.description(info.item)}
+              left={this.props.left ? () => this.props.left!(item) : undefined}
+              description={this.props.description(item)}
             />
           </Card>
         )}
