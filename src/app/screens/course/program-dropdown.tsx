@@ -1,7 +1,7 @@
 import programService from '@app/services/program.service';
 import {ProgramType} from '@app/types';
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, Menu, Button} from 'react-native-paper';
+import {ActivityIndicator, Menu, Button, Caption} from 'react-native-paper';
 
 type P = {
   selectedPrograms: Partial<ProgramType>[];
@@ -17,30 +17,36 @@ const ProgramDropdown = ({selectedPrograms, onAdd}: P) => {
     });
   }, []);
   return programs ? (
-    <Menu
-      anchor={
-        <Button
-          mode="outlined"
-          color="gray"
-          icon="chevron-down"
-          style={{margin: 4}}
-          onPress={() => setShown(true)}>
-          Select Program
-        </Button>
-      }
-      visible={shown}
-      onDismiss={() => setShown(false)}
-      children={programs.map(p => (
-        <Menu.Item
-          title={p.title}
-          disabled={selectedPrograms?.find(_p => _p.id === p.id) !== undefined}
-          onPress={() => {
-            onAdd(p);
-            setShown(false);
-          }}
-        />
-      ))}
-    />
+    programs.length > 0 ? (
+      <Menu
+        anchor={
+          <Button
+            mode="outlined"
+            color="gray"
+            icon="chevron-down"
+            style={{margin: 4}}
+            onPress={() => setShown(true)}>
+            Select Program
+          </Button>
+        }
+        visible={shown}
+        onDismiss={() => setShown(false)}
+        children={programs.map(p => (
+          <Menu.Item
+            title={p.title}
+            disabled={
+              selectedPrograms?.find(_p => _p.id === p.id) !== undefined
+            }
+            onPress={() => {
+              onAdd(p);
+              setShown(false);
+            }}
+          />
+        ))}
+      />
+    ) : (
+      <Caption>No programs available...</Caption>
+    )
   ) : (
     <ActivityIndicator />
   );
