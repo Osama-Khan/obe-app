@@ -1,7 +1,13 @@
 import {AxiosResponse} from 'axios';
 import React from 'react';
-import {FlatListProps, RefreshControl, ToastAndroid} from 'react-native';
-import {FlatList} from 'react-native-gesture-handler';
+import {
+  FlatListProps,
+  FlatList,
+  RefreshControl,
+  ToastAndroid,
+} from 'react-native';
+import {ActivityIndicator} from 'react-native-paper';
+import {IconMessageView} from '../icon-message-view';
 
 export type FetchingFlatListProps<T> = Omit<FlatListProps<T>, 'data'> & {
   /** The method used to fetch data */
@@ -30,8 +36,15 @@ export default class FetchingFlatList<ItemType> extends React.Component<
   }
 
   render() {
-    return (
+    return this.state.items ? (
       <FlatList
+        ListEmptyComponent={() => (
+          <IconMessageView
+            title="No data!"
+            caption="The response was empty..."
+            icon="emoticon-sad"
+          />
+        )}
         {...this.props}
         data={this.state.items}
         onRefresh={this.load}
@@ -41,6 +54,8 @@ export default class FetchingFlatList<ItemType> extends React.Component<
           />
         }
       />
+    ) : (
+      <ActivityIndicator style={{flexGrow: 1}} />
     );
   }
 

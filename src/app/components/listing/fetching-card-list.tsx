@@ -1,6 +1,8 @@
 import {AxiosResponse} from 'axios';
 import React from 'react';
 import {ToastAndroid} from 'react-native';
+import {ActivityIndicator} from 'react-native-paper';
+import {IconMessageView} from '../icon-message-view';
 import CardList, {CardListProps} from './card-list';
 
 type P<T> = Omit<CardListProps<T>, 'data'> & {
@@ -40,6 +42,20 @@ export default class FetchingCardList<ItemType> extends React.Component<
   }
 
   render() {
-    return <CardList {...this.props} data={this.state.items} />;
+    return this.state.items ? (
+      <CardList
+        ListEmptyComponent={() => (
+          <IconMessageView
+            title="No data!"
+            caption="The response was empty..."
+            icon="emoticon-sad"
+          />
+        )}
+        {...this.props}
+        data={this.state.items}
+      />
+    ) : (
+      <ActivityIndicator style={{flexGrow: 1}} />
+    );
   }
 }
