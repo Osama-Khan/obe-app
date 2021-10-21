@@ -37,7 +37,7 @@ export default class ModalBase extends React.Component<PropType> {
             style={[
               styles.touchable,
               {
-                backgroundColor: props.backgroundColor || '#8888',
+                backgroundColor: props.backgroundColor || '#0008',
               },
             ]}
             onTouchEnd={onDismiss}
