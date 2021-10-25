@@ -80,7 +80,6 @@ export default function EditCourseScreen({navigation, route}: P) {
               courseService
                 .update(course.id, d)
                 .then(res => {
-                  console.log(res.data);
                   uiService.toastSuccess('Successfully updated data!');
                 })
                 .catch(e => {
