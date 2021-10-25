@@ -7,7 +7,7 @@ import {NavigationProp} from '@react-navigation/core';
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {Card, IconButton} from 'react-native-paper';
-import {addCourseRoute} from 'src/app.routes';
+import {addCourseRoute, editCourseRoute} from 'src/app.routes';
 
 type P = {navigation: NavigationProp<any>};
 export const ViewCourseScreen = ({navigation}: P) => {
@@ -42,6 +42,11 @@ export const ViewCourseScreen = ({navigation}: P) => {
                     icon="pencil"
                     style={{margin: 0}}
                     size={18}
+                    onPress={() =>
+                      navigation.navigate(editCourseRoute.name, {
+                        courseId: item.id,
+                      })
+                    }
                   />
                   <IconButton
                     color="red"

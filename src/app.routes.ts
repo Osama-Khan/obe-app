@@ -1,5 +1,6 @@
 import {LoginScreen} from '@app/screens/auth/login.screen';
 import {AddCourseScreen, ViewCourseScreen} from '@app/screens/course';
+import EditCourseScreen from '@app/screens/course/edit-course.screen';
 import {Home} from '@app/screens/home';
 import {AddProgramScreen, ViewProgramScreen} from '@app/screens/program';
 import {AddUserScreen, ViewUserScreen} from '@app/screens/user';
@@ -40,6 +41,12 @@ export const addCourseRoute: RouteType = {
   component: AddCourseScreen,
 };
 
+export const editCourseRoute: RouteType = {
+  id: 'edit-course',
+  name: 'Edit Course',
+  component: EditCourseScreen,
+};
+
 export const viewCourseRoute: RouteType = {
   id: 'view-courses',
   name: 'View Courses',
@@ -76,6 +83,7 @@ export const routes: RoutesType = {
     loginRoute,
     homeRoute,
     addCourseRoute,
+    editCourseRoute,
     viewCourseRoute,
     addProgramRoute,
     viewProgramRoute,
