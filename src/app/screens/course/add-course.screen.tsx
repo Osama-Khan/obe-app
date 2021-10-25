@@ -1,7 +1,8 @@
 import courseService from '@app/services/course.service';
+import uiService from '@app/services/ui.service';
 import ProgramType from '@app/types/program.type';
 import React, {useState} from 'react';
-import {ToastAndroid, View} from 'react-native';
+import {View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {
   Button,
@@ -110,7 +111,7 @@ const isInvalid = (data: FormDataType) =>
 const isNumber = (str: string) => parseInt(str).toString() === str;
 const handleSubmit = (data: FormDataType) => {
   if (isInvalid(data)) {
-    ToastAndroid.show('Invalid data', ToastAndroid.SHORT);
+    uiService.toastError('Invalid data!');
     return;
   }
   const creditHours = parseInt(data.creditHours);
@@ -118,9 +119,9 @@ const handleSubmit = (data: FormDataType) => {
   courseService
     .insert(submission)
     .then(res => {
-      ToastAndroid.show('Inserted with ID: ' + res.data.id, ToastAndroid.SHORT);
+      uiService.toastSuccess('Inserted with ID: ' + res.data.id);
     })
     .catch(e => {
-      ToastAndroid.show('Failed to insert!', ToastAndroid.SHORT);
+      uiService.toastError('Failed to insert!');
     });
 };

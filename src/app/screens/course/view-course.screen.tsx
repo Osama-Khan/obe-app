@@ -1,10 +1,11 @@
 import {FetchingDataTable} from '@app/components/data-table';
 import {ConfirmModal} from '@app/components/modal';
 import courseService from '@app/services/course.service';
+import uiService from '@app/services/ui.service';
 import CourseType from '@app/types/course.type';
 import {NavigationProp} from '@react-navigation/core';
 import React, {useEffect, useState} from 'react';
-import {ToastAndroid, View} from 'react-native';
+import {View} from 'react-native';
 import {Card, IconButton} from 'react-native-paper';
 import {addCourseRoute} from 'src/app.routes';
 
@@ -66,13 +67,10 @@ export const ViewCourseScreen = ({navigation}: P) => {
             courseService
               .delete(selected!.id)
               .then(res => {
-                ToastAndroid.show(`Course deleted!`, ToastAndroid.LONG);
+                uiService.toastSuccess('Course deleted!');
               })
               .catch(e => {
-                ToastAndroid.show(
-                  `Could not delete course!`,
-                  ToastAndroid.LONG,
-                );
+                uiService.toastError('Could not delete course!');
               });
             setSelected(undefined);
           },

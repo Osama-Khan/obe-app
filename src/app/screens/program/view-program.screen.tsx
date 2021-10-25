@@ -1,11 +1,11 @@
 import {FetchingDataTable} from '@app/components/data-table';
-import {FetchingCardList} from '@app/components/listing';
 import {ConfirmModal} from '@app/components/modal';
 import programService from '@app/services/program.service';
+import uiService from '@app/services/ui.service';
 import ProgramType from '@app/types/program.type';
 import {NavigationProp} from '@react-navigation/core';
 import React, {useState} from 'react';
-import {ToastAndroid, View} from 'react-native';
+import {View} from 'react-native';
 import {Button, Card, IconButton, Text} from 'react-native-paper';
 import {addProgramRoute} from 'src/app.routes';
 
@@ -80,13 +80,10 @@ export const ViewProgramScreen = ({navigation}: P) => {
           onPress: () => {
             Promise.all(selected.map(p => programService.delete(p.id)))
               .then(res => {
-                ToastAndroid.show(`Programs deleted!`, ToastAndroid.LONG);
+                uiService.toastSuccess('Programs deleted!');
               })
               .catch(e => {
-                ToastAndroid.show(
-                  `Could not delete all programs!`,
-                  ToastAndroid.LONG,
-                );
+                uiService.toastError('Could not delete all programs!');
               });
             setSelected([]);
             setModalShown(false);

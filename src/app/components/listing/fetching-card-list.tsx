@@ -1,6 +1,6 @@
+import uiService from '@app/services/ui.service';
 import {AxiosResponse} from 'axios';
 import React from 'react';
-import {ToastAndroid} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import {IconMessageView} from '../icon-message-view';
 import CardList, {CardListProps} from './card-list';
@@ -37,7 +37,7 @@ export default class FetchingCardList<ItemType> extends React.Component<
         this.setState({...this.state, items});
       })
       .catch(e => {
-        ToastAndroid.show('Failed to load list!', ToastAndroid.LONG);
+        uiService.toastError('Failed to load list!');
       });
   }
 

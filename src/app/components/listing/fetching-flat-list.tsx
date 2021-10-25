@@ -1,11 +1,7 @@
+import uiService from '@app/services/ui.service';
 import {AxiosResponse} from 'axios';
 import React from 'react';
-import {
-  FlatListProps,
-  FlatList,
-  RefreshControl,
-  ToastAndroid,
-} from 'react-native';
+import {FlatListProps, FlatList, RefreshControl} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import {IconMessageView} from '../icon-message-view';
 
@@ -70,7 +66,7 @@ export default class FetchingFlatList<ItemType> extends React.Component<
         this.setState({...this.state, items});
       })
       .catch(e => {
-        ToastAndroid.show('Failed to load list!', ToastAndroid.LONG);
+        uiService.toastError('Failed to load list!');
       });
   };
 }

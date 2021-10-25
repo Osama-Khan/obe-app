@@ -1,8 +1,8 @@
 import programService from '@app/services/program.service';
+import uiService from '@app/services/ui.service';
 import ProgramType from '@app/types/program.type';
-import {Formik} from 'formik';
 import React, {useState} from 'react';
-import {ToastAndroid, ScrollView, View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import {
   Button,
   Caption,
@@ -114,15 +114,15 @@ export const AddProgramScreen = () => {
 const isInvalid = (data: Partial<ProgramType>) => !data.title;
 const handleSubmit = (data: Partial<ProgramType>) => {
   if (isInvalid(data)) {
-    ToastAndroid.show('Invalid data', ToastAndroid.SHORT);
+    uiService.toastError('Invalid data');
     return;
   }
   programService
     .insert(data)
     .then(res => {
-      ToastAndroid.show('Inserted with ID: ' + res.data.id, ToastAndroid.SHORT);
+      uiService.toastSuccess('Inserted with ID: ' + res.data.id);
     })
     .catch(e => {
-      ToastAndroid.show('Failed to insert!', ToastAndroid.SHORT);
+      uiService.toastError('Failed to insert!');
     });
 };

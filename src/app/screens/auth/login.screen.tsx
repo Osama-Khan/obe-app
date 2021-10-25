@@ -2,7 +2,7 @@ import userService from '@app/services/user.service';
 import {NavigationProp, StackActions} from '@react-navigation/core';
 import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
-import {Switch, ToastAndroid, View} from 'react-native';
+import {Switch, View} from 'react-native';
 import {
   Caption,
   Card,
@@ -14,6 +14,7 @@ import {
 } from 'react-native-paper';
 import {homeRoute} from 'src/app.routes';
 import userActions from '@app/store/actions/user.actions';
+import uiService from '@app/services/ui.service';
 
 type P = {navigation: NavigationProp<any>};
 
@@ -71,10 +72,7 @@ export const LoginScreen = ({navigation}: P) => {
               })
               .catch(e => {
                 if (e.response.status === 400) {
-                  ToastAndroid.show(
-                    'Invalid username or password!',
-                    ToastAndroid.SHORT,
-                  );
+                  uiService.toastError('Invalid username or password!');
                 }
               })
               .finally(() => {

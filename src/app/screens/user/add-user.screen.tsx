@@ -1,9 +1,10 @@
 import {DatePickerInputFormik} from '@app/components/pickers';
+import uiService from '@app/services/ui.service';
 import userService from '@app/services/user.service';
 import UserType from '@app/types/user.type';
 import {Formik} from 'formik';
 import React from 'react';
-import {ToastAndroid, View} from 'react-native';
+import {View} from 'react-native';
 import {Button, Card, TextInput} from 'react-native-paper';
 
 type FormDataType = Partial<UserType> & {
@@ -76,10 +77,10 @@ const isInvalid = (data: FormDataType) =>
   !data.username || !data.email || !data.password || !data.dateOfBirth;
 const handleSubmit = (data: FormDataType) => {
   if (isInvalid(data)) {
-    ToastAndroid.show('Invalid data', ToastAndroid.SHORT);
+    uiService.toastError('Invalid data');
     return;
   }
   userService.insert(data).then(res => {
-    ToastAndroid.show('Inserted with ID: ' + res.data.id, ToastAndroid.SHORT);
+    uiService.toastSuccess('Inserted with ID: ' + res.data.id);
   });
 };

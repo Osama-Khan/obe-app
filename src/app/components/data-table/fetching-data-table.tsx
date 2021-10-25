@@ -1,6 +1,6 @@
+import uiService from '@app/services/ui.service';
 import {AxiosResponse} from 'axios';
 import React from 'react';
-import {ToastAndroid} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import {DataTable} from '.';
 import {DataTableProps} from './data-table';
@@ -37,7 +37,7 @@ export default class FetchingDataTable<ItemType> extends React.Component<
         this.setState({...this.state, items});
       })
       .catch(e => {
-        ToastAndroid.show('Failed to load table data!', ToastAndroid.LONG);
+        uiService.toastError('Failed to load table data!');
       });
   }
 
