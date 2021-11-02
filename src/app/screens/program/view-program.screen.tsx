@@ -1,5 +1,6 @@
 import {FetchingDataTable} from '@app/components/data-table';
 import {ConfirmModal} from '@app/components/modal';
+import {ManyCriteria} from '@app/models/criteria';
 import programService from '@app/services/program.service';
 import uiService from '@app/services/ui.service';
 import ProgramType from '@app/types/program.type';
@@ -7,9 +8,11 @@ import {NavigationProp} from '@react-navigation/core';
 import React, {useState} from 'react';
 import {View} from 'react-native';
 import {Button, Card, IconButton, Text} from 'react-native-paper';
-import {addProgramRoute} from 'src/app.routes';
+import {addProgramRoute, editProgramRoute} from 'src/app.routes';
 
 type P = {navigation: NavigationProp<any>};
+const criteria = new ManyCriteria<ProgramType>();
+criteria.addRelation('courses');
 export const ViewProgramScreen = ({navigation}: P) => {
   const [selected, setSelected] = useState<ProgramType[]>([]);
   const [modalShown, setModalShown] = useState(false);
@@ -31,7 +34,9 @@ export const ViewProgramScreen = ({navigation}: P) => {
           disabled={selected.length < 1}
           color="#0af"
           onPress={() => {
-            //TODO: Edit stuff
+            navigation.navigate(editProgramRoute.name, {
+              programId: selected[0].id,
+            });
           }}
         />
         <Button
@@ -43,21 +48,29 @@ export const ViewProgramScreen = ({navigation}: P) => {
         </Button>
       </View>
       <Card style={{margin: 8}} elevation={8}>
-        <FetchingDataTable<ProgramType>
-          fetchMethod={() => programService.get()}
+        <FetchingDataTable
+          fetchMethod={criteria => programService.get(criteria)}
+          criteria={criteria}
           checkProperty="id"
           columns={[
             {title: 'ID', property: 'id'},
             {title: 'Title', property: 'title'},
             {
               title: 'Courses',
-              property: ({item}) => (
-                <Text>
-                  {item.courses
-                    ? item.courses?.splice(0, 2).join(',') + '...'
-                    : 'N/A'}
-                </Text>
-              ),
+              property: ({item}) => {
+                const num = item.courses?.length;
+                let text;
+                if (num && num > 0) {
+                  text = item.courses
+                    ?.splice(0, 2)
+                    .map(c => c.title)
+                    .join(', ');
+                  if (num > 2) text += ', ...';
+                } else {
+                  text = 'N/A';
+                }
+                return <Text>{text}</Text>;
+              },
             },
           ]}
           onCheckedChange={checked => {

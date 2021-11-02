@@ -1,12 +1,15 @@
-import {FetchingCardList} from '@app/components/listing';
+import {FetchingDataTable} from '@app/components/data-table';
+import {ManyCriteria} from '@app/models/criteria';
 import userService from '@app/services/user.service';
 import UserType from '@app/types/user.type';
 import {NavigationProp} from '@react-navigation/core';
 import React from 'react';
-import {Button} from 'react-native-paper';
+import {Button, Card, Text} from 'react-native-paper';
 import {addUserRoute} from 'src/app.routes';
 
 type P = {navigation: NavigationProp<any>};
+const criteria = new ManyCriteria<UserType>({relations: ['role']});
+
 export const ViewUserScreen = ({navigation}: P) => {
   return (
     <>
@@ -17,11 +20,26 @@ export const ViewUserScreen = ({navigation}: P) => {
         onPress={() => navigation.navigate(addUserRoute.name)}>
         Add
       </Button>
-      <FetchingCardList<UserType>
-        fetchMethod={() => userService.get()}
-        title={item => item.username}
-        description={item => item.email}
-      />
+      <Card style={{margin: 8}}>
+        <FetchingDataTable
+          fetchMethod={criteria => userService.get(criteria)}
+          criteria={criteria}
+          columns={[
+            {
+              property: 'username',
+              title: 'Username',
+            },
+            {
+              property: 'email',
+              title: 'Email',
+            },
+            {
+              property: ({item: user}) => <Text>{user.role!.name}</Text>,
+              title: 'Role',
+            },
+          ]}
+        />
+      </Card>
     </>
   );
 };

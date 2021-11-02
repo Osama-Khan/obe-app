@@ -6,87 +6,88 @@ import CourseType from '@app/types/course.type';
 import {NavigationProp} from '@react-navigation/core';
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
-import {Card, IconButton} from 'react-native-paper';
+import {Button, Card, IconButton} from 'react-native-paper';
 import {addCourseRoute, editCourseRoute} from 'src/app.routes';
 
 type P = {navigation: NavigationProp<any>};
 export const ViewCourseScreen = ({navigation}: P) => {
-  const [selected, setSelected] = useState<CourseType>();
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <IconButton
-          style={{marginVertical: 'auto'}}
-          icon="plus-circle"
-          color="white"
-          onPress={() => navigation.navigate(addCourseRoute.name)}
-        />
-      ),
-    });
-  }, []);
+  const [selected, setSelected] = useState<CourseType[]>([]);
+  const [modalShown, setModalShown] = useState(false);
   return (
     <>
       <Card style={{margin: 8}} elevation={8}>
+        <View style={{flexDirection: 'row'}}>
+          <IconButton
+            icon="delete"
+            style={{margin: 8, marginLeft: 'auto'}}
+            disabled={selected.length < 1}
+            color="red"
+            onPress={() => {
+              setModalShown(true);
+            }}
+          />
+          <IconButton
+            icon="pencil"
+            style={{margin: 8}}
+            disabled={selected.length !== 1}
+            color="#0af"
+            onPress={() => {
+              navigation.navigate(editCourseRoute.name, {
+                courseId: selected[0].id,
+              });
+            }}
+          />
+          <Button
+            icon="plus"
+            style={{margin: 8}}
+            mode="contained"
+            onPress={() => navigation.navigate(addCourseRoute.name)}>
+            Add
+          </Button>
+        </View>
         <FetchingDataTable<CourseType>
           fetchMethod={() => courseService.get()}
+          checkProperty="id"
+          onCheckedChange={setSelected}
           columns={[
             {title: 'Title', property: 'title'},
             {title: 'Code', property: 'code'},
             {title: 'Credit Hrs', property: 'creditHours', numeric: true},
-            {
-              title: 'Actions',
-              property: ({item}) => (
-                <View style={{flexDirection: 'row'}}>
-                  <IconButton
-                    color="blue"
-                    icon="pencil"
-                    style={{margin: 0}}
-                    size={18}
-                    onPress={() =>
-                      navigation.navigate(editCourseRoute.name, {
-                        courseId: item.id,
-                      })
-                    }
-                  />
-                  <IconButton
-                    color="red"
-                    icon="delete"
-                    style={{margin: 0}}
-                    size={18}
-                    onPress={() => setSelected(item)}
-                  />
-                </View>
-              ),
-              numeric: true,
-            },
           ]}
           itemsPerPage={2}
         />
       </Card>
       <ConfirmModal
-        title="Delete Course?"
-        description={`Are you sure you want to delete the course "${selected?.title}"?`}
-        visible={!!selected}
+        title="Delete Courses?"
+        description={`Are you sure you want to delete the courses: [${selected
+          .map(s => s.title)
+          .join(', ')}]?`}
+        visible={modalShown}
         positiveButton={{
           onPress: () => {
-            courseService
-              .delete(selected!.id)
+            const prms = Promise.all(
+              selected.map(s => courseService.delete(s.id)),
+            );
+            prms
               .then(res => {
-                uiService.toastSuccess('Course deleted!');
+                uiService.toastSuccess('Courses deleted!');
+                setSelected([]);
               })
               .catch(e => {
-                uiService.toastError('Could not delete course!');
+                uiService.toastError('Could not delete some courses!');
+              })
+              .finally(() => {
+                setModalShown(false);
               });
-            setSelected(undefined);
           },
         }}
         negativeButton={{
           onPress: () => {
-            setSelected(undefined);
+            setModalShown(false);
           },
         }}
         onDismiss={() => {
-          setSelected(undefined);
+          setModalShown(false);
         }}
       />
     </>
