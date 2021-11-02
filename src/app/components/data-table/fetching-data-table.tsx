@@ -1,3 +1,4 @@
+import {ManyCriteria} from '@app/models/criteria';
 import uiService from '@app/services/ui.service';
 import {AxiosResponse} from 'axios';
 import React from 'react';
@@ -7,7 +8,10 @@ import {DataTableProps} from './data-table';
 
 type P<T> = Omit<DataTableProps<T>, 'data'> & {
   /** The method used to fetch data */
-  fetchMethod: () => Promise<AxiosResponse<T[]>>;
+  fetchMethod: (criteria?: ManyCriteria<T>) => Promise<AxiosResponse<T[]>>;
+
+  /** The criteria for filtering entities */
+  criteria?: ManyCriteria<T>;
 
   /** The method used to extract data from response */
   dataExtractor?: (response: AxiosResponse<T[]>) => T[];
@@ -28,7 +32,7 @@ export default class FetchingDataTable<ItemType> extends React.Component<
 
   componentDidMount() {
     this.props
-      .fetchMethod()
+      .fetchMethod(this.props.criteria)
       .then(res => {
         let items = res.data;
         if (this.props.dataExtractor) {

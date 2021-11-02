@@ -1,4 +1,5 @@
-import axios from 'axios';
+import {Criteria, ManyCriteria} from '@app/models/criteria';
+import axios, {AxiosResponse} from 'axios';
 import ApiService from './api.service';
 
 /** Provides basic CRUD API methods */
@@ -10,13 +11,16 @@ export default abstract class CrudService<Model> extends ApiService {
   }
 
   /** Gets all items */
-  get() {
-    return axios.get(this.endpoint);
+  get(criteria?: ManyCriteria<Model>): Promise<AxiosResponse<Model[]>> {
+    return axios.post(this.endpoint, criteria?.body);
   }
 
   /** Gets one item */
-  getOne(id: string) {
-    return axios.get(`${this.endpoint}/${id}`);
+  getOne(
+    id: string,
+    criteria?: Criteria<Model>,
+  ): Promise<AxiosResponse<Model>> {
+    return axios.post(`${this.endpoint}/${id}`, criteria?.body);
   }
 
   /** Sends a put request with the given data */
