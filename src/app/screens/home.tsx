@@ -46,7 +46,7 @@ export const Home = (props: P) => {
   return user ? (
     <>
       <IconCard
-        icon="book"
+        icon="bookshelf"
         title="Courses"
         onPress={() => goto(viewCourseRoute.name)}
       />
