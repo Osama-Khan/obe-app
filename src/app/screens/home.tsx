@@ -10,6 +10,7 @@ import {
   Title,
 } from 'react-native-paper';
 import {
+  allocationRoute,
   loginRoute,
   viewCourseRoute,
   viewProgramRoute,
@@ -58,6 +59,11 @@ export const Home = (props: P) => {
         icon="account"
         title="Users"
         onPress={() => goto(viewUsersRoute.name)}
+      />
+      <IconCard
+        icon="sitemap"
+        title="Allocate Courses"
+        onPress={() => goto(allocationRoute.name)}
       />
       <Modal visible={visible} onDismiss={() => setVisible(false)}>
         <View style={{padding: 8}}>

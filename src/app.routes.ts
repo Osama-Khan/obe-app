@@ -1,3 +1,4 @@
+import AllocationScreen from '@app/screens/allocation';
 import {LoginScreen} from '@app/screens/auth/login.screen';
 import {
   AddCourseScreen,
@@ -90,6 +91,12 @@ export const viewUsersRoute: RouteType = {
   component: ViewUserScreen,
 };
 
+export const allocationRoute: RouteType = {
+  id: 'allocation',
+  name: 'Allocate Courses',
+  component: AllocationScreen,
+};
+
 export const routes: RoutesType = {
   bottomNav: [],
   stackNav: [
@@ -103,5 +110,6 @@ export const routes: RoutesType = {
     viewProgramRoute,
     addUserRoute,
     viewUsersRoute,
+    allocationRoute,
   ],
 };
