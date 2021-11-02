@@ -1,8 +1,15 @@
 import {LoginScreen} from '@app/screens/auth/login.screen';
-import {AddCourseScreen, ViewCourseScreen} from '@app/screens/course';
-import EditCourseScreen from '@app/screens/course/edit-course.screen';
+import {
+  AddCourseScreen,
+  ViewCourseScreen,
+  EditCourseScreen,
+} from '@app/screens/course';
 import {Home} from '@app/screens/home';
-import {AddProgramScreen, ViewProgramScreen} from '@app/screens/program';
+import {
+  AddProgramScreen,
+  EditProgramScreen,
+  ViewProgramScreen,
+} from '@app/screens/program';
 import {AddUserScreen, ViewUserScreen} from '@app/screens/user';
 import {StackNavigationOptions} from '@react-navigation/stack';
 
@@ -59,6 +66,12 @@ export const addProgramRoute: RouteType = {
   component: AddProgramScreen,
 };
 
+export const editProgramRoute: RouteType = {
+  id: 'edit-program',
+  name: 'Edit Program',
+  component: EditProgramScreen,
+};
+
 export const viewProgramRoute: RouteType = {
   id: 'view-programs',
   name: 'View Programs',
@@ -86,6 +99,7 @@ export const routes: RoutesType = {
     editCourseRoute,
     viewCourseRoute,
     addProgramRoute,
+    editProgramRoute,
     viewProgramRoute,
     addUserRoute,
     viewUsersRoute,
