@@ -11,17 +11,15 @@ import {
 } from 'react-native-paper';
 import {
   allocationRoute,
-  loginRoute,
   viewCourseRoute,
   viewProgramRoute,
   viewUsersRoute,
-} from 'src/app.routes';
+} from '@app/routes/admin.routes';
 import Icon from '@app/components/icon';
 import Modal from '@app/components/modal';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppStateType} from '@app/store/state';
 import {userActions} from '@app/store/actions';
-import {StackActions} from '@react-navigation/native';
 
 type P = {navigation: NavigationProp<any>};
 
@@ -77,7 +75,6 @@ export const Home = (props: P) => {
             left={() => <List.Icon icon="logout" color="#f22" />}
             onPress={() => {
               dispatch(userActions.clearUser());
-              props.navigation.dispatch(StackActions.replace(loginRoute.name));
             }}
           />
         </View>

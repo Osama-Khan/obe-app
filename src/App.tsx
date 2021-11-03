@@ -1,6 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import React from 'react';
+import React, {useMemo, useState} from 'react';
 import {Provider as ReduxProvider} from 'react-redux';
 import {StatusBar} from 'react-native';
 import {Provider} from 'react-native-paper';
@@ -11,6 +11,20 @@ import Toast from 'react-native-toast-message';
 
 const {Navigator, Screen} = createStackNavigator();
 const App = () => {
+  const [stack, setStack] = useState(routes.auth);
+  useMemo(() => {
+    store.subscribe(() => {
+      const user = store.getState().user;
+      if (!user.userData) {
+        if (stack !== routes.auth) setStack(routes.auth);
+        return;
+      }
+      const role = user.userData.role?.name;
+      if (role === 'admin' && stack !== routes.admin) {
+        setStack(routes.admin);
+      }
+    });
+  }, []);
   return (
     <>
       <ReduxProvider store={store}>
@@ -18,7 +32,7 @@ const App = () => {
           <NavigationContainer theme={DefaultNavTheme}>
             <StatusBar backgroundColor="#50d" />
             <Navigator>
-              {routes.stackNav.map(r => (
+              {stack.map(r => (
                 <Screen
                   component={r.component}
                   name={r.name}

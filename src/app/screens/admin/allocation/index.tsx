@@ -7,7 +7,7 @@ import {pickSingle} from 'react-native-document-picker';
 import courseService from '@app/services/course.service';
 import uiService from '@app/services/ui.service';
 
-export default function AllocationScreen() {
+export function AllocationScreen() {
   const [fileName, setFileName] = useState('');
   const [stream, setStream] = useState('');
   const [saving, setSaving] = useState(false);

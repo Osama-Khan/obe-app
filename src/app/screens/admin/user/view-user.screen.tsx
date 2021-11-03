@@ -5,7 +5,7 @@ import UserType from '@app/types/user.type';
 import {NavigationProp} from '@react-navigation/core';
 import React from 'react';
 import {Button, Card, Text} from 'react-native-paper';
-import {addUserRoute} from 'src/app.routes';
+import {addUserRoute} from '@app/routes/admin.routes';
 
 type P = {navigation: NavigationProp<any>};
 const criteria = new ManyCriteria<UserType>({relations: ['role']});
