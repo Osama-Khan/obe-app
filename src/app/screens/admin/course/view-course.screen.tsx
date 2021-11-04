@@ -15,36 +15,36 @@ export const ViewCourseScreen = ({navigation}: P) => {
   const [modalShown, setModalShown] = useState(false);
   return (
     <>
+      <View style={{flexDirection: 'row'}}>
+        <IconButton
+          icon="delete"
+          style={{margin: 8, marginLeft: 'auto'}}
+          disabled={selected.length < 1}
+          color="red"
+          onPress={() => {
+            setModalShown(true);
+          }}
+        />
+        <IconButton
+          icon="pencil"
+          style={{margin: 8}}
+          disabled={selected.length !== 1}
+          color="#0af"
+          onPress={() => {
+            navigation.navigate(editCourseRoute.name, {
+              courseId: selected[0].id,
+            });
+          }}
+        />
+        <Button
+          icon="plus"
+          style={{margin: 8}}
+          mode="contained"
+          onPress={() => navigation.navigate(addCourseRoute.name)}>
+          Add
+        </Button>
+      </View>
       <Card style={{margin: 8}} elevation={8}>
-        <View style={{flexDirection: 'row'}}>
-          <IconButton
-            icon="delete"
-            style={{margin: 8, marginLeft: 'auto'}}
-            disabled={selected.length < 1}
-            color="red"
-            onPress={() => {
-              setModalShown(true);
-            }}
-          />
-          <IconButton
-            icon="pencil"
-            style={{margin: 8}}
-            disabled={selected.length !== 1}
-            color="#0af"
-            onPress={() => {
-              navigation.navigate(editCourseRoute.name, {
-                courseId: selected[0].id,
-              });
-            }}
-          />
-          <Button
-            icon="plus"
-            style={{margin: 8}}
-            mode="contained"
-            onPress={() => navigation.navigate(addCourseRoute.name)}>
-            Add
-          </Button>
-        </View>
         <FetchingDataTable<CourseType>
           fetchMethod={() => courseService.get()}
           checkProperty="id"
