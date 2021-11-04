@@ -14,7 +14,7 @@ import {RouteType} from '@app/types/route.type';
 
 export const homeRoute: RouteType = {
   id: 'home',
-  name: 'Home',
+  name: 'Admin Panel',
   component: Home,
 };
 
