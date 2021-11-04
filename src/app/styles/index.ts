@@ -1,3 +1,2 @@
-import {theme, navTheme} from './theme';
-
-export {theme as DefaultTheme, navTheme as DefaultNavTheme};
+export {theme as AppTheme, navTheme as NavTheme} from './theme';
+export {default as colors} from './colors';

@@ -4,11 +4,7 @@ import {
   Theme as NavTheme,
 } from '@react-navigation/native';
 import {Theme as PaperTheme} from 'react-native-paper/lib/typescript/types';
-
-const colors = {
-  primary: '#70f',
-  accent: '#90f',
-};
+import colors from './colors';
 
 const theme: PaperTheme = {
   ...PaperDefault,
