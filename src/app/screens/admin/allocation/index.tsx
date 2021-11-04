@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import {View} from 'react-native';
 import {Button, Caption, Card, Title} from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from '@app/components/icon';
 import {readFile} from 'react-native-fs';
 import {pickSingle} from 'react-native-document-picker';
 import courseService from '@app/services/course.service';
 import uiService from '@app/services/ui.service';
+import {colors} from '@app/styles';
 
 export function AllocationScreen() {
   const [fileName, setFileName] = useState('');
@@ -26,7 +27,8 @@ export function AllocationScreen() {
           });
         }}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <View style={{backgroundColor: stream ? '#0f0' : '#70f'}}>
+          <View
+            style={{backgroundColor: stream ? colors.primary : colors.slate}}>
             <Icon
               name={stream ? 'check' : 'plus'}
               size={32}

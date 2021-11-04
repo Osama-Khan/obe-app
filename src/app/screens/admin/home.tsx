@@ -20,6 +20,7 @@ import Modal from '@app/components/modal';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppStateType} from '@app/store/state';
 import {userActions} from '@app/store/actions';
+import {colors} from '@app/styles';
 
 type P = {navigation: NavigationProp<any>};
 
@@ -72,9 +73,8 @@ export const Home = (props: P) => {
           <Divider style={{marginVertical: 8}} />
           <List.Item
             title="Log out"
-            titleStyle={{color: '#f22'}}
-            description="Hold to logout"
-            left={() => <List.Icon icon="logout" color="#f22" />}
+            titleStyle={{color: colors.red}}
+            left={() => <List.Icon icon="logout" color={colors.red} />}
             onPress={() => {
               dispatch(userActions.clearUser());
             }}
@@ -105,7 +105,7 @@ const IconCard = ({
         style={{
           padding: 8,
           width: '100%',
-          backgroundColor: '#70f',
+          backgroundColor: colors.primary,
           alignItems: 'center',
         }}>
         <Icon name={icon} size={96} color="#fffa" />
