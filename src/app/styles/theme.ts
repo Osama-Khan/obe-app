@@ -4,7 +4,7 @@ import {
   Theme as NavTheme,
 } from '@react-navigation/native';
 import {Theme as PaperTheme} from 'react-native-paper/lib/typescript/types';
-import colors from './colors';
+import {appColors as colors} from './colors';
 
 const theme: PaperTheme = {
   ...PaperDefault,
@@ -18,9 +18,9 @@ const navTheme: NavTheme = {
   ...NavDefault,
   colors: {
     ...NavDefault.colors,
-    primary: colors.primary,
+    ...colors,
     card: colors.primary,
-    text: '#fff',
+    text: colors.textInverted,
   },
 };
 
