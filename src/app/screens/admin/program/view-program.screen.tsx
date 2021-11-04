@@ -31,7 +31,7 @@ export const ViewProgramScreen = ({navigation}: P) => {
         <IconButton
           icon="pencil"
           style={{margin: 8}}
-          disabled={selected.length < 1}
+          disabled={selected.length !== 1}
           color="#0af"
           onPress={() => {
             navigation.navigate(editProgramRoute.name, {
