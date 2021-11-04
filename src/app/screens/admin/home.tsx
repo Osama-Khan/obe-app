@@ -43,26 +43,28 @@ export const Home = (props: P) => {
   const goto = (r: string) => props.navigation.navigate(r);
   return user ? (
     <>
-      <IconCard
-        icon="bookshelf"
-        title="Courses"
-        onPress={() => goto(viewCourseRoute.name)}
-      />
-      <IconCard
-        icon="folder"
-        title="Programs"
-        onPress={() => goto(viewProgramRoute.name)}
-      />
-      <IconCard
-        icon="account"
-        title="Users"
-        onPress={() => goto(viewUsersRoute.name)}
-      />
-      <IconCard
-        icon="sitemap"
-        title="Allocate Courses"
-        onPress={() => goto(allocationRoute.name)}
-      />
+      <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+        <IconCard
+          icon="bookshelf"
+          title="Courses"
+          onPress={() => goto(viewCourseRoute.name)}
+        />
+        <IconCard
+          icon="folder"
+          title="Programs"
+          onPress={() => goto(viewProgramRoute.name)}
+        />
+        <IconCard
+          icon="account"
+          title="Users"
+          onPress={() => goto(viewUsersRoute.name)}
+        />
+        <IconCard
+          icon="sitemap"
+          title="Allocate Courses"
+          onPress={() => goto(allocationRoute.name)}
+        />
+      </View>
       <Modal visible={visible} onDismiss={() => setVisible(false)}>
         <View style={{padding: 8}}>
           <Title>{user.username}</Title>
@@ -94,13 +96,20 @@ const IconCard = ({
   icon: string;
   onPress: () => void;
 }) => (
-  <Card style={{margin: 8, overflow: 'hidden'}} elevation={8} onPress={onPress}>
-    <View style={{alignItems: 'center', flexDirection: 'row'}}>
-      <Icon
-        name={icon}
-        size={48}
-        style={{padding: 8, backgroundColor: '#70f'}}
-      />
+  <Card
+    style={{margin: '2%', overflow: 'hidden', width: '46%'}}
+    elevation={8}
+    onPress={onPress}>
+    <View style={{alignItems: 'center'}}>
+      <View
+        style={{
+          padding: 8,
+          width: '100%',
+          backgroundColor: '#70f',
+          alignItems: 'center',
+        }}>
+        <Icon name={icon} size={96} color="#fffa" />
+      </View>
       <Title style={{marginLeft: 8}}>{title}</Title>
     </View>
   </Card>
