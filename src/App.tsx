@@ -8,6 +8,7 @@ import {routes} from './app.routes';
 import store from '@app/store';
 import {NavTheme, AppTheme, colors} from '@app/styles';
 import Toast from 'react-native-toast-message';
+import uiService from '@app/services/ui.service';
 
 const {Navigator, Screen} = createStackNavigator();
 const App = () => {
@@ -22,7 +23,17 @@ const App = () => {
       const role = user.userData.role?.name;
       if (role === 'admin') {
         setStack(routes.admin);
+        return;
       }
+      if (role === 'teacher') {
+        setStack(routes.teacher);
+        return;
+      }
+      if (role === 'student') {
+        setStack(routes.student);
+        return;
+      }
+      uiService.toastError('Error: Could not find navigation for user type!');
     });
   }, []);
   return (
