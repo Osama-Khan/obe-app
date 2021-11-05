@@ -1,8 +1,7 @@
 import userService from '@app/services/user.service';
-import {NavigationProp} from '@react-navigation/core';
 import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
-import {Switch, View} from 'react-native';
+import {Image, ScrollView, Switch, View} from 'react-native';
 import {
   Caption,
   Card,
@@ -15,9 +14,7 @@ import {
 import userActions from '@app/store/actions/user.actions';
 import uiService from '@app/services/ui.service';
 
-type P = {navigation: NavigationProp<any>};
-
-export const LoginScreen = ({navigation}: P) => {
+export const LoginScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(false);
@@ -26,7 +23,12 @@ export const LoginScreen = ({navigation}: P) => {
   const dispatch = useDispatch();
 
   return (
-    <View style={{justifyContent: 'center', flexGrow: 1}}>
+    <ScrollView>
+      <Image
+        source={require('@assets/logo.png')}
+        style={{alignSelf: 'center', width: '100%', margin: 8, height: 128}}
+        resizeMode="contain"
+      />
       <Card style={{margin: 8, padding: 8}}>
         <Title style={{fontWeight: 'bold'}}>Login</Title>
         <Caption>Enter your details</Caption>
@@ -65,7 +67,11 @@ export const LoginScreen = ({navigation}: P) => {
               .then((res: any) => {
                 const {token, ...userData} = res.data;
                 dispatch(
-                  userActions.setUser({token, userData, restoringState: false}),
+                  userActions.setUser({
+                    token,
+                    userData,
+                    restoringState: false,
+                  }),
                 );
               })
               .catch(e => {
@@ -80,6 +86,6 @@ export const LoginScreen = ({navigation}: P) => {
           Login
         </Button>
       </Card>
-    </View>
+    </ScrollView>
   );
 };
