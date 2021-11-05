@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleProp, ViewStyle} from 'react-native';
 import {Card, Menu, Text} from 'react-native-paper';
 
-type OptionType = {
+export type OptionType = {
   name: string;
   value: string;
   key?: string;
@@ -10,7 +10,7 @@ type OptionType = {
   disabled?: boolean;
   selected?: boolean;
 };
-type PropType<T extends OptionType> = {
+export type DropdownProps<T extends OptionType> = {
   options: T[];
   onSelect: (option: T) => void;
   style?: StyleProp<ViewStyle>;
@@ -18,10 +18,10 @@ type PropType<T extends OptionType> = {
 type StateType<T extends OptionType> = {visible: boolean; selected: T};
 
 export default class DropDown<T extends OptionType> extends React.Component<
-  PropType<T>,
+  DropdownProps<T>,
   StateType<T>
 > {
-  constructor(props: PropType<T>) {
+  constructor(props: DropdownProps<T>) {
     super(props);
     let selected = props.options.findIndex(o => o.selected);
     selected = selected === -1 ? 0 : selected;
