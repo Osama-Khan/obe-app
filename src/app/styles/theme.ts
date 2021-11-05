@@ -12,6 +12,7 @@ const theme: PaperTheme = {
     ...PaperDefault.colors,
     ...colors,
   },
+  roundness: 8,
 };
 
 const navTheme: NavTheme = {
