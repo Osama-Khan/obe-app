@@ -16,11 +16,11 @@ const App = () => {
     store.subscribe(() => {
       const user = store.getState().user;
       if (!user.userData) {
-        if (stack !== routes.auth) setStack(routes.auth);
+        setStack(routes.auth);
         return;
       }
       const role = user.userData.role?.name;
-      if (role === 'admin' && stack !== routes.admin) {
+      if (role === 'admin') {
         setStack(routes.admin);
       }
     });
