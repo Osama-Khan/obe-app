@@ -9,14 +9,18 @@ import {
 import {useSelector} from 'react-redux';
 import {AppStateType} from '@app/store/state';
 import allocationService from '@app/services/allocation.service';
-import {ManyCriteria} from '@app/models/criteria';
+import {Criteria, ManyCriteria} from '@app/models/criteria';
 import uiService from '@app/services/ui.service';
+import sectionService from '@app/services/section.service';
+import {AllocationType, ProgramType, SectionType} from '@app/types';
+
+type AllocationProgramType = AllocationType & {program?: ProgramType};
 
 export const Home = () => {
   const user = useSelector((state: AppStateType) => state.user.userData);
-  const [allocations, setAllocations] = useState<any[]>();
+  const [allocations, setAllocations] = useState<AllocationProgramType[]>();
   useEffect(() => {
-    const criteria = new ManyCriteria<any>();
+    const criteria = new ManyCriteria<AllocationType>();
     criteria.addCondition('user', user!.id, '=');
     criteria.addRelation('course');
     criteria.addRelation('user');
@@ -24,7 +28,21 @@ export const Home = () => {
     allocationService
       .get(criteria)
       .then(res => {
-        setAllocations(res.data);
+        const allocs: AllocationProgramType[] = res.data;
+        const pCrit = new Criteria<SectionType>();
+        pCrit.addRelation('program');
+        Promise.all(
+          allocs.map((a, i) =>
+            sectionService
+              .getOne(a.section!.id, pCrit)
+              .then(res => {
+                allocs[i].program = res.data.program!;
+              })
+              .then(() => {
+                setAllocations(allocs);
+              }),
+          ),
+        );
       })
       .catch(e => uiService.toastError('Failed to fetch allocation data!'));
   }, []);
@@ -36,10 +54,10 @@ export const Home = () => {
         allocations.length > 0 ? (
           allocations.map(a => (
             <Card style={{margin: 16, padding: 16}}>
-              <Title>{a.course.title}</Title>
+              <Title>{a.course!.title}</Title>
               <Caption>
-                Teaching in {a.section.semester}
-                {a.section.name}
+                Teaching in {a.program!.title}-{a.section!.semester}
+                {a.section!.name}
               </Caption>
             </Card>
           ))
