@@ -1,4 +1,5 @@
-import {FindConditions, IFindConditions} from './Conditions';
+import {FindConditions} from './Conditions';
+import FindOperator from './Operators';
 import {FindManyOptions, FindOneOptions} from './Options';
 
 export class Criteria<Entity> {
@@ -12,8 +13,16 @@ export class Criteria<Entity> {
     return this._criteria;
   }
 
-  addCondition = (where: IFindConditions<Entity>) => {
-    const cond = new FindConditions<Entity>(where);
+  addCondition = (
+    key: keyof Entity,
+    value: string,
+    operator?: FindOperator,
+  ) => {
+    const cond = new FindConditions<Entity>({
+      key,
+      value,
+      operator: operator || '=',
+    });
     !this._criteria.where && (this._criteria.where = []);
     this._criteria.where.push(cond);
   };
