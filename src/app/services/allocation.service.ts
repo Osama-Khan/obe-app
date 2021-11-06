@@ -1,7 +1,8 @@
+import {AllocationType} from '@app/types';
 import axios from 'axios';
 import CrudService from './crud.service';
 
-class AllocationService extends CrudService<any> {
+class AllocationService extends CrudService<AllocationType> {
   constructor() {
     super('allocation');
   }
