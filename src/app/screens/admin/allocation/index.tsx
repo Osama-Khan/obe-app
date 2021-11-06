@@ -4,9 +4,9 @@ import {Button, Caption, Card, Title} from 'react-native-paper';
 import Icon from '@app/components/icon';
 import {readFile} from 'react-native-fs';
 import {pickSingle} from 'react-native-document-picker';
-import courseService from '@app/services/course.service';
 import uiService from '@app/services/ui.service';
 import {colors} from '@app/styles';
+import allocationService from '@app/services/allocation.service';
 
 export function AllocationScreen() {
   const [fileName, setFileName] = useState('');
@@ -47,14 +47,20 @@ export function AllocationScreen() {
         loading={saving}
         onPress={() => {
           setSaving(true);
-          courseService
+          allocationService
             .uploadAllocationFile(stream)
             .then(() =>
               uiService.toastSuccess('Successfully uploaded allocation file!'),
             )
-            .catch(e =>
-              uiService.toastError('Failed to upload allocation file!'),
-            )
+            .catch(e => {
+              uiService.toastError(
+                e.response
+                  ? e.response.data?.message ||
+                      `Error Code: ${e.response.status}`
+                  : 'Could not upload file!',
+                'Upload Failed!',
+              );
+            })
             .finally(() => {
               setStream('');
               setFileName('');
