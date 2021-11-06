@@ -1,3 +1,4 @@
+import AllocationType from './allocation.type';
 import CLOType from './clo.type';
 import DbEntity from './db-entity.type';
 import ProgramType from './program.type';
@@ -8,6 +9,7 @@ type CourseType = DbEntity & {
   creditHours: number;
   programs?: ProgramType[];
   clos?: CLOType[];
+  allocations?: AllocationType[];
 };
 
 export default CourseType;
