@@ -3,6 +3,7 @@ import {
   ActivityIndicator,
   Caption,
   Card,
+  FAB,
   Text,
   Title,
 } from 'react-native-paper';
@@ -13,6 +14,9 @@ import {Criteria, ManyCriteria} from '@app/models/criteria';
 import uiService from '@app/services/ui.service';
 import sectionService from '@app/services/section.service';
 import {AllocationType, ProgramType, SectionType} from '@app/types';
+import {colors} from '@app/styles';
+import store from '@app/store';
+import {userActions} from '@app/store/actions';
 
 type AllocationProgramType = AllocationType & {program?: ProgramType};
 
@@ -69,6 +73,16 @@ export const Home = () => {
       ) : (
         <ActivityIndicator />
       )}
+      <FAB
+        style={{
+          position: 'absolute',
+          bottom: 16,
+          right: 16,
+          backgroundColor: colors.red,
+        }}
+        onPress={() => store.dispatch(userActions.clearUser())}
+        icon="logout"
+      />
     </>
   );
 };
