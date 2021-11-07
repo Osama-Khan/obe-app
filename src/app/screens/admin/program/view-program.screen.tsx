@@ -62,7 +62,7 @@ export const ViewProgramScreen = ({navigation}: P) => {
                 let text;
                 if (num && num > 0) {
                   text = item.courses
-                    ?.splice(0, 2)
+                    ?.slice(0, 2)
                     .map(c => c.title)
                     .join(', ');
                   if (num > 2) text += ', ...';
