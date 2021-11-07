@@ -73,7 +73,7 @@ export default class DataTable<ItemType> extends React.Component<
       <PaperDataTable>
         <PaperDataTable.Header>
           {checkProperty ? (
-            <PaperDataTable.Title>
+            <PaperDataTable.Cell style={{maxWidth: 48}}>
               <Checkbox
                 status={
                   filteredItems
@@ -94,7 +94,7 @@ export default class DataTable<ItemType> extends React.Component<
                   }
                 }}
               />
-            </PaperDataTable.Title>
+            </PaperDataTable.Cell>
           ) : (
             <></>
           )}
@@ -112,7 +112,7 @@ export default class DataTable<ItemType> extends React.Component<
           items.map((item, index) => (
             <PaperDataTable.Row key={index} style={this.props.rowStyle}>
               {checkProperty ? (
-                <PaperDataTable.Cell>
+                <PaperDataTable.Cell style={{maxWidth: 48}}>
                   <Checkbox
                     status={
                       checked.find(
