@@ -6,8 +6,13 @@ import CourseType from '@app/types/course.type';
 import {NavigationProp} from '@react-navigation/core';
 import React, {useState} from 'react';
 import {View} from 'react-native';
-import {Button, Card, IconButton} from 'react-native-paper';
-import {addCourseRoute, editCourseRoute} from '@app/routes/admin.routes';
+import {Button, Card, IconButton, Text} from 'react-native-paper';
+import {
+  addCourseRoute,
+  courseDetailRoute,
+  editCourseRoute,
+} from '@app/routes/admin.routes';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 type P = {navigation: NavigationProp<any>};
 export const ViewCourseScreen = ({navigation}: P) => {
@@ -50,7 +55,17 @@ export const ViewCourseScreen = ({navigation}: P) => {
           checkProperty="id"
           onCheckedChange={setSelected}
           columns={[
-            {title: 'Title', property: 'title'},
+            {
+              title: 'Title',
+              property: ({item}) => (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate(courseDetailRoute.name, {course: item})
+                  }>
+                  <Text>{item.title}</Text>
+                </TouchableOpacity>
+              ),
+            },
             {title: 'Code', property: 'code'},
             {title: 'Credit Hrs', property: 'creditHours', numeric: true},
           ]}

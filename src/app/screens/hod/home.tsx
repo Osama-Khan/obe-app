@@ -1,4 +1,4 @@
-import {NavigationProp} from '@react-navigation/core';
+import {NavigationProp, useNavigation} from '@react-navigation/core';
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {
@@ -9,7 +9,11 @@ import {
   List,
   Title,
 } from 'react-native-paper';
-import {viewUsersRoute} from '@app/routes/admin.routes';
+import {
+  allocationRoute,
+  viewCourseRoute,
+  viewProgramRoute,
+} from '@app/routes/hod.routes';
 import Icon from '@app/components/icon';
 import Modal from '@app/components/modal';
 import {useDispatch, useSelector} from 'react-redux';
@@ -17,14 +21,13 @@ import {AppStateType} from '@app/store/state';
 import {userActions} from '@app/store/actions';
 import {colors} from '@app/styles';
 
-type P = {navigation: NavigationProp<any>};
-
-export const Home = (props: P) => {
+export const Home = () => {
   const user = useSelector((state: AppStateType) => state.user.userData);
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
+  const navigation = useNavigation();
   useEffect(() => {
-    props.navigation.setOptions({
+    navigation.setOptions({
       headerTitleAlign: 'center',
       headerTitleAllowFontScaling: true,
       headerRight: () => (
@@ -36,14 +39,24 @@ export const Home = (props: P) => {
       ),
     });
   }, []);
-  const goto = (r: string) => props.navigation.navigate(r);
+  const goto = (r: string) => navigation.navigate(r);
   return user ? (
     <>
       <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
         <IconCard
-          icon="account"
-          title="Users"
-          onPress={() => goto(viewUsersRoute.name)}
+          icon="bookshelf"
+          title="Courses"
+          onPress={() => goto(viewCourseRoute.name)}
+        />
+        <IconCard
+          icon="folder"
+          title="Programs"
+          onPress={() => goto(viewProgramRoute.name)}
+        />
+        <IconCard
+          icon="sitemap"
+          title="Allocate Courses"
+          onPress={() => goto(allocationRoute.name)}
         />
       </View>
       <Modal visible={visible} onDismiss={() => setVisible(false)}>

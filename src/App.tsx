@@ -25,6 +25,10 @@ const App = () => {
         setStack(routes.admin);
         return;
       }
+      if (role === 'hod') {
+        setStack(routes.hod);
+        return;
+      }
       if (role === 'teacher') {
         setStack(routes.teacher);
         return;
