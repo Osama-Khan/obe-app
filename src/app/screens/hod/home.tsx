@@ -1,4 +1,4 @@
-import {NavigationProp, useNavigation} from '@react-navigation/core';
+import {useNavigation} from '@react-navigation/core';
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {

@@ -11,8 +11,8 @@ import {
   addCourseRoute,
   courseDetailRoute,
   editCourseRoute,
-} from '@app/routes/admin.routes';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+} from '@app/routes/hod.routes';
+import {TouchableOpacity} from 'react-native';
 
 type P = {navigation: NavigationProp<any>};
 export const ViewCourseScreen = ({navigation}: P) => {

@@ -8,7 +8,7 @@ import {NavigationProp} from '@react-navigation/core';
 import React, {useState} from 'react';
 import {View} from 'react-native';
 import {Button, Card, IconButton, Text} from 'react-native-paper';
-import {addProgramRoute, editProgramRoute} from '@app/routes/admin.routes';
+import {addProgramRoute, editProgramRoute} from '@app/routes/hod.routes';
 
 type P = {navigation: NavigationProp<any>};
 const criteria = new ManyCriteria<ProgramType>();

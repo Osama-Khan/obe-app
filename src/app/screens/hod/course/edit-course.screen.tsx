@@ -3,7 +3,7 @@ import uiService from '@app/services/ui.service';
 import {CourseType} from '@app/types';
 import {NavigationProp, RouteProp} from '@react-navigation/core';
 import React, {useEffect, useState} from 'react';
-import {Dimensions, View} from 'react-native';
+import {View} from 'react-native';
 import {
   Button,
   Caption,
