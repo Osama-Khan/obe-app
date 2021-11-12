@@ -3,6 +3,7 @@ import {
   AddCourseScreen,
   ViewCourseScreen,
   EditCourseScreen,
+  CourseDetailScreen,
   AddProgramScreen,
   EditProgramScreen,
   ViewProgramScreen,
@@ -34,6 +35,12 @@ export const viewCourseRoute: RouteType = {
   component: ViewCourseScreen,
 };
 
+export const courseDetailRoute: RouteType = {
+  id: 'course-detail',
+  name: 'Course Detail',
+  component: CourseDetailScreen,
+};
+
 export const addProgramRoute: RouteType = {
   id: 'add-program',
   name: 'Add Program',
@@ -63,6 +70,7 @@ export default [
   addCourseRoute,
   editCourseRoute,
   viewCourseRoute,
+  courseDetailRoute,
   addProgramRoute,
   editProgramRoute,
   viewProgramRoute,
