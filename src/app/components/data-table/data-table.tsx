@@ -27,6 +27,9 @@ export type DataTableProps<T> = {
 
     /** If the column contains numeric data */
     numeric?: boolean;
+
+    /** Weight (width %) of the column in the table */
+    weight?: number;
   }[];
 
   /** Filter method for rows */
@@ -100,7 +103,7 @@ export default class DataTable<ItemType> extends React.Component<
           )}
           {columns.map((c, i) => (
             <PaperDataTable.Title
-              style={this.props.headerStyle}
+              style={[this.props.headerStyle, {flexGrow: c.weight || 1}]}
               key={i}
               numeric={c.numeric}>
               {c.title}
@@ -143,7 +146,9 @@ export default class DataTable<ItemType> extends React.Component<
                 <></>
               )}
               {columns.map(c => (
-                <PaperDataTable.Cell numeric={c.numeric}>
+                <PaperDataTable.Cell
+                  style={{flexGrow: c.weight || 1}}
+                  numeric={c.numeric}>
                   {typeof c.property === 'function' ? (
                     <c.property item={item} />
                   ) : (
