@@ -6,7 +6,7 @@ import {CLOType, CourseType} from '@app/types';
 import {useNavigation, useRoute} from '@react-navigation/core';
 import React, {useMemo, useState} from 'react';
 import {View} from 'react-native';
-import {Button, Card, IconButton} from 'react-native-paper';
+import {Button, Card, IconButton, Text} from 'react-native-paper';
 import AddCloView from './add-clo.view';
 
 let criteria: ManyCriteria<CLOType>;
@@ -52,8 +52,16 @@ export const CourseDetailScreen = () => {
           fetchMethod={c => cloService.get(c)}
           criteria={criteria}
           columns={[
-            {title: 'Title', property: 'title'},
-            {title: 'Description', property: 'description'},
+            {title: 'Title', property: 'title', weight: 0.4},
+            {
+              title: 'PLOs',
+              property: ({item}) => {
+                const plos =
+                  item.plos?.map(p => p.title).join(', ') || 'No PLOs set';
+                return <Text>{plos}</Text>;
+              },
+              weight: 1,
+            },
           ]}
           onCheckedChange={c => setSelected(c)}
           checkProperty="id"
