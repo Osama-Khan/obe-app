@@ -1,3 +1,4 @@
+import {AppTheme, colors} from '@app/styles';
 import React from 'react';
 import {
   ScrollView,
@@ -62,7 +63,10 @@ export default class BottomUpModal extends React.Component<ModalPropType, any> {
           position="bottom"
           animationType="slide"
           backgroundColor="#0000"
-          modalStyle={{borderTopLeftRadius: 8, borderTopRightRadius: 8}}>
+          modalStyle={{
+            borderTopLeftRadius: AppTheme.roundness,
+            borderTopRightRadius: AppTheme.roundness,
+          }}>
           <Reanimated.View
             style={[modalStyle, {height: this.height}]}
             {...this._panResponder.panHandlers}>
@@ -96,5 +100,5 @@ export default class BottomUpModal extends React.Component<ModalPropType, any> {
   }
 }
 const modalStyle = {
-  backgroundColor: '#ddd',
+  backgroundColor: '#fff',
 };
