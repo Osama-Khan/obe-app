@@ -25,11 +25,9 @@ export function EditProgramScreen({route}: P) {
 
   useEffect(() => {
     const id = route.params!.programId;
-    console.log('Getting ' + id);
     programService
       .getOne(id)
       .then(res => {
-        console.log(res);
         setProgram(res.data);
         setTitle(res.data['title']);
       })
