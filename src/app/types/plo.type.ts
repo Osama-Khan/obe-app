@@ -1,11 +1,11 @@
 import ProgramType from './program.type';
-import CLOType from './clo.type';
 import DbEntity from './db-entity.type';
+import ObjectiveMapType from './objective-map.type';
 
 type PLOType = DbEntity & {
   title: string;
   description: string;
-  clos?: CLOType[];
+  maps?: ObjectiveMapType[];
   program?: ProgramType;
 };
 

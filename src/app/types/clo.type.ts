@@ -1,11 +1,11 @@
 import CourseType from './course.type';
 import DbEntity from './db-entity.type';
-import PLOType from './plo.type';
+import ObjectiveMapType from './objective-map.type';
 
 type CLOType = DbEntity & {
   title: string;
   description: string;
-  plos?: PLOType[];
+  maps?: ObjectiveMapType[];
   course?: CourseType;
 };
 
