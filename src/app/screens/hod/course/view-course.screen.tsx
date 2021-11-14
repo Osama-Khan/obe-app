@@ -58,12 +58,16 @@ export const ViewCourseScreen = ({navigation}: P) => {
             {
               title: 'Title',
               property: ({item}) => (
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate(courseDetailRoute.name, {course: item})
-                  }>
-                  <Text>{item.title}</Text>
-                </TouchableOpacity>
+                <View>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate(courseDetailRoute.name, {
+                        course: item,
+                      })
+                    }>
+                    <Text>{item.title}</Text>
+                  </TouchableOpacity>
+                </View>
               ),
             },
             {title: 'Code', property: 'code'},
