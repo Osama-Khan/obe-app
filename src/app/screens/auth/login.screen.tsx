@@ -1,4 +1,3 @@
-import userService from '@app/services/user.service';
 import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {Image, ScrollView, Switch, View} from 'react-native';
@@ -13,6 +12,7 @@ import {
 } from 'react-native-paper';
 import userActions from '@app/store/actions/user.actions';
 import uiService from '@app/services/ui.service';
+import authService from '@app/services/auth.service';
 
 export const LoginScreen = () => {
   const [username, setUsername] = useState('');
@@ -62,7 +62,7 @@ export const LoginScreen = () => {
           loading={loading}
           onPress={() => {
             setLoading(true);
-            userService
+            authService
               .login({username, password, remember})
               .then((res: any) => {
                 const {token, ...userData} = res.data;
