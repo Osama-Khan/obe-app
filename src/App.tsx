@@ -9,8 +9,11 @@ import store from '@app/store';
 import {NavTheme, AppTheme, colors} from '@app/styles';
 import Toast from 'react-native-toast-message';
 import uiService from '@app/services/ui.service';
+import {initializeInterceptors} from '@app/interceptors';
 
 const {Navigator, Screen} = createStackNavigator();
+initializeInterceptors();
+
 const App = () => {
   const [stack, setStack] = useState(routes.auth);
   useMemo(() => {
