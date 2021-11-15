@@ -64,15 +64,6 @@ export const LoginScreen = () => {
             setLoading(true);
             authService
               .login({username, password, remember})
-              .then((res: any) => {
-                const {token, ...userData} = res.data;
-                dispatch(
-                  userActions.setUser({
-                    token,
-                    userData,
-                  }),
-                );
-              })
               .catch(e => {
                 if (e.response.status === 400) {
                   uiService.toastError('Invalid username or password!');

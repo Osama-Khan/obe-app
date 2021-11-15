@@ -18,16 +18,30 @@ class AuthService extends ApiService {
     if (remember) {
       storageService.setToken(res.data.token);
     }
+    const {token, ...userData} = res.data;
+    store.dispatch(
+      userActions.setUser({
+        token,
+        userData,
+      }),
+    );
     return res;
   }
 
   async loginWithToken() {
-    const token = await storageService.getToken();
-    if (token) {
+    const inToken = await storageService.getToken();
+    if (inToken) {
       const res: AuthResponseType = await axios.post(this.endpoint + '/token', {
-        token,
+        token: inToken,
       });
-      res.data.token = token;
+      res.data.token = inToken;
+      const {token, ...userData} = res.data;
+      store.dispatch(
+        userActions.setUser({
+          token,
+          userData,
+        }),
+      );
       return res;
     }
     return false;
