@@ -70,7 +70,6 @@ export const LoginScreen = () => {
                   userActions.setUser({
                     token,
                     userData,
-                    restoringState: false,
                   }),
                 );
               })

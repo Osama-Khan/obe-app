@@ -2,13 +2,11 @@ import UserModel from '@app/models/user';
 
 export interface IUserState {
   userData?: UserModel;
-  restoringState: boolean;
   token?: string;
 }
 
 export default class UserState implements IUserState {
   userData?: UserModel;
-  restoringState = false;
   token?: string;
 
   constructor(obj?: Partial<UserState>) {
