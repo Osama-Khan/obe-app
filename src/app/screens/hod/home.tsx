@@ -18,8 +18,8 @@ import Icon from '@app/components/icon';
 import Modal from '@app/components/modal';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppStateType} from '@app/store/state';
-import {userActions} from '@app/store/actions';
 import {colors} from '@app/styles';
+import authService from '@app/services/auth.service';
 
 export const Home = () => {
   const user = useSelector((state: AppStateType) => state.user.userData);
@@ -69,7 +69,7 @@ export const Home = () => {
             titleStyle={{color: colors.red}}
             left={() => <List.Icon icon="logout" color={colors.red} />}
             onPress={() => {
-              dispatch(userActions.clearUser());
+              authService.logout();
             }}
           />
         </View>

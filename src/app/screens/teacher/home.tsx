@@ -15,8 +15,7 @@ import uiService from '@app/services/ui.service';
 import sectionService from '@app/services/section.service';
 import {AllocationType, ProgramType, SectionType} from '@app/types';
 import {colors} from '@app/styles';
-import store from '@app/store';
-import {userActions} from '@app/store/actions';
+import authService from '@app/services/auth.service';
 
 type AllocationProgramType = AllocationType & {program?: ProgramType};
 
@@ -80,7 +79,7 @@ export const Home = () => {
           right: 16,
           backgroundColor: colors.red,
         }}
-        onPress={() => store.dispatch(userActions.clearUser())}
+        onPress={() => authService.logout()}
         icon="logout"
       />
     </>
