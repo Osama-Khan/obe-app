@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
+  Button,
   Caption,
   Card,
+  Divider,
   FAB,
   Text,
   Title,
@@ -56,12 +58,18 @@ export const Home = () => {
       {allocations ? (
         allocations.length > 0 ? (
           allocations.map(a => (
-            <Card style={{margin: 16, padding: 16}}>
-              <Title>{a.course!.title}</Title>
-              <Caption>
+            <Card style={{margin: 16}}>
+              <Title style={{margin: 16, marginTop: 16}}>
+                {a.course!.title}
+              </Title>
+              <Caption style={{margin: 16, marginBottom: 16}}>
                 Teaching in {a.program!.title}-{a.section!.semester}
                 {a.section!.name}
               </Caption>
+              <Divider />
+              <Button style={{}} icon="clipboard-plus">
+                Add Activity
+              </Button>
             </Card>
           ))
         ) : (
