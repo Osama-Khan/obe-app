@@ -23,7 +23,7 @@ export type DataTableProps<T> = {
     title: string;
 
     /** Property or selector used to modify the data shown */
-    property: keyof T | (({item}: {item: T}) => React.ReactElement);
+    selector: keyof T | (({item}: {item: T}) => React.ReactElement);
 
     /** If the column contains numeric data */
     numeric?: boolean;
@@ -149,10 +149,10 @@ export default class DataTable<ItemType> extends React.Component<
                 <PaperDataTable.Cell
                   style={{flexGrow: c.weight || 1}}
                   numeric={c.numeric}>
-                  {typeof c.property === 'function' ? (
-                    <c.property item={item} />
+                  {typeof c.selector === 'function' ? (
+                    <c.selector item={item} />
                   ) : (
-                    item[c.property]
+                    item[c.selector]
                   )}
                 </PaperDataTable.Cell>
               ))}

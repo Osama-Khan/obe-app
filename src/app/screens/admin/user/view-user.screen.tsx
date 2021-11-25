@@ -26,15 +26,15 @@ export const ViewUserScreen = ({navigation}: P) => {
           criteria={criteria}
           columns={[
             {
-              property: 'username',
+              selector: 'username',
               title: 'Username',
             },
             {
-              property: 'email',
+              selector: 'email',
               title: 'Email',
             },
             {
-              property: ({item: user}) => <Text>{user.role!.name}</Text>,
+              selector: ({item: user}) => <Text>{user.role!.name}</Text>,
               title: 'Role',
             },
           ]}

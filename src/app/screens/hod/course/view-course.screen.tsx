@@ -57,7 +57,7 @@ export const ViewCourseScreen = ({navigation}: P) => {
           columns={[
             {
               title: 'Title',
-              property: ({item}) => (
+              selector: ({item}) => (
                 <View>
                   <TouchableOpacity
                     onPress={() =>
@@ -70,8 +70,8 @@ export const ViewCourseScreen = ({navigation}: P) => {
                 </View>
               ),
             },
-            {title: 'Code', property: 'code'},
-            {title: 'Credit Hrs', property: 'creditHours', numeric: true},
+            {title: 'Code', selector: 'code'},
+            {title: 'Credit Hrs', selector: 'creditHours', numeric: true},
           ]}
           itemsPerPage={2}
         />

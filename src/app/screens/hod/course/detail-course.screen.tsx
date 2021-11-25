@@ -98,10 +98,10 @@ export const CourseDetailScreen = () => {
         <DataTable
           data={clos || []}
           columns={[
-            {title: 'Title', property: 'title', weight: 0.4},
+            {title: 'Title', selector: 'title', weight: 0.4},
             {
               title: 'PLOs',
-              property: ({item}) => {
+              selector: ({item}) => {
                 const plos =
                   item.maps
                     ?.map((m, i) => `(${m.plo?.title} - ${m.weight}%)`)

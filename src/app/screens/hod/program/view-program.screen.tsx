@@ -53,11 +53,11 @@ export const ViewProgramScreen = ({navigation}: P) => {
           criteria={criteria}
           checkProperty="id"
           columns={[
-            {title: 'ID', property: 'id'},
-            {title: 'Title', property: 'title'},
+            {title: 'ID', selector: 'id'},
+            {title: 'Title', selector: 'title'},
             {
               title: 'Courses',
-              property: ({item}) => {
+              selector: ({item}) => {
                 const num = item.courses?.length;
                 let text;
                 if (num && num > 0) {
