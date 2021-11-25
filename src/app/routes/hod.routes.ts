@@ -62,7 +62,7 @@ export const viewProgramRoute: RouteType = {
 
 export const allocationRoute: RouteType = {
   id: 'allocation',
-  name: 'Allocate Courses',
+  name: 'Allocations',
   component: AllocationScreen,
 };
 
