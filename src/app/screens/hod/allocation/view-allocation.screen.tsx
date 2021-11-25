@@ -72,7 +72,7 @@ export function AllocationScreen() {
               data={allocs}
               columns={[
                 {
-                  property: ({item}) => (
+                  selector: ({item}) => (
                     <View>
                       <TouchableOpacity onPress={() => {}}>
                         <Text>
@@ -85,11 +85,11 @@ export function AllocationScreen() {
                   title: 'Section',
                 },
                 {
-                  property: ({item}) => <Text>{item.course!.title}</Text>,
+                  selector: ({item}) => <Text>{item.course!.title}</Text>,
                   title: 'Course',
                 },
                 {
-                  property: ({item}) => <Text>{item.user!.username}</Text>,
+                  selector: ({item}) => <Text>{item.user!.username}</Text>,
                   title: 'Teacher',
                 },
               ]}
