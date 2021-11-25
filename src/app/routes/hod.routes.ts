@@ -9,7 +9,6 @@ import {
   ViewProgramScreen,
   Home,
 } from '@app/screens/hod';
-import {AssessmentScreen} from '@app/screens/hod/assessment';
 import {RouteType} from '@app/types/route.type';
 
 export const homeRoute: RouteType = {
@@ -66,10 +65,6 @@ export const allocationRoute: RouteType = {
   component: AllocationScreen,
 };
 
-export const assessmentRoute: RouteType = {
-  id: 'assessment',
-  name: 'Assessment',
-  component: AssessmentScreen,
 };
 
 export default [
@@ -82,5 +77,4 @@ export default [
   editProgramRoute,
   viewProgramRoute,
   allocationRoute,
-  assessmentRoute,
 ];
