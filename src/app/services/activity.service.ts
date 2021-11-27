@@ -9,7 +9,7 @@ class ActivityService extends CrudService<ActivityType> {
 
   /** Gets all activity types */
   getTypes() {
-    return axios.post(this.endpoint + '/types');
+    return axios.post(this.endpoint + '-type');
   }
 }
 
