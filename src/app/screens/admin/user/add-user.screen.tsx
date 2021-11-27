@@ -6,13 +6,13 @@ import userService from '@app/services/user.service';
 import UserType from '@app/types/user.type';
 import {Formik} from 'formik';
 import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
-import {ScrollView, Text} from 'react-native';
+import {ScrollView} from 'react-native';
 import {
   ActivityIndicator,
   Button,
   Card,
   Divider,
-  List,
+  Caption,
   TextInput,
 } from 'react-native-paper';
 
@@ -87,7 +87,7 @@ export const AddUserScreen = () => {
               style={{margin: 8}}
             />
             <Divider style={{marginVertical: 8}} />
-            <Text style={{marginHorizontal: 8}}>User Role</Text>
+            <Caption style={{marginHorizontal: 8}}>User Role</Caption>
             {roles ? (
               <DropdownFormik
                 options={roles.map(r => ({name: r.name, value: r.id}))}
