@@ -10,6 +10,7 @@ import {
   Home,
   UploadAllocationScreen,
 } from '@app/screens/hod';
+import {AllocationDetailScreen} from '@app/screens/hod/allocation/detail-allocation.screen';
 import {RouteType} from '@app/types/route.type';
 
 export const homeRoute: RouteType = {
@@ -66,6 +67,12 @@ export const allocationRoute: RouteType = {
   component: AllocationScreen,
 };
 
+export const allocationDetailRoute: RouteType = {
+  id: 'allocation-detail',
+  name: 'Allocation Detail',
+  component: AllocationDetailScreen,
+};
+
 export const allocationUploadRoute: RouteType = {
   id: 'allocation-upload',
   name: 'Upload Allocation',
@@ -82,5 +89,6 @@ export default [
   editProgramRoute,
   viewProgramRoute,
   allocationRoute,
+  allocationDetailRoute,
   allocationUploadRoute,
 ];

@@ -8,7 +8,10 @@ import {Criteria, ManyCriteria} from '@app/models/criteria';
 import {AllocationType, ProgramType, SectionType} from '@app/types';
 import {DataTable} from '@app/components/data-table';
 import {useNavigation} from '@react-navigation/core';
-import {allocationUploadRoute} from '@app/routes/hod.routes';
+import {
+  allocationDetailRoute,
+  allocationUploadRoute,
+} from '@app/routes/hod.routes';
 import Icon from '@app/components/icon';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
@@ -74,7 +77,12 @@ export function AllocationScreen() {
                 {
                   selector: ({item}) => (
                     <View>
-                      <TouchableOpacity onPress={() => {}}>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate(allocationDetailRoute.name, {
+                            allocation: item,
+                          })
+                        }>
                         <Text>
                           {item.program!.title}-{item.section!.semester}
                           {item.section!.name}
