@@ -6,6 +6,7 @@ import {
   Card,
   Divider,
   FAB,
+  IconButton,
   Text,
   Title,
 } from 'react-native-paper';
@@ -19,11 +20,14 @@ import {AllocationType, ProgramType, SectionType} from '@app/types';
 import {colors} from '@app/styles';
 import authService from '@app/services/auth.service';
 import {FlatList, View} from 'react-native';
+import {useNavigation} from '@react-navigation/core';
+import {allocationDetailRoute} from '@app/routes/teacher.routes';
 
 type AllocationProgramType = AllocationType & {program?: ProgramType};
 
 export const Home = () => {
   const user = useSelector((state: AppStateType) => state.user.userData);
+  const navigation = useNavigation();
   const [allocations, setAllocations] = useState<AllocationProgramType[]>();
   useEffect(() => {
     const criteria = new ManyCriteria<AllocationType>();
@@ -64,18 +68,37 @@ export const Home = () => {
               style={{
                 marginHorizontal: 16,
                 marginVertical: 8,
+                overflow: 'hidden',
+              }}
+              onPress={() => {
+                navigation.navigate(allocationDetailRoute.name, {
+                  allocation: item,
+                });
               }}>
-              <Title style={{margin: 16, marginTop: 16}}>
-                {item.course!.title}
-              </Title>
-              <Caption style={{margin: 16, marginBottom: 16}}>
-                Teaching in {item.program!.title}-{item.section!.semester}
-                {item.section!.name}
-              </Caption>
-              <Divider />
-              <Button style={{}} icon="clipboard-plus">
-                Add Activity
-              </Button>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}>
+                <View>
+                  <Title style={{margin: 16, marginTop: 16}}>
+                    {item.course!.title}
+                  </Title>
+                  <Caption style={{margin: 16, marginBottom: 16}}>
+                    Teaching in {item.program!.title}-{item.section!.semester}
+                    {item.section!.name}
+                  </Caption>
+                </View>
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    backgroundColor: colors.primary,
+                    height: '100%',
+                  }}>
+                  <IconButton icon="chevron-right" color="white" />
+                </View>
+              </View>
             </Card>
           )}
           ListHeaderComponent={
