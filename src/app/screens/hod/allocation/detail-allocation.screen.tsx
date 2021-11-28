@@ -39,6 +39,13 @@ export const AllocationDetailScreen = () => {
     allocation.section!.semester
   }${allocation.section!.name}`;
 
+  const getCloTotal = (id: string) => {
+    if (!assessments || assessments.length === 0) return 0;
+    const matches = assessments.filter(a => a.clo.id === id);
+    if (matches.length === 0) return 0;
+    return matches.map(clo => clo.weight).reduce((a, b) => a + b);
+  };
+
   useMemo(() => {
     navigation.setOptions({headerTitle: sectionName + ' Assessment'});
   }, []);
@@ -119,7 +126,7 @@ export const AllocationDetailScreen = () => {
             }}
             type={selectedType}
             allocId={allocation.id}
-            clos={clos}
+            clos={clos.map(c => ({...c, weight: getCloTotal(c.id)}))}
           />
         </Modal>
       )}
