@@ -18,6 +18,7 @@ import sectionService from '@app/services/section.service';
 import {AllocationType, ProgramType, SectionType} from '@app/types';
 import {colors} from '@app/styles';
 import authService from '@app/services/auth.service';
+import {FlatList, View} from 'react-native';
 
 type AllocationProgramType = AllocationType & {program?: ProgramType};
 
@@ -54,29 +55,40 @@ export const Home = () => {
 
   return (
     <>
-      <Caption style={{margin: 16, marginTop: 16}}>My Allocations</Caption>
       {allocations ? (
-        allocations.length > 0 ? (
-          allocations.map(a => (
-            <Card style={{margin: 16}}>
+        <FlatList
+          data={allocations}
+          renderItem={({item}) => (
+            <Card
+              key={item.id}
+              style={{
+                marginHorizontal: 16,
+                marginVertical: 8,
+              }}>
               <Title style={{margin: 16, marginTop: 16}}>
-                {a.course!.title}
+                {item.course!.title}
               </Title>
               <Caption style={{margin: 16, marginBottom: 16}}>
-                Teaching in {a.program!.title}-{a.section!.semester}
-                {a.section!.name}
+                Teaching in {item.program!.title}-{item.section!.semester}
+                {item.section!.name}
               </Caption>
               <Divider />
               <Button style={{}} icon="clipboard-plus">
                 Add Activity
               </Button>
             </Card>
-          ))
-        ) : (
-          <Text style={{alignSelf: 'center', margin: 16}}>
-            You don't have any allocated courses
-          </Text>
-        )
+          )}
+          ListHeaderComponent={
+            <Caption style={{margin: 16, marginTop: 16}}>
+              My Allocations
+            </Caption>
+          }
+          ListEmptyComponent={
+            <Text style={{alignSelf: 'center', margin: 16}}>
+              You don't have any allocated courses
+            </Text>
+          }
+        />
       ) : (
         <ActivityIndicator />
       )}
