@@ -1,4 +1,6 @@
 import ListSelect from '@app/components/list-select';
+import assessmentService from '@app/services/assessment.service';
+import uiService from '@app/services/ui.service';
 import {colors} from '@app/styles';
 import {ActivityTypeType, AssessmentType, CLOType} from '@app/types';
 import React, {useState} from 'react';
@@ -71,17 +73,17 @@ export default function AddCLOView({onAdd, allocId, type, clos}: P) {
             weight,
             clo,
           };
-          //assessmentService
-          //  .insert(assessment)
-          //  .then(r => {
-          //    onAdd(r.data);
-          //  })
-          //  .catch(e => {
-          //    uiService.toastError('Failed to add CLO!');
-          //  })
-          //  .finally(() => {
-          //    setSaving(false);
-          //  });
+          assessmentService
+            .insert(assessment)
+            .then(r => {
+              onAdd(r.data);
+            })
+            .catch(e => {
+              uiService.toastError('Failed to add CLO!');
+            })
+            .finally(() => {
+              setSaving(false);
+            });
         }}>
         Add
       </Button>
