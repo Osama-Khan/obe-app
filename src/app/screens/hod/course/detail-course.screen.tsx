@@ -8,7 +8,8 @@ import {colors} from '@app/styles';
 import {CLOType, CourseType, PLOType} from '@app/types';
 import {useNavigation, useRoute} from '@react-navigation/core';
 import React, {useEffect, useMemo, useState} from 'react';
-import {ScrollView, View} from 'react-native';
+import {ScrollView, useWindowDimensions, View} from 'react-native';
+import {ProgressChart} from 'react-native-chart-kit';
 import {
   ActivityIndicator,
   Button,
@@ -30,6 +31,7 @@ export const CourseDetailScreen = () => {
   const [updates, setUpdates] = useState(0);
   const route = useRoute<any>();
   const navigation = useNavigation();
+  const width = useWindowDimensions().width;
   const course: CourseType = route.params!.course;
 
   const getPloUsage = (id: string) => {
@@ -61,6 +63,10 @@ export const CourseDetailScreen = () => {
       .then(r => setPlos(r.data))
       .catch(e => uiService.toastError('Could not fetch PLOs!'));
   }, [updates]);
+
+  const ploUsages = plos
+    ?.map(p => ({...p, usage: getPloUsage(p.id)}))
+    .filter(p => p.usage > 0);
 
   return (
     <ScrollView>
@@ -104,7 +110,7 @@ export const CourseDetailScreen = () => {
               selector: ({item}) => {
                 const plos =
                   item.maps
-                    ?.map((m, i) => `(${m.plo?.title} - ${m.weight}%)`)
+                    ?.map(m => `(${m.plo?.title} - ${m.weight}%)`)
                     .join(', ') || 'No PLOs set';
                 return <Text>{plos}</Text>;
               },
@@ -116,27 +122,25 @@ export const CourseDetailScreen = () => {
         />
       </Card>
       <Caption style={{margin: 16}}>Weights Assigned</Caption>
-      <Card style={{margin: 8, padding: 16}}>
+      <Card style={{margin: 8, overflow: 'hidden'}}>
         {plos ? (
-          plos.map(p => {
-            const usage = getPloUsage(p.id);
-            return (
-              <React.Fragment key={p.id}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                  }}>
-                  <Text>{p.title}</Text>
-                  <Caption style={{marginLeft: 'auto'}}>{usage}%</Caption>
-                </View>
-                <ProgressBar
-                  progress={usage / 100}
-                  color={usage === 100 ? colors.green : undefined}
-                />
-                <Divider style={{marginVertical: 8}} />
-              </React.Fragment>
-            );
-          })
+          <ProgressChart
+            data={{
+              labels: ploUsages!.map(p => p.title),
+              data: ploUsages!.map(p => p.usage / 100),
+            }}
+            width={width - 16}
+            height={150}
+            strokeWidth={16}
+            radius={32}
+            chartConfig={{
+              backgroundGradientFrom: colors.primaryLight,
+              backgroundGradientTo: colors.primary,
+              color: (o = 1) => `rgb(255,255,255,${o})`,
+              labelColor: (o = 1) => `rgb(255,255,255,${o})`,
+            }}
+            hideLegend={false}
+          />
         ) : (
           <ActivityIndicator />
         )}
