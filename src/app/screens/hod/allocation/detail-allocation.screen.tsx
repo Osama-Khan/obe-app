@@ -4,6 +4,7 @@ import activityService from '@app/services/activity.service';
 import assessmentService from '@app/services/assessment.service';
 import cloService from '@app/services/clo.service';
 import uiService from '@app/services/ui.service';
+import {colors} from '@app/styles';
 import {
   ActivityTypeType,
   AllocationType,
@@ -17,6 +18,7 @@ import {ScrollView, View} from 'react-native';
 import {
   ActivityIndicator,
   Button,
+  Caption,
   Divider,
   List,
   Text,
@@ -74,6 +76,19 @@ export const AllocationDetailScreen = () => {
   const loaded = types && assessments && clos;
   return loaded ? (
     <>
+      {clos.length === 0 ? (
+        <Caption
+          style={{
+            textAlign: 'center',
+            color: 'white',
+            marginVertical: 0,
+            backgroundColor: colors.red,
+          }}>
+          This course has no CLOs.
+        </Caption>
+      ) : (
+        <></>
+      )}
       <ScrollView>
         {types.map(t => (
           <View style={{backgroundColor: 'white'}}>
@@ -102,6 +117,7 @@ export const AllocationDetailScreen = () => {
               <Button
                 icon="plus"
                 mode="outlined"
+                disabled={clos.length === 0}
                 style={{
                   alignSelf: 'center',
                   margin: 8,
