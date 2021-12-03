@@ -12,7 +12,6 @@ import {
   allocationDetailRoute,
   allocationUploadRoute,
 } from '@app/routes/hod.routes';
-import Icon from '@app/components/icon';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 type AllocationProgramType = AllocationType & {program?: ProgramType};
@@ -34,16 +33,11 @@ export function AllocationScreen() {
         pCrit.addRelation('program');
         Promise.all(
           allocs.map((a, i) =>
-            sectionService
-              .getOne(a.section!.id, pCrit)
-              .then(res => {
-                allocs[i].program = res.data.program!;
-              })
-              .then(() => {
-                setAllocs(allocs);
-              }),
+            sectionService.getOne(a.section!.id, pCrit).then(res => {
+              allocs[i].program = res.data.program!;
+            }),
           ),
-        );
+        ).then(() => setAllocs(allocs));
       })
       .catch(e => uiService.toastError('Failed to fetch allocation data!'));
   };
