@@ -43,16 +43,13 @@ export const Home = () => {
         pCrit.addRelation('program');
         Promise.all(
           allocs.map((a, i) =>
-            sectionService
-              .getOne(a.section!.id, pCrit)
-              .then(res => {
-                allocs[i].program = res.data.program!;
-              })
-              .then(() => {
-                setAllocations(allocs);
-              }),
+            sectionService.getOne(a.section!.id, pCrit).then(res => {
+              allocs[i].program = res.data.program!;
+            }),
           ),
-        );
+        ).then(() => {
+          setAllocations(allocs);
+        });
       })
       .catch(e => uiService.toastError('Failed to fetch allocation data!'));
   }, []);
@@ -78,7 +75,6 @@ export const Home = () => {
               <View
                 style={{
                   flexDirection: 'row',
-                  alignItems: 'center',
                   justifyContent: 'space-between',
                 }}>
                 <View>
@@ -94,7 +90,6 @@ export const Home = () => {
                   style={{
                     justifyContent: 'center',
                     backgroundColor: colors.primary,
-                    height: '100%',
                   }}>
                   <IconButton icon="chevron-right" color="white" />
                 </View>
