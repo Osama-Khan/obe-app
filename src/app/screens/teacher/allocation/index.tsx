@@ -32,6 +32,7 @@ export default function AllocationDetail() {
     const crit = new ManyCriteria<AssessmentType>();
     crit.addRelation('clo');
     crit.addRelation('type');
+    crit.addCondition('allocation', allocation.id);
     assessmentService.get(crit).then(r => {
       const t: ActivityTypeType[] = [];
       const c: CLOType[] = [];
@@ -72,13 +73,17 @@ export default function AllocationDetail() {
     <ScrollView>
       <List.Section title="CLO Distribution">
         {assessments ? (
-          <WeightsCard
-            style={{marginHorizontal: 16, overflow: 'hidden'}}
-            assessments={assessments}
-            clos={clos!}
-            types={types!}
-            chartWidth={dimens.width - 32}
-          />
+          assessments.length > 0 ? (
+            <WeightsCard
+              style={{marginHorizontal: 16, overflow: 'hidden'}}
+              assessments={assessments}
+              clos={clos!}
+              types={types!}
+              chartWidth={dimens.width - 32}
+            />
+          ) : (
+            <Caption style={{alignSelf: 'center'}}>No Assessment Data</Caption>
+          )
         ) : (
           <ActivityIndicator />
         )}
