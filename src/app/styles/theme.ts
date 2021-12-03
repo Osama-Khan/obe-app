@@ -21,6 +21,7 @@ const navTheme: NavTheme = {
     ...NavDefault.colors,
     ...colors,
     card: colors.primary,
+    primary: colors.textInverted,
     text: colors.textInverted,
   },
 };
