@@ -1,54 +1,20 @@
-import {ManyCriteria} from '@app/models/criteria';
-import assessmentService from '@app/services/assessment.service';
-import {colors} from '@app/styles';
-import {ActivityTypeType, AssessmentType, CLOType} from '@app/types';
 import {useNavigation, useRoute} from '@react-navigation/core';
-import React, {useEffect, useMemo, useState} from 'react';
-import {ScrollView, useWindowDimensions, View} from 'react-native';
-import {StackedBarChart} from 'react-native-chart-kit';
-import {
-  ActivityIndicator,
-  Caption,
-  Card,
-  List,
-  Title,
-} from 'react-native-paper';
-import WeightsCard from './weights-card';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import React, {useMemo} from 'react';
+import {View} from 'react-native';
+import {Caption, Title} from 'react-native-paper';
+import {AssessmentScreen} from './assessment';
+
+const {Navigator, Screen} = createMaterialTopTabNavigator();
 
 export default function AllocationDetail() {
   const navigation = useNavigation();
   const route = useRoute<any>();
-  const dimens = useWindowDimensions();
-  const [assessments, setAssessments] = useState<AssessmentType[]>();
-  const [types, setTypes] = useState<ActivityTypeType[]>();
-  const [clos, setClos] = useState<CLOType[]>();
   const allocation = route.params!.allocation;
 
   const sectionName = `${allocation.program!.title}-${
     allocation.section!.semester
   }${allocation.section!.name}`;
-
-  useEffect(() => {
-    const crit = new ManyCriteria<AssessmentType>();
-    crit.addRelation('clo');
-    crit.addRelation('type');
-    crit.addCondition('allocation', allocation.id);
-    assessmentService.get(crit).then(r => {
-      const t: ActivityTypeType[] = [];
-      const c: CLOType[] = [];
-      for (const d of r.data) {
-        if (!t.find(t => t.id === d.type.id)) {
-          t.push(d.type);
-        }
-        if (!c.find(c => c.id === d.clo.id)) {
-          c.push(d.clo);
-        }
-      }
-      setTypes(t);
-      setClos(c);
-      setAssessments(r.data);
-    });
-  }, []);
 
   useMemo(() => {
     navigation.setOptions({
@@ -70,24 +36,12 @@ export default function AllocationDetail() {
   }, []);
 
   return (
-    <ScrollView>
-      <List.Section title="CLO Distribution">
-        {assessments ? (
-          assessments.length > 0 ? (
-            <WeightsCard
-              style={{marginHorizontal: 16, overflow: 'hidden'}}
-              assessments={assessments}
-              clos={clos!}
-              types={types!}
-              chartWidth={dimens.width - 32}
-            />
-          ) : (
-            <Caption style={{alignSelf: 'center'}}>No Assessment Data</Caption>
-          )
-        ) : (
-          <ActivityIndicator />
-        )}
-      </List.Section>
-    </ScrollView>
+    <Navigator>
+      <Screen
+        name="Assessment"
+        component={AssessmentScreen}
+        initialParams={{allocation}}
+      />
+    </Navigator>
   );
 }
