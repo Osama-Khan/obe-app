@@ -14,11 +14,11 @@ type P = ViewProps & {
 
 const pieColors = [
   colors.primaryLight,
+  '#2196f3',
+  '#1e88e5',
   colors.primary,
+  '#1565c0',
   colors.primaryDark,
-  colors.slateLight,
-  colors.slate,
-  colors.slateDark,
 ];
 
 export default function WeightsCard(props: P) {
