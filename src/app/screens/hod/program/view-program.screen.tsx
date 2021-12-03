@@ -53,7 +53,6 @@ export const ViewProgramScreen = ({navigation}: P) => {
           criteria={criteria}
           checkProperty="id"
           columns={[
-            {title: 'ID', selector: 'id'},
             {title: 'Title', selector: 'title'},
             {
               title: 'Courses',
