@@ -104,65 +104,73 @@ export default function AddActivityView({onAdd, section, clos, course}: P) {
         ) : (
           <ActivityIndicator />
         )}
-        <Caption style={{marginTop: 8}}>Add CLOs</Caption>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text>Tap to add CLO with</Text>
-          <TextInput
-            value={weight.toString()}
-            style={{
-              backgroundColor: '#0000',
-              margin: 4,
-            }}
-            keyboardType="decimal-pad"
-            onChangeText={weight => {
-              if (weight === '') {
-                setWeight(1);
-                return;
-              }
-              const num = parseInt(weight);
-              if (num === NaN) return;
-              setWeight(num > 0 ? num : 1);
-            }}
-            dense
-          />
-          <Text>% weight</Text>
-        </View>
-        <FlatList
-          horizontal
-          data={clos}
-          // Adds padding at the start and end to prevent whitespace
-          // while scrolling
-          ListHeaderComponent={<View style={{width: 16}} />}
-          ListFooterComponent={<View style={{width: 16}} />}
-          style={{marginHorizontal: -16}}
-          renderItem={({item: c}) => {
-            const isAdded = added.find(a => c.id === a?.id);
-            return (
-              <Chip
-                icon={isAdded || c.weight >= 100 ? undefined : 'plus'}
-                onPress={isAdded ? undefined : () => addClo(c, weight)}
-                onClose={isAdded ? () => removeClo(c.id) : undefined}
-                disabled={c.weight >= 100}
-                style={[
-                  {margin: 4},
-                  isAdded
-                    ? {
-                        backgroundColor: colors.primaryLight,
-                        borderColor: colors.primaryDark,
-                        borderWidth: 2,
-                      }
-                    : {},
-                  c.weight >= 100 ? {opacity: 0.5} : {},
-                ]}
-                key={c.id}>
-                <Text>
-                  {c.title} - {c.weight + (isAdded ? isAdded.weight : 0)}%
-                </Text>
-              </Chip>
-            );
-          }}
-          ListEmptyComponent={<ActivityIndicator />}
-        />
+        {clos.length > 0 ? (
+          <>
+            <Caption style={{marginTop: 8}}>Add CLOs</Caption>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text>Tap to add CLO with</Text>
+              <TextInput
+                value={weight.toString()}
+                style={{
+                  backgroundColor: '#0000',
+                  margin: 4,
+                }}
+                keyboardType="decimal-pad"
+                onChangeText={weight => {
+                  if (weight === '') {
+                    setWeight(1);
+                    return;
+                  }
+                  const num = parseInt(weight);
+                  if (num === NaN) return;
+                  setWeight(num > 0 ? num : 1);
+                }}
+                dense
+              />
+              <Text>% weight</Text>
+            </View>
+            <FlatList
+              horizontal
+              data={clos}
+              // Adds padding at the start and end to prevent whitespace
+              // while scrolling
+              ListHeaderComponent={<View style={{width: 16}} />}
+              ListFooterComponent={<View style={{width: 16}} />}
+              style={{marginHorizontal: -16}}
+              renderItem={({item: c}) => {
+                const isAdded = added.find(a => c.id === a?.id);
+                return (
+                  <Chip
+                    icon={isAdded || c.weight >= 100 ? undefined : 'plus'}
+                    onPress={isAdded ? undefined : () => addClo(c, weight)}
+                    onClose={isAdded ? () => removeClo(c.id) : undefined}
+                    disabled={c.weight >= 100}
+                    style={[
+                      {margin: 4},
+                      isAdded
+                        ? {
+                            backgroundColor: colors.primaryLight,
+                            borderColor: colors.primaryDark,
+                            borderWidth: 2,
+                          }
+                        : {},
+                      c.weight >= 100 ? {opacity: 0.5} : {},
+                    ]}
+                    key={c.id}>
+                    <Text>
+                      {c.title} - {c.weight + (isAdded ? isAdded.weight : 0)}%
+                    </Text>
+                  </Chip>
+                );
+              }}
+              ListEmptyComponent={<ActivityIndicator />}
+            />
+          </>
+        ) : (
+          <Caption style={{color: colors.red}}>
+            No CLOs Available for this course!
+          </Caption>
+        )}
       </View>
       <Button
         style={{marginTop: 16, borderRadius: 0}}
