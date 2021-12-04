@@ -105,52 +105,61 @@ export const CourseDetailScreen = () => {
           Add
         </Button>
       </View>
-      <Card style={{margin: 8}}>
-        <DataTable
-          data={clos || []}
-          columns={[
-            {title: 'Title', selector: 'title', weight: 0.4},
-            {
-              title: 'PLOs',
-              selector: ({item}) => {
-                const plos =
-                  item.maps
-                    ?.map((m, i) => `(${m.plo?.title} - ${m.weight}%)`)
-                    .join(', ') || 'No PLOs set';
-                return <Text>{plos}</Text>;
-              },
-              weight: 1,
-            },
-          ]}
-          onCheckedChange={c => setSelected(c)}
-          checkProperty="id"
-        />
-      </Card>
-      <Caption style={{margin: 16}}>Weights Assigned</Caption>
-      <Card style={{margin: 8, overflow: 'hidden'}}>
-        {ploUsage ? (
-          <ProgressChart
-            data={{
-              labels: ploUsage!.map(p => 'PLO ' + p.number),
-              data: ploUsage!.map(p => p.weight / 100),
-            }}
-            width={width - 16}
-            height={240}
-            strokeWidth={8}
-            radius={24}
-            chartConfig={{
-              backgroundGradientFrom: colors.primaryLight,
-              backgroundGradientTo: colors.primary,
-              color: (o = 1) => `rgb(255,255,255,${o})`,
-              labelColor: (o = 1) => `rgb(255,255,255,${o})`,
-              propsForLabels: {fontWeight: 'bold'},
-            }}
-            hideLegend={false}
-          />
-        ) : (
-          <ActivityIndicator />
-        )}
-      </Card>
+      {clos?.length === 0 ? (
+        <Caption
+          style={{marginVertical: 8, color: colors.red, alignSelf: 'center'}}>
+          This Course has no CLOs
+        </Caption>
+      ) : (
+        <>
+          <Card style={{margin: 8}}>
+            <DataTable
+              data={clos || []}
+              columns={[
+                {title: 'Title', selector: 'title', weight: 0.4},
+                {
+                  title: 'PLOs',
+                  selector: ({item}) => {
+                    const plos =
+                      item.maps
+                        ?.map((m, i) => `(${m.plo?.title} - ${m.weight}%)`)
+                        .join(', ') || 'No PLOs set';
+                    return <Text>{plos}</Text>;
+                  },
+                  weight: 1,
+                },
+              ]}
+              onCheckedChange={c => setSelected(c)}
+              checkProperty="id"
+            />
+          </Card>
+          <Caption style={{margin: 16}}>Weights Assigned</Caption>
+          <Card style={{margin: 8, overflow: 'hidden'}}>
+            {ploUsage ? (
+              <ProgressChart
+                data={{
+                  labels: ploUsage!.map(p => 'PLO ' + p.number),
+                  data: ploUsage!.map(p => p.weight / 100),
+                }}
+                width={width - 16}
+                height={240}
+                strokeWidth={8}
+                radius={24}
+                chartConfig={{
+                  backgroundGradientFrom: colors.primaryLight,
+                  backgroundGradientTo: colors.primary,
+                  color: (o = 1) => `rgb(255,255,255,${o})`,
+                  labelColor: (o = 1) => `rgb(255,255,255,${o})`,
+                  propsForLabels: {fontWeight: 'bold'},
+                }}
+                hideLegend={false}
+              />
+            ) : (
+              <ActivityIndicator />
+            )}
+          </Card>
+        </>
+      )}
       <Modal visible={modalShown} onDismiss={() => setModalShown(false)}>
         {ploUsage ? (
           <AddCloView
