@@ -1,4 +1,4 @@
-import {ActivityType, ActivityTypeType} from './activity.type';
+import {ActivityType, ActivityMapType, ActivityTypeType} from './activity.type';
 import AllocationType from './allocation.type';
 import AssessmentType from './assessment.type';
 import CLOType from './clo.type';
@@ -11,6 +11,7 @@ import UserType from './user.type';
 
 export type {
   ActivityType,
+  ActivityMapType,
   ActivityTypeType,
   AllocationType,
   AssessmentType,
