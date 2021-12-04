@@ -42,6 +42,21 @@ export class Criteria<Entity> {
     return this._criteria.relations.filter(r => r !== name.toString());
   };
 
+  addSelect = (name: keyof Entity) => {
+    if (this.hasSelect(name)) return false;
+    !this._criteria.select && (this._criteria.select = []);
+    return this._criteria.select.push(name.toString());
+  };
+
+  hasSelect = (name: keyof Entity) =>
+    this._criteria.select?.find(r => r === name.toString());
+
+  removeSelect = (name: keyof Entity) => {
+    if (!this._criteria.select) return false;
+    if (!this.hasSelect(name)) return false;
+    return this._criteria.select.filter(r => r !== name.toString());
+  };
+
   setOrder = (by: keyof Entity, as: 'ASC' | 'DESC') => {
     this._criteria.order = {};
     this._criteria.order[by] = as;
