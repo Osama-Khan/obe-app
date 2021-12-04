@@ -15,11 +15,8 @@ import {
   Button,
   Caption,
   Card,
-  Divider,
   IconButton,
-  ProgressBar,
   Text,
-  Title,
 } from 'react-native-paper';
 import AddCloView from './add-clo.view';
 
@@ -45,12 +42,16 @@ export const CourseDetailScreen = () => {
     criteria.addCondition('course', course.id);
     cloService
       .get(criteria)
-      .then(r => setClos(r.data))
+      .then(r => {
+        setClos(r.data);
+        ploService
+          .get()
+          .then(r => {
+            setPlos(r.data);
+          })
+          .catch(e => uiService.toastError('Could not fetch PLOs!'));
+      })
       .catch(e => uiService.toastError('Could not fetch CLOs!'));
-    ploService
-      .get()
-      .then(r => setPlos(r.data))
-      .catch(e => uiService.toastError('Could not fetch PLOs!'));
   }, [updates]);
 
   useEffect(() => {
