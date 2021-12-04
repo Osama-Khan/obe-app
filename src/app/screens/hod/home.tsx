@@ -11,6 +11,7 @@ import {
 } from 'react-native-paper';
 import {
   allocationRoute,
+  viewPlosRoute,
   viewCourseRoute,
   viewProgramRoute,
 } from '@app/routes/hod.routes';
@@ -54,9 +55,14 @@ export const Home = () => {
           onPress={() => goto(viewProgramRoute.name)}
         />
         <IconCard
-          icon="sitemap"
+          icon="clipboard-account"
           title="Allocate Courses"
           onPress={() => goto(allocationRoute.name)}
+        />
+        <IconCard
+          icon="sitemap"
+          title="Manage PLOs"
+          onPress={() => goto(viewPlosRoute.name)}
         />
       </View>
       <Modal visible={visible} onDismiss={() => setVisible(false)}>

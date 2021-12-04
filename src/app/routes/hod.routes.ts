@@ -11,6 +11,7 @@ import {
   UploadAllocationScreen,
 } from '@app/screens/hod';
 import {AllocationDetailScreen} from '@app/screens/hod/allocation/detail-allocation.screen';
+import {AddPLOScreen, EditPLOScreen, ViewPLOScreen} from '@app/screens/hod/plo';
 import {RouteType} from '@app/types/route.type';
 
 export const homeRoute: RouteType = {
@@ -79,6 +80,24 @@ export const allocationUploadRoute: RouteType = {
   component: UploadAllocationScreen,
 };
 
+export const viewPlosRoute: RouteType = {
+  id: 'view-plos',
+  name: 'View PLOs',
+  component: ViewPLOScreen,
+};
+
+export const addPloRoute: RouteType = {
+  id: 'add-plo',
+  name: 'Add PLO',
+  component: AddPLOScreen,
+};
+
+export const editPloRoute: RouteType = {
+  id: 'edit-plo',
+  name: 'Edit PLO',
+  component: EditPLOScreen,
+};
+
 export default [
   homeRoute,
   addCourseRoute,
@@ -91,4 +110,7 @@ export default [
   allocationRoute,
   allocationDetailRoute,
   allocationUploadRoute,
+  viewPlosRoute,
+  addPloRoute,
+  editPloRoute,
 ];
