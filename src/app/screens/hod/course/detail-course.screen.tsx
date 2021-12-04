@@ -68,8 +68,7 @@ export const CourseDetailScreen = () => {
     };
     const usages = plos
       ?.map(p => ({...p, weight: getPloUsage(p.id)}))
-      .filter(p => p.weight > 0)
-      .sort((p, n) => p.number - n.number);
+      .filter(p => p.weight > 0);
     setPloUsage(usages);
   }, [plos]);
 
