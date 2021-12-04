@@ -86,7 +86,7 @@ export const CourseDetailScreen = () => {
                 uiService.toastSuccess('Records deleted!');
               })
               .catch(e => {
-                uiService.toastSuccess('Failed to delete some records!');
+                uiService.toastError('Failed to delete some records!');
               })
               .finally(() => {
                 setUpdates(updates + 1);

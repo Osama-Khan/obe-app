@@ -83,7 +83,7 @@ export default function EditCourseScreen({navigation, route}: P) {
                   uiService.toastSuccess('Successfully updated data!');
                 })
                 .catch(e => {
-                  uiService.toastSuccess('Failed to update data!');
+                  uiService.toastError('Failed to update data!');
                 })
                 .finally(() => setSaving(false));
             }}
