@@ -8,7 +8,8 @@ import {colors} from '@app/styles';
 import {CLOType, CourseType, PLOType} from '@app/types';
 import {useNavigation, useRoute} from '@react-navigation/core';
 import React, {useEffect, useMemo, useState} from 'react';
-import {ScrollView, View} from 'react-native';
+import {ScrollView, useWindowDimensions, View} from 'react-native';
+import {ProgressChart} from 'react-native-chart-kit';
 import {
   ActivityIndicator,
   Button,
@@ -26,23 +27,13 @@ export const CourseDetailScreen = () => {
   const [selected, setSelected] = useState<CLOType[]>([]);
   const [clos, setClos] = useState<CLOType[]>();
   const [plos, setPlos] = useState<PLOType[]>();
+  const [ploUsage, setPloUsage] = useState<(PLOType & {weight: number})[]>();
   const [modalShown, setModalShown] = useState(false);
   const [updates, setUpdates] = useState(0);
   const route = useRoute<any>();
+  const width = useWindowDimensions().width;
   const navigation = useNavigation();
   const course: CourseType = route.params!.course;
-
-  const getPloUsage = (id: string) => {
-    if (!clos || !plos) return -1;
-    const plo = plos.find(p => p.id === id);
-    if (!plo) return -1;
-    let weight = 0;
-    clos.forEach(c => {
-      const map = c.maps!.find(map => map.plo!.id === id);
-      if (map) weight += map.weight;
-    });
-    return weight;
-  };
 
   useMemo(() => {
     navigation.setOptions({headerTitle: course.title + ' CLOs'});
@@ -61,6 +52,25 @@ export const CourseDetailScreen = () => {
       .then(r => setPlos(r.data))
       .catch(e => uiService.toastError('Could not fetch PLOs!'));
   }, [updates]);
+
+  useEffect(() => {
+    const getPloUsage = (id: string) => {
+      if (!clos || !plos) return -1;
+      const plo = plos.find(p => p.id === id);
+      if (!plo) return -1;
+      let weight = 0;
+      clos.forEach(c => {
+        const map = c.maps!.find(map => map.plo!.id === id);
+        if (map) weight += map.weight;
+      });
+      return weight;
+    };
+    const usages = plos
+      ?.map(p => ({...p, weight: getPloUsage(p.id)}))
+      .filter(p => p.weight > 0)
+      .sort((p, n) => p.number - n.number);
+    setPloUsage(usages);
+  }, [plos]);
 
   return (
     <ScrollView>
@@ -116,39 +126,38 @@ export const CourseDetailScreen = () => {
         />
       </Card>
       <Caption style={{margin: 16}}>Weights Assigned</Caption>
-      <Card style={{margin: 8, padding: 16}}>
-        {plos ? (
-          plos.map(p => {
-            const usage = getPloUsage(p.id);
-            return (
-              <React.Fragment key={p.id}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                  }}>
-                  <Text>{p.title}</Text>
-                  <Caption style={{marginLeft: 'auto'}}>{usage}%</Caption>
-                </View>
-                <ProgressBar
-                  progress={usage / 100}
-                  color={usage === 100 ? colors.green : undefined}
-                />
-                <Divider style={{marginVertical: 8}} />
-              </React.Fragment>
-            );
-          })
+      <Card style={{margin: 8, overflow: 'hidden'}}>
+        {ploUsage ? (
+          <ProgressChart
+            data={{
+              labels: ploUsage!.map(p => 'PLO ' + p.number),
+              data: ploUsage!.map(p => p.weight / 100),
+            }}
+            width={width - 16}
+            height={240}
+            strokeWidth={8}
+            radius={24}
+            chartConfig={{
+              backgroundGradientFrom: colors.primaryLight,
+              backgroundGradientTo: colors.primary,
+              color: (o = 1) => `rgb(255,255,255,${o})`,
+              labelColor: (o = 1) => `rgb(255,255,255,${o})`,
+              propsForLabels: {fontWeight: 'bold'},
+            }}
+            hideLegend={false}
+          />
         ) : (
           <ActivityIndicator />
         )}
       </Card>
       <Modal visible={modalShown} onDismiss={() => setModalShown(false)}>
-        {plos ? (
+        {ploUsage ? (
           <AddCloView
             onAdd={() => {
               setUpdates(updates + 1);
               setModalShown(false);
             }}
-            plos={plos.map(p => ({...p, weight: getPloUsage(p.id)}))}
+            plos={ploUsage!}
             courseId={course.id}
           />
         ) : (
