@@ -14,11 +14,12 @@ import {
 } from '@app/types';
 import {useNavigation, useRoute} from '@react-navigation/core';
 import React, {useEffect, useMemo, useState} from 'react';
-import {ScrollView, View} from 'react-native';
+import {FlatList} from 'react-native';
 import {
   ActivityIndicator,
   Button,
   Caption,
+  Card,
   Divider,
   List,
   Text,
@@ -89,50 +90,59 @@ export const AllocationDetailScreen = () => {
       ) : (
         <></>
       )}
-      <ScrollView>
-        {types.map(t => (
-          <View style={{backgroundColor: 'white'}}>
-            <List.Accordion
-              key={t.id}
-              title={t.name}
-              style={{backgroundColor: 'white'}}>
-              {assessments
-                .filter(a => a.type.id === t.id)
-                .map(a => (
-                  <List.Item
-                    title={a.clo!.title}
-                    description={a.clo!.description}
-                    right={() => (
-                      <Text
-                        style={{
-                          fontWeight: 'bold',
-                          alignSelf: 'center',
-                          marginLeft: 32,
-                        }}>
-                        {a.weight}%
-                      </Text>
-                    )}
-                  />
-                ))}
-              <Button
-                icon="plus"
-                mode="outlined"
-                disabled={clos.length === 0}
-                style={{
-                  alignSelf: 'center',
-                  margin: 8,
-                }}
-                onPress={() => {
-                  setSelectedType(t);
-                  setModalShown(true);
-                }}>
-                Add CLO
-              </Button>
-            </List.Accordion>
-            <Divider />
-          </View>
-        ))}
-      </ScrollView>
+      <List.AccordionGroup>
+        <FlatList
+          renderItem={({item: t}) => (
+            <Card
+              style={{
+                margin: 16,
+                marginVertical: 8,
+                overflow: 'hidden',
+              }}>
+              <List.Accordion
+                key={t.id}
+                id={t.id}
+                title={t.name}
+                style={{backgroundColor: '#f8f8f8'}}>
+                {assessments
+                  .filter(a => a.type.id === t.id)
+                  .map(a => (
+                    <List.Item
+                      title={a.clo!.title}
+                      description={a.clo!.description}
+                      right={() => (
+                        <Text
+                          style={{
+                            fontWeight: 'bold',
+                            alignSelf: 'center',
+                            marginLeft: 32,
+                          }}>
+                          {a.weight}%
+                        </Text>
+                      )}
+                    />
+                  ))}
+                <Button
+                  icon="plus"
+                  mode="outlined"
+                  disabled={clos.length === 0}
+                  style={{
+                    alignSelf: 'center',
+                    margin: 8,
+                  }}
+                  onPress={() => {
+                    setSelectedType(t);
+                    setModalShown(true);
+                  }}>
+                  Add CLO
+                </Button>
+              </List.Accordion>
+              <Divider />
+            </Card>
+          )}
+          data={types}
+        />
+      </List.AccordionGroup>
       {selectedType && (
         <Modal visible={modalShown} onDismiss={() => setModalShown(false)}>
           <AddCLOView
