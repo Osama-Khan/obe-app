@@ -1,17 +1,8 @@
 import ListSelect from '@app/components/list-select';
-import {ManyCriteria} from '@app/models/criteria';
 import activityService from '@app/services/activity.service';
-import cloService from '@app/services/clo.service';
 import uiService from '@app/services/ui.service';
 import {colors} from '@app/styles';
-import {
-  ActivityType,
-  ActivityTypeType,
-  AssessmentType,
-  CLOType,
-  CourseType,
-  SectionType,
-} from '@app/types';
+import {ActivityTypeType, CLOType, CourseType, SectionType} from '@app/types';
 import React, {useEffect, useState} from 'react';
 import {View, ScrollView, FlatList} from 'react-native';
 import {
