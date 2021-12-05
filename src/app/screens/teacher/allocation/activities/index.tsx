@@ -3,26 +3,12 @@ import {ManyCriteria} from '@app/models/criteria';
 import activityService from '@app/services/activity.service';
 import cloService from '@app/services/clo.service';
 import uiService from '@app/services/ui.service';
-import {
-  ActivityType,
-  ActivityTypeType,
-  AllocationType,
-  AssessmentType,
-  CLOType,
-  ProgramType,
-} from '@app/types';
+import {ActivityType, AllocationType, CLOType, ProgramType} from '@app/types';
 import {useRoute} from '@react-navigation/core';
 import React, {useEffect, useState} from 'react';
-import {FlatList, View} from 'react-native';
-import {
-  ActivityIndicator,
-  Button,
-  Caption,
-  Divider,
-  FAB,
-  List,
-  Text,
-} from 'react-native-paper';
+import {FlatList} from 'react-native';
+import {ActivityIndicator, Caption, FAB} from 'react-native-paper';
+import ActivityCard from './activity-card';
 import AddActivityView from './add-activity.view';
 
 export const ActivitiesScreen = () => {
@@ -66,45 +52,17 @@ export const ActivitiesScreen = () => {
   return activities ? (
     <>
       {activities.length > 0 ? (
-        <List.AccordionGroup>
-          <FlatList
-            data={activities}
-            renderItem={({item: a}) => (
-              <View style={{backgroundColor: 'white'}}>
-                <List.Accordion
-                  key={a.id}
-                  id={a.id}
-                  title={a.title}
-                  description={a.description}
-                  style={{backgroundColor: 'white'}}>
-                  {a.maps
-                    .map(m => ({...m.clo, weight: m.weight}))
-                    .map(c => (
-                      <List.Item
-                        title={c.title}
-                        description={c.description}
-                        right={() => (
-                          <Text
-                            style={{
-                              fontWeight: 'bold',
-                              textAlignVertical: 'center',
-                            }}>
-                            {c.weight}%
-                          </Text>
-                        )}
-                      />
-                    ))}
-                </List.Accordion>
-                <Divider />
-              </View>
-            )}
-            ListEmptyComponent={
-              <Caption style={{alignSelf: 'center', marginVertical: 16}}>
-                No Activities Found
-              </Caption>
-            }
-          />
-        </List.AccordionGroup>
+        <FlatList
+          data={activities}
+          renderItem={({item}) => (
+            <ActivityCard key={item.id} activity={item} />
+          )}
+          ListEmptyComponent={
+            <Caption style={{alignSelf: 'center', marginVertical: 16}}>
+              No Activities Found
+            </Caption>
+          }
+        />
       ) : (
         <Caption style={{alignSelf: 'center', marginVertical: 16}}>
           No Activities Found
