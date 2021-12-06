@@ -34,6 +34,7 @@ export default function ActivityCard({activity}: {activity: ActivityType}) {
           .map(m => ({...m.clo, weight: m.weight}))
           .map(c => (
             <List.Item
+              key={c.id}
               title={c.title}
               description={c.description}
               right={() => (
