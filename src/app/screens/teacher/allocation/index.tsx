@@ -5,6 +5,7 @@ import {View} from 'react-native';
 import {Caption, Title} from 'react-native-paper';
 import {ActivitiesScreen} from './activities';
 import {AssessmentScreen} from './assessment';
+import StudentsScreen from './students';
 
 const {Navigator, Screen} = createMaterialTopTabNavigator();
 
@@ -46,6 +47,11 @@ export default function AllocationDetail() {
       <Screen
         name="Assessment"
         component={AssessmentScreen}
+        initialParams={{allocation}}
+      />
+      <Screen
+        name="Students"
+        component={StudentsScreen}
         initialParams={{allocation}}
       />
     </Navigator>
