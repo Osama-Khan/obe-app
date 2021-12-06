@@ -32,12 +32,19 @@ export default function StudentsScreen() {
   return users ? (
     <FlatList
       ListHeaderComponent={
-        <Searchbar
-          style={{margin: 16, marginVertical: 8}}
-          placeholder="Search Students..."
-          value={q}
-          onChangeText={setQ}
-        />
+        users.length > 0 ? (
+          <Searchbar
+            style={{margin: 16, marginVertical: 8}}
+            placeholder="Search Students..."
+            value={q}
+            onChangeText={setQ}
+          />
+        ) : undefined
+      }
+      ListEmptyComponent={
+        <Caption style={{marginVertical: 16, alignSelf: 'center'}}>
+          This section has no students!
+        </Caption>
       }
       data={users.filter(u => {
         const lower = q.toLowerCase();
