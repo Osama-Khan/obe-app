@@ -10,7 +10,6 @@ import {
   Button,
   Text,
 } from 'react-native-paper';
-import userActions from '@app/store/actions/user.actions';
 import uiService from '@app/services/ui.service';
 import authService from '@app/services/auth.service';
 

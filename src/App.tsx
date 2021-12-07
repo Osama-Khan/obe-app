@@ -11,7 +11,6 @@ import Toast from 'react-native-toast-message';
 import uiService from '@app/services/ui.service';
 import {initializeInterceptors} from '@app/interceptors';
 import authService from '@app/services/auth.service';
-import {userActions} from '@app/store/actions';
 import storageService from '@app/services/storage.service';
 
 const {Navigator, Screen} = createStackNavigator();

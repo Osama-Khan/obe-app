@@ -1,7 +1,7 @@
 import {colors} from '@app/styles';
 import {ActivityTypeType, AssessmentType, CLOType} from '@app/types';
 import React, {useState} from 'react';
-import {FlatList, View, ViewProps} from 'react-native';
+import {FlatList, ViewProps} from 'react-native';
 import {PieChart} from 'react-native-chart-kit';
 import {Caption, Card, Chip} from 'react-native-paper';
 

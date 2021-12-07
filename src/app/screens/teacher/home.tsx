@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
-  Button,
   Caption,
   Card,
-  Divider,
   FAB,
   IconButton,
   Text,

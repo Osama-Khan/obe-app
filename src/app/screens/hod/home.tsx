@@ -24,7 +24,6 @@ import authService from '@app/services/auth.service';
 
 export const Home = () => {
   const user = useSelector((state: AppStateType) => state.user.userData);
-  const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const navigation = useNavigation();
   useEffect(() => {
