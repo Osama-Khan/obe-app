@@ -1,3 +1,4 @@
+import {AllocationType, SectionType} from '@app/types';
 import RoleType from '@app/types/role.type';
 import UserType from '@app/types/user.type';
 
@@ -7,6 +8,8 @@ export default class UserModel implements UserType {
   email: string;
   dateOfBirth: Date;
   role?: RoleType;
+  sections?: SectionType[];
+  allocations?: AllocationType[];
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;

@@ -8,8 +8,8 @@ type UserType = DbEntity & {
   email: string;
   dateOfBirth: Date;
   role?: RoleType;
-  sections: SectionType[];
-  allocations: AllocationType[];
+  sections?: SectionType[];
+  allocations?: AllocationType[];
 };
 
 export default UserType;
