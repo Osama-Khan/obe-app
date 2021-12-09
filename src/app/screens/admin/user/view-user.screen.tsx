@@ -6,13 +6,14 @@ import {NavigationProp} from '@react-navigation/core';
 import React from 'react';
 import {Button, Card, Text} from 'react-native-paper';
 import {addUserRoute} from '@app/routes/admin.routes';
+import {ScrollView} from 'react-native-gesture-handler';
 
 type P = {navigation: NavigationProp<any>};
 const criteria = new ManyCriteria<UserType>({relations: ['role']});
 
 export const ViewUserScreen = ({navigation}: P) => {
   return (
-    <>
+    <ScrollView>
       <Button
         icon="plus"
         style={{margin: 8, marginLeft: 'auto'}}
@@ -40,6 +41,6 @@ export const ViewUserScreen = ({navigation}: P) => {
           ]}
         />
       </Card>
-    </>
+    </ScrollView>
   );
 };
