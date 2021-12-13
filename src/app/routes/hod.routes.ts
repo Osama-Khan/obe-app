@@ -12,6 +12,7 @@ import {
 } from '@app/screens/hod';
 import {AllocationDetailScreen} from '@app/screens/hod/allocation/detail-allocation.screen';
 import {AddPLOScreen, EditPLOScreen, ViewPLOScreen} from '@app/screens/hod/plo';
+import ProgramPlosScreen from '@app/screens/hod/program/plos';
 import {RouteType} from '@app/types/route.type';
 
 export const homeRoute: RouteType = {
@@ -62,6 +63,12 @@ export const viewProgramRoute: RouteType = {
   component: ViewProgramScreen,
 };
 
+export const programPlosRoute: RouteType = {
+  id: 'program-plos',
+  name: 'Program PLOs',
+  component: ProgramPlosScreen,
+};
+
 export const allocationRoute: RouteType = {
   id: 'allocation',
   name: 'Allocations',
@@ -107,6 +114,7 @@ export default [
   addProgramRoute,
   editProgramRoute,
   viewProgramRoute,
+  programPlosRoute,
   allocationRoute,
   allocationDetailRoute,
   allocationUploadRoute,
