@@ -1,13 +1,20 @@
+import {ManyCriteria} from '@app/models/criteria';
 import uiService from '@app/services/ui.service';
 import {AxiosResponse} from 'axios';
 import React from 'react';
 import {FlatListProps, FlatList, RefreshControl} from 'react-native';
-import {ActivityIndicator} from 'react-native-paper';
+import {ActivityIndicator, Caption} from 'react-native-paper';
 import {IconMessageView} from '../icon-message-view';
 
 export type FetchingFlatListProps<T> = Omit<FlatListProps<T>, 'data'> & {
   /** The method used to fetch data */
-  fetchMethod: () => Promise<AxiosResponse<T[]>>;
+  fetchMethod: (criteria?: ManyCriteria<T>) => Promise<AxiosResponse<T[]>>;
+
+  /** The criteria for filtering entities */
+  criteria?: ManyCriteria<T>;
+
+  /** Filter for the records */
+  filter?: (item: T) => boolean;
 
   /** The method used to extract data from response */
   dataExtractor?: (response: AxiosResponse<T[]>) => T[];
@@ -32,18 +39,28 @@ export default class FetchingFlatList<ItemType> extends React.Component<
   }
 
   render() {
+    const filtered = this.state.items?.filter(
+      this.props.filter || (() => true),
+    );
     return this.state.items ? (
       <FlatList
-        ListEmptyComponent={() => (
-          <IconMessageView
-            title="No data!"
-            caption="The response was empty..."
-            icon="emoticon-sad"
-          />
-        )}
+        ListEmptyComponent={() =>
+          this.state.items!.length > 0 ? (
+            <Caption style={{alignSelf: 'center', flexGrow: 1}}>
+              No records found matching the given filter!
+            </Caption>
+          ) : (
+            <IconMessageView
+              title="No data!"
+              caption="The response was empty..."
+              icon="emoticon-sad"
+            />
+          )
+        }
         {...this.props}
-        data={this.state.items}
+        data={filtered}
         onRefresh={this.load}
+        refreshing={this.state.loading && !!this.state.items}
         refreshControl={
           <RefreshControl
             refreshing={this.state.loading && !!this.state.items}
@@ -57,7 +74,7 @@ export default class FetchingFlatList<ItemType> extends React.Component<
 
   load = () => {
     this.props
-      .fetchMethod()
+      .fetchMethod(this.props.criteria)
       .then(res => {
         let items = res.data;
         if (this.props.dataExtractor) {
