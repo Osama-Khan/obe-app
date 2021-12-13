@@ -4,6 +4,7 @@ import AssessmentType from './assessment.type';
 import CLOType from './clo.type';
 import CourseType from './course.type';
 import PLOType from './plo.type';
+import ProgramPloType from './program-plo.type';
 import ProgramType from './program.type';
 import RoleType from './role.type';
 import SectionType from './section.type';
@@ -19,6 +20,7 @@ export type {
   CourseType,
   PLOType,
   ProgramType,
+  ProgramPloType,
   RoleType,
   SectionType,
   UserType,
