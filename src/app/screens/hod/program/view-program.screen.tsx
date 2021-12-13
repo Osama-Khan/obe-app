@@ -1,4 +1,3 @@
-import {FetchingDataTable} from '@app/components/data-table';
 import {ConfirmModal} from '@app/components/modal';
 import {ManyCriteria} from '@app/models/criteria';
 import programService from '@app/services/program.service';
@@ -7,8 +6,20 @@ import ProgramType from '@app/types/program.type';
 import {NavigationProp} from '@react-navigation/core';
 import React, {useState} from 'react';
 import {View} from 'react-native';
-import {Button, Card, IconButton, Text} from 'react-native-paper';
-import {addProgramRoute, editProgramRoute} from '@app/routes/hod.routes';
+import {
+  Button,
+  Card,
+  FAB,
+  IconButton,
+  Searchbar,
+  Title,
+} from 'react-native-paper';
+import {
+  addProgramRoute,
+  programCoursesRoute,
+  programPlosRoute,
+} from '@app/routes/hod.routes';
+import {FetchingFlatList} from '@app/components/listing';
 
 type P = {navigation: NavigationProp<any>};
 const criteria = new ManyCriteria<ProgramType>();
@@ -16,68 +27,51 @@ criteria.addRelation('courses');
 export const ViewProgramScreen = ({navigation}: P) => {
   const [selected, setSelected] = useState<ProgramType[]>([]);
   const [modalShown, setModalShown] = useState(false);
+  const [search, setSearch] = useState('');
   return (
     <>
-      <View style={{flexDirection: 'row'}}>
-        <IconButton
-          icon="delete"
-          style={{margin: 8, marginLeft: 'auto'}}
-          disabled={selected.length < 1}
-          color="red"
-          onPress={() => {
-            setModalShown(true);
-          }}
-        />
-        <IconButton
-          icon="pencil"
-          style={{margin: 8}}
-          disabled={selected.length !== 1}
-          color="#0af"
-          onPress={() => {
-            navigation.navigate(editProgramRoute.name, {
-              programId: selected[0].id,
-            });
-          }}
-        />
-        <Button
-          icon="plus"
-          style={{margin: 8}}
-          mode="contained"
-          onPress={() => navigation.navigate(addProgramRoute.name)}>
-          Add
-        </Button>
-      </View>
-      <Card style={{margin: 8}} elevation={8}>
-        <FetchingDataTable
-          fetchMethod={criteria => programService.get(criteria)}
-          criteria={criteria}
-          checkProperty="id"
-          columns={[
-            {title: 'Title', selector: 'title'},
-            {
-              title: 'Courses',
-              selector: ({item}) => {
-                const num = item.courses?.length;
-                let text;
-                if (num && num > 0) {
-                  text = item.courses
-                    ?.slice(0, 2)
-                    .map(c => c.title)
-                    .join(', ');
-                  if (num > 2) text += ', ...';
-                } else {
-                  text = 'N/A';
-                }
-                return <Text>{text}</Text>;
-              },
-            },
-          ]}
-          onCheckedChange={checked => {
-            setSelected(checked);
-          }}
-          itemsPerPage={2}
-        />
-      </Card>
+      <Searchbar
+        placeholder="Search Programs..."
+        value={search}
+        onChangeText={setSearch}
+        style={{margin: 16, marginBottom: 0}}
+      />
+      <FetchingFlatList
+        fetchMethod={criteria => programService.get(criteria)}
+        criteria={criteria}
+        filter={item => item.title.includes(search)}
+        renderItem={({item}) => (
+          <Card style={{margin: 16, marginVertical: 8}}>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Title style={{margin: 16, marginVertical: 16}}>
+                {item.title}
+              </Title>
+              <IconButton icon="chevron-right" />
+            </View>
+            <Button
+              icon="graph"
+              onPress={() => {
+                navigation.navigate(programPlosRoute.name, {program: item});
+              }}>
+              PLOs
+            </Button>
+            <Button
+              icon="bookshelf"
+              onPress={() => {
+                navigation.navigate(programCoursesRoute.name, {program: item});
+              }}>
+              Courses
+            </Button>
+          </Card>
+        )}
+      />
+      <FAB
+        icon="plus"
+        style={{position: 'absolute', bottom: 8, right: 8}}
+        onPress={() => navigation.navigate(addProgramRoute.name)}
+      />
+
       <ConfirmModal
         title={`Delete ${
           selected.length === 1 ? 'Program' : 'Multiple Programs'
