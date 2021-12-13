@@ -1,5 +1,7 @@
+import {addPloRoute} from '@app/routes/hod.routes';
 import ploService from '@app/services/plo.service';
 import {PLOType} from '@app/types';
+import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, Menu, Button, Caption} from 'react-native-paper';
 
@@ -11,6 +13,9 @@ type P = {
 const PloDropdown = ({selectedPlos, onAdd}: P) => {
   const [shown, setShown] = useState(false);
   const [plos, setPlos] = useState<PLOType[]>();
+
+  const navigation = useNavigation();
+
   useEffect(() => {
     ploService.get().then(res => {
       setPlos(res.data);
@@ -31,16 +36,26 @@ const PloDropdown = ({selectedPlos, onAdd}: P) => {
         }
         visible={shown}
         onDismiss={() => setShown(false)}
-        children={plos.map(p => (
+        children={[
           <Menu.Item
-            title={p.title}
-            disabled={selectedPlos?.find(_p => _p.id === p.id) !== undefined}
+            title="Create new PLO"
+            icon="plus"
             onPress={() => {
-              onAdd(p);
+              navigation.navigate(addPloRoute.name);
               setShown(false);
             }}
-          />
-        ))}
+          />,
+          plos.map(p => (
+            <Menu.Item
+              key={p.id}
+              title={p.title}
+              disabled={selectedPlos?.find(_p => _p.id === p.id) !== undefined}
+              onPress={() => {
+                onAdd(p);
+              }}
+            />
+          )),
+        ]}
       />
     ) : (
       <Caption>No plos available...</Caption>
