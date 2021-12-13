@@ -1,17 +1,17 @@
-import {AppTheme, colors} from '@app/styles';
+import {AppTheme} from '@app/styles';
 import React from 'react';
 import {
   ScrollView,
   PanResponder,
   PanResponderInstance,
   Dimensions,
+  ModalProps,
 } from 'react-native';
 import Reanimated, {EasingNode} from 'react-native-reanimated';
 import Icon from '../icon';
 import ModalBase from './modal-base';
-import {ModalPropType} from './modal-prop-type';
 
-export default class BottomUpModal extends React.Component<ModalPropType, any> {
+export default class BottomUpModal extends React.Component<ModalProps, any> {
   height = new Reanimated.Value(this.collapsedHeight);
   heightValue = this.collapsedHeight;
   modalHeight = this.collapsedHeight;

@@ -1,9 +1,9 @@
 import React from 'react';
+import {ModalProps} from 'react-native';
 import ModalBase from './modal-base';
-import {ModalPropType} from './modal-prop-type';
 
 /** Shows a modal with given children when visible prop is set to true */
-export default class Modal extends React.Component<ModalPropType> {
+export default class Modal extends React.Component<ModalProps> {
   render() {
     return <ModalBase {...this.props} animationType="fade" />;
   }

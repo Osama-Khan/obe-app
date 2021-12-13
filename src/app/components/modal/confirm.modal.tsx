@@ -1,8 +1,7 @@
 import React from 'react';
-import {StyleProp, TextStyle, View} from 'react-native';
+import {ModalProps, StyleProp, TextStyle, View} from 'react-native';
 import {Divider, Title, Text, Button} from 'react-native-paper';
 import Modal from './modal';
-import {ModalPropType} from './modal-prop-type';
 
 type ModalButtonType = {
   text?: string;
@@ -10,7 +9,7 @@ type ModalButtonType = {
   style?: StyleProp<TextStyle>;
 };
 
-type ConfirmModalProps = Omit<ModalPropType, 'children'> & {
+type ConfirmModalProps = Omit<ModalProps, 'children'> & {
   title: string;
   description: string;
   positiveButton: ModalButtonType;

@@ -1,9 +1,15 @@
 import React from 'react';
-import {Modal as M, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
+import {
+  Modal as M,
+  ModalProps,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 import {Surface} from 'react-native-paper';
-import {ModalPropType} from './modal-prop-type';
 
-type PropType = ModalPropType & {
+type PropType = ModalProps & {
   /** Style of the modal holder */
   holderStyle?: StyleProp<ViewStyle>;
 
