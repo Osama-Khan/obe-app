@@ -6,6 +6,7 @@ export const appColors = {
   primary: '#1976d2',
   primaryDark: '#004ba0',
   primaryLight: '#63a4ff',
+  primarySubtle: '#1976d222',
   accent: '#4fc3f7',
   green: '#388e3c',
   greenDark: '#00600f',
