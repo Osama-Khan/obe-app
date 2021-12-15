@@ -1,4 +1,3 @@
-import Modal from '@app/components/modal';
 import {ManyCriteria} from '@app/models/criteria';
 import activityService from '@app/services/activity.service';
 import cloService from '@app/services/clo.service';
@@ -9,7 +8,7 @@ import React, {useEffect, useState} from 'react';
 import {FlatList} from 'react-native';
 import {ActivityIndicator, Caption, FAB} from 'react-native-paper';
 import ActivityCard from './activity-card';
-import AddActivityView from './add-activity.view';
+import AddActivityModal from './add-activity.modal';
 
 export const ActivitiesScreen = () => {
   const [activities, setActivities] = useState<ActivityType[]>();
@@ -80,21 +79,25 @@ export const ActivitiesScreen = () => {
         }}
       />
 
-      <Modal visible={modalShown} onDismiss={() => setModalShown(false)}>
-        {clos ? (
-          <AddActivityView
-            onAdd={() => {
-              setUpdates(updates + 1);
-              setModalShown(false);
-            }}
-            course={allocation.course!}
-            section={allocation.section!}
-            clos={clos.map(c => ({...c, weight: getCloUsage(c.id)}))}
-          />
-        ) : (
-          <ActivityIndicator />
-        )}
-      </Modal>
+      {clos ? (
+        <AddActivityModal
+          expanded
+          locked
+          visible={modalShown}
+          onDismiss={() => setModalShown(false)}
+          onAdd={() => {
+            setUpdates(updates + 1);
+            setModalShown(false);
+          }}
+          course={allocation.course!}
+          section={allocation.section!}
+          clos={clos?.map(c => ({
+            ...c,
+            weight: getCloUsage(c.id),
+          }))}></AddActivityModal>
+      ) : (
+        <></>
+      )}
     </>
   ) : (
     <ActivityIndicator style={{margin: 16, alignSelf: 'center'}} />
