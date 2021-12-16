@@ -2,11 +2,20 @@ import {IconMessageView} from '@app/components/icon-message-view';
 import {ManyCriteria} from '@app/models/criteria';
 import programPloService from '@app/services/program-plo.service';
 import uiService from '@app/services/ui.service';
+import {colors} from '@app/styles';
 import {ProgramPloType} from '@app/types';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useMemo, useState} from 'react';
 import {FlatList, useWindowDimensions, View} from 'react-native';
-import {ActivityIndicator, Card, FAB, Text, Title} from 'react-native-paper';
+import {
+  ActivityIndicator,
+  Caption,
+  Card,
+  FAB,
+  IconButton,
+  Text,
+  Title,
+} from 'react-native-paper';
 import AddPloModal from './add-plo.modal';
 
 export default function ProgramPlosScreen() {
@@ -33,11 +42,25 @@ export default function ProgramPlosScreen() {
       <FlatList
         data={maps}
         renderItem={({item}) => (
-          <Card style={{margin: 16, marginVertical: 8, padding: 8}}>
-            <Title>PLO {item.number}</Title>
-            <Text>
+          <Card
+            style={{
+              borderTopWidth: 2,
+              borderColor: colors.primary,
+              margin: 16,
+              marginVertical: 8,
+              padding: 8,
+            }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Title>PLO {item.number}</Title>
+              <IconButton
+                style={{marginLeft: 'auto'}}
+                color={colors.red}
+                icon="link-off"
+              />
+            </View>
+            <Caption>
               {item.plo!.title}: {item.plo!.description}
-            </Text>
+            </Caption>
           </Card>
         )}
         ListEmptyComponent={

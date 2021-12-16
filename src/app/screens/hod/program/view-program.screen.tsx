@@ -41,7 +41,7 @@ export const ViewProgramScreen = ({navigation}: P) => {
         criteria={criteria}
         filter={item => item.title.includes(search)}
         renderItem={({item}) => (
-          <Card style={{margin: 16, marginVertical: 8}}>
+          <Card style={{margin: 16, marginVertical: 8, overflow: 'hidden'}}>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Title style={{margin: 16, marginVertical: 16}}>
@@ -51,6 +51,8 @@ export const ViewProgramScreen = ({navigation}: P) => {
             </View>
             <Button
               icon="graph"
+              mode="outlined"
+              style={{borderRadius: 0}}
               onPress={() => {
                 navigation.navigate(programPlosRoute.name, {program: item});
               }}>
@@ -58,6 +60,8 @@ export const ViewProgramScreen = ({navigation}: P) => {
             </Button>
             <Button
               icon="bookshelf"
+              mode="outlined"
+              style={{borderRadius: 0}}
               onPress={() => {
                 navigation.navigate(programCoursesRoute.name, {program: item});
               }}>
