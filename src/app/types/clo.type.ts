@@ -6,6 +6,7 @@ import ObjectiveMapType from './objective-map.type';
 type CLOType = DbEntity & {
   title: string;
   description: string;
+  number: number;
   maps?: ObjectiveMapType[];
   activityMaps: ActivityMapType[];
   course?: CourseType;
