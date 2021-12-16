@@ -9,15 +9,10 @@ import {
   List,
   Title,
 } from 'react-native-paper';
-import {
-  allocationRoute,
-  viewPlosRoute,
-  viewCourseRoute,
-  viewProgramRoute,
-} from '@app/routes/hod.routes';
+import {allocationRoute, viewProgramRoute} from '@app/routes/hod.routes';
 import Icon from '@app/components/icon';
 import Modal from '@app/components/modal';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {AppStateType} from '@app/store/state';
 import {colors} from '@app/styles';
 import authService from '@app/services/auth.service';
@@ -44,11 +39,6 @@ export const Home = () => {
     <>
       <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
         <IconCard
-          icon="bookshelf"
-          title="Courses"
-          onPress={() => goto(viewCourseRoute.name)}
-        />
-        <IconCard
           icon="folder"
           title="Programs"
           onPress={() => goto(viewProgramRoute.name)}
@@ -57,11 +47,6 @@ export const Home = () => {
           icon="clipboard-account"
           title="Allocate Courses"
           onPress={() => goto(allocationRoute.name)}
-        />
-        <IconCard
-          icon="sitemap"
-          title="Manage PLOs"
-          onPress={() => goto(viewPlosRoute.name)}
         />
       </View>
       <Modal visible={visible} onDismiss={() => setVisible(false)}>

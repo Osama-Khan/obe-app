@@ -123,10 +123,4 @@ export default [
   viewProgramRoute,
   programPlosRoute,
   programCoursesRoute,
-  allocationRoute,
-  allocationDetailRoute,
-  allocationUploadRoute,
-  viewPlosRoute,
-  addPloRoute,
-  editPloRoute,
 ];
