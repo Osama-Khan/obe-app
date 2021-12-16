@@ -89,12 +89,12 @@ export const ActivitiesScreen = () => {
             setUpdates(updates + 1);
             setModalShown(false);
           }}
-          course={allocation.course!}
-          section={allocation.section!}
+          allocation={allocation}
           clos={clos?.map(c => ({
             ...c,
             weight: getCloUsage(c.id),
-          }))}></AddActivityModal>
+          }))}
+        />
       ) : (
         <></>
       )}

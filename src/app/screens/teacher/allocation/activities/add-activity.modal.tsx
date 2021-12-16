@@ -8,9 +8,8 @@ import {colors} from '@app/styles';
 import {
   ActivityType,
   ActivityTypeType,
+  AllocationType,
   CLOType,
-  CourseType,
-  SectionType,
 } from '@app/types';
 import React, {useEffect, useMemo, useState} from 'react';
 import {View, ScrollView, FlatList, BackHandler} from 'react-native';
@@ -26,10 +25,8 @@ import {
 } from 'react-native-paper';
 
 type P = BottomUpModalProps & {
-  /** The section the activity is for */
-  section: SectionType;
-  /** The course the activity is for */
-  course: CourseType;
+  /** The allocation the activity is for */
+  allocation: AllocationType;
   /** The clos available for the activity */
   clos: (CLOType & {weight: number})[];
   /** Called with the activity when an activity is added */
@@ -38,9 +35,8 @@ type P = BottomUpModalProps & {
 
 export default function AddActivityModal({
   onAdd,
-  section,
+  allocation,
   clos,
-  course,
   ...modalProps
 }: P) {
   const [weight, setWeight] = useState(25);
@@ -203,7 +199,7 @@ export default function AddActivityModal({
               title,
               description,
               type: {id: type!.id},
-              section: {id: section.id},
+              section: {id: allocation.section!.id},
               maps: added.map(c => ({
                 clo: {id: c!.id},
                 weight: c.weight,
