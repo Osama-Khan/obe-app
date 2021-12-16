@@ -170,7 +170,7 @@ const AddView = ({
       />
       <Button
         style={{alignSelf: 'flex-end'}}
-        disabled={!desc || !title || !number || !number || invalidNumber}
+        disabled={!desc || !title || !number || invalidNumber}
         onPress={() => {
           onAdd({title, description: desc}, parseInt(number));
         }}>
