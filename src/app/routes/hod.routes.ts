@@ -1,9 +1,5 @@
 import {
   AllocationScreen,
-  AddCourseScreen,
-  ViewCourseScreen,
-  EditCourseScreen,
-  CourseDetailScreen,
   AddProgramScreen,
   EditProgramScreen,
   ViewProgramScreen,
@@ -11,7 +7,6 @@ import {
   UploadAllocationScreen,
 } from '@app/screens/hod';
 import {AllocationDetailScreen} from '@app/screens/hod/allocation/detail-allocation.screen';
-import {AddPLOScreen, EditPLOScreen, ViewPLOScreen} from '@app/screens/hod/plo';
 import ProgramCoursesScreen from '@app/screens/hod/program/courses';
 import {
   ViewClosScreen,
@@ -24,30 +19,6 @@ export const homeRoute: RouteType = {
   id: 'home',
   name: 'HOD Panel',
   component: Home,
-};
-
-export const addCourseRoute: RouteType = {
-  id: 'add-course',
-  name: 'Add Course',
-  component: AddCourseScreen,
-};
-
-export const editCourseRoute: RouteType = {
-  id: 'edit-course',
-  name: 'Edit Course',
-  component: EditCourseScreen,
-};
-
-export const viewCourseRoute: RouteType = {
-  id: 'view-courses',
-  name: 'View Courses',
-  component: ViewCourseScreen,
-};
-
-export const courseDetailRoute: RouteType = {
-  id: 'course-detail',
-  name: 'Course Detail',
-  component: CourseDetailScreen,
 };
 
 export const addProgramRoute: RouteType = {
@@ -110,30 +81,8 @@ export const allocationUploadRoute: RouteType = {
   component: UploadAllocationScreen,
 };
 
-export const viewPlosRoute: RouteType = {
-  id: 'view-plos',
-  name: 'View PLOs',
-  component: ViewPLOScreen,
-};
-
-export const addPloRoute: RouteType = {
-  id: 'add-plo',
-  name: 'Add PLO',
-  component: AddPLOScreen,
-};
-
-export const editPloRoute: RouteType = {
-  id: 'edit-plo',
-  name: 'Edit PLO',
-  component: EditPLOScreen,
-};
-
 export default [
   homeRoute,
-  addCourseRoute,
-  editCourseRoute,
-  viewCourseRoute,
-  courseDetailRoute,
   addProgramRoute,
   editProgramRoute,
   viewProgramRoute,
