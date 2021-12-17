@@ -5,14 +5,12 @@ import {
   ViewProgramScreen,
   Home,
   UploadAllocationScreen,
-} from '@app/screens/hod';
-import {AllocationDetailScreen} from '@app/screens/hod/allocation/detail-allocation.screen';
-import ProgramCoursesScreen from '@app/screens/hod/program/courses';
-import {
+  AllocationDetailScreen,
+  ViewCoursesScreen,
   ViewClosScreen,
   AddCloScreen,
-} from '@app/screens/hod/program/courses/clos';
-import ProgramPlosScreen from '@app/screens/hod/program/plos';
+  ViewPlosScreen,
+} from '@app/screens/hod';
 import {RouteType} from '@app/types/route.type';
 
 export const homeRoute: RouteType = {
@@ -40,15 +38,15 @@ export const viewProgramRoute: RouteType = {
 };
 
 export const programPlosRoute: RouteType = {
-  id: 'program-plos',
-  name: 'Program PLOs',
-  component: ProgramPlosScreen,
+  id: 'view-plos',
+  name: 'View PLOs',
+  component: ViewPlosScreen,
 };
 
 export const programCoursesRoute: RouteType = {
-  id: 'program-courses',
-  name: 'Program Courses',
-  component: ProgramCoursesScreen,
+  id: 'view-courses',
+  name: 'View Courses',
+  component: ViewCoursesScreen,
 };
 
 export const viewClosRoute: RouteType = {
@@ -84,6 +82,9 @@ export const allocationUploadRoute: RouteType = {
 export default [
   homeRoute,
   addProgramRoute,
+  allocationRoute,
+  allocationDetailRoute,
+  allocationUploadRoute,
   editProgramRoute,
   viewProgramRoute,
   programPlosRoute,
