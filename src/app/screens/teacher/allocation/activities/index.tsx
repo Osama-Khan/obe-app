@@ -1,20 +1,20 @@
 import {ManyCriteria} from '@app/models/criteria';
+import {addActivityRoute} from '@app/routes/teacher.routes';
 import activityService from '@app/services/activity.service';
 import cloService from '@app/services/clo.service';
 import uiService from '@app/services/ui.service';
 import {ActivityType, AllocationType, CLOType, ProgramType} from '@app/types';
-import {useRoute} from '@react-navigation/core';
+import {useNavigation, useRoute} from '@react-navigation/core';
 import React, {useEffect, useState} from 'react';
 import {FlatList} from 'react-native';
 import {ActivityIndicator, Caption, FAB} from 'react-native-paper';
 import ActivityCard from './activity-card';
-import AddActivityModal from './add-activity.modal';
 
 export const ActivitiesScreen = () => {
   const [activities, setActivities] = useState<ActivityType[]>();
   const [clos, setClos] = useState<CLOType[]>();
-  const [modalShown, setModalShown] = useState(false);
   const [updates, setUpdates] = useState(0);
+  const navigation = useNavigation<any>();
   const route = useRoute<any>();
   const allocation: AllocationType & {program: ProgramType} =
     route.params!.allocation;
@@ -75,29 +75,18 @@ export const ActivitiesScreen = () => {
           right: 16,
         }}
         onPress={() => {
-          setModalShown(true);
+          navigation.navigate(addActivityRoute.name, {
+            onAdd: () => {
+              setUpdates(updates + 1);
+            },
+            allocation,
+            clos: clos?.map(c => ({
+              ...c,
+              weight: getCloUsage(c.id),
+            })),
+          });
         }}
       />
-
-      {clos ? (
-        <AddActivityModal
-          expanded
-          locked
-          visible={modalShown}
-          onDismiss={() => setModalShown(false)}
-          onAdd={() => {
-            setUpdates(updates + 1);
-            setModalShown(false);
-          }}
-          allocation={allocation}
-          clos={clos?.map(c => ({
-            ...c,
-            weight: getCloUsage(c.id),
-          }))}
-        />
-      ) : (
-        <></>
-      )}
     </>
   ) : (
     <ActivityIndicator style={{margin: 16, alignSelf: 'center'}} />
