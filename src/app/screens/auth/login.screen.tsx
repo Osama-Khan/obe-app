@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {useDispatch} from 'react-redux';
 import {Image, ScrollView, Switch, View} from 'react-native';
 import {
   Caption,
@@ -18,8 +17,6 @@ export const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const dispatch = useDispatch();
 
   return (
     <ScrollView>
