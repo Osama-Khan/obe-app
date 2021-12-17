@@ -13,6 +13,10 @@ import {
 import {AllocationDetailScreen} from '@app/screens/hod/allocation/detail-allocation.screen';
 import {AddPLOScreen, EditPLOScreen, ViewPLOScreen} from '@app/screens/hod/plo';
 import ProgramCoursesScreen from '@app/screens/hod/program/courses';
+import {
+  ViewClosScreen,
+  AddCloScreen,
+} from '@app/screens/hod/program/courses/clos';
 import ProgramPlosScreen from '@app/screens/hod/program/plos';
 import {RouteType} from '@app/types/route.type';
 
@@ -76,6 +80,18 @@ export const programCoursesRoute: RouteType = {
   component: ProgramCoursesScreen,
 };
 
+export const viewClosRoute: RouteType = {
+  id: 'view-clos',
+  name: 'Course CLOs',
+  component: ViewClosScreen,
+};
+
+export const addCloRoute: RouteType = {
+  id: 'add-clo',
+  name: 'Add CLO',
+  component: AddCloScreen,
+};
+
 export const allocationRoute: RouteType = {
   id: 'allocation',
   name: 'Allocations',
@@ -123,4 +139,6 @@ export default [
   viewProgramRoute,
   programPlosRoute,
   programCoursesRoute,
+  viewClosRoute,
+  addCloRoute,
 ];
