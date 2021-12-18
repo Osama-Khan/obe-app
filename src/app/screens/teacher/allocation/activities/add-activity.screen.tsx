@@ -1,4 +1,5 @@
 import ListSelect from '@app/components/list-select';
+import WeightPicker from '@app/components/WeightPicker';
 import activityService from '@app/services/activity.service';
 import uiService from '@app/services/ui.service';
 import {colors} from '@app/styles';
@@ -9,19 +10,16 @@ import {
   CLOType,
 } from '@app/types';
 import {useRoute} from '@react-navigation/native';
-import React, {useEffect, useMemo, useState} from 'react';
-import {View, ScrollView, FlatList, BackHandler} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ScrollView} from 'react-native';
 import {
   ActivityIndicator,
   Button,
   Caption,
   Card,
-  Chip,
-  Divider,
-  Text,
   TextInput,
-  Title,
 } from 'react-native-paper';
+import useAssessments from '@app/hooks/useAssessments';
 
 type ParamsType = {
   /** The allocation the activity is for */
@@ -33,45 +31,38 @@ type ParamsType = {
 };
 
 export default function AddActivityScreen() {
-  const [weight, setWeight] = useState(25);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [types, setTypes] = useState<ActivityTypeType[]>();
   const [type, setType] = useState<Partial<ActivityTypeType>>();
-  const [added, setAdded] = useState<(Partial<CLOType> & {weight: number})[]>(
-    [],
-  );
+  const [clos, setClos] = useState<CLOType[]>();
   const [saving, setSaving] = useState(false);
 
   const route = useRoute<{params: ParamsType; key: string; name: string}>();
-  const {allocation, clos, onAdd} = route.params;
+  const {allocation, onAdd} = route.params;
 
-  const addClo = (clo: CLOType & {weight: number}, weight: number) => {
-    if (weight <= 0) {
-      uiService.toastError(`Weight can't be 0`);
-      return;
-    }
-    if (weight > 100 || weight + clo.weight > 100) {
-      const possibleWeight = 100 - clo.weight;
-      uiService.toastError(
-        `Max possible weight is ${possibleWeight}%`,
-        'Too much weight!',
-      );
-      return;
-    }
-    setAdded([...added, {...clo, weight}]);
+  const {assessments, types} = useAssessments(allocation.id);
+  const [added, setAdded] = useState<any>(clos?.map(c => undefined));
+
+  const getCloUsage = (id: string) => {
+    if (!clos || !assessments) return -1;
+    const clo = clos.find(c => c.id === id);
+    if (!clo) return -1;
+    let weight = 0;
+    assessments.forEach(a => {
+      if (a.clo.id === id) weight += a.weight;
+    });
+    return weight;
   };
-  const removeClo = (id: string) => setAdded(added.filter(a => a?.id !== id));
 
   useEffect(() => {
-    activityService
-      .getTypes()
-      .then(r => {
-        setTypes(r.data);
-        setType(r.data[0]);
-      })
-      .catch(e => uiService.toastError('Could not fetch Activity types!'));
-  }, []);
+    if (!assessments || !type) return;
+    setClos(undefined);
+    const clos: CLOType[] = [];
+    assessments.forEach(a => {
+      if (a.type.id === type!.id) clos.push(a.clo);
+    });
+    setClos(clos);
+  }, [type]);
 
   return (
     <ScrollView>
@@ -95,85 +86,59 @@ export default function AddActivityScreen() {
         <Caption style={{marginTop: 8}}>Choose Type</Caption>
         {types ? (
           <ListSelect
-            options={types.map(c => ({name: c.name, value: c.id}))}
+            options={[
+              {name: 'Select a Type...', value: '', disabled: true},
+              ...types.map(c => ({name: c.name, value: c.id})),
+            ]}
             onSelect={o => setType(types.find(c => c.id === o.value)!)}
           />
         ) : (
           <ActivityIndicator />
         )}
-        {clos.length > 0 ? (
-          <>
-            <Caption style={{marginTop: 8}}>Add CLOs</Caption>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text>Tap to add CLO with</Text>
-              <TextInput
-                value={weight.toString()}
-                style={{
-                  backgroundColor: '#0000',
-                  margin: 4,
-                }}
-                keyboardType="decimal-pad"
-                onChangeText={weight => {
-                  if (weight === '') {
-                    setWeight(1);
-                    return;
-                  }
-                  const num = parseInt(weight);
-                  if (num === NaN) return;
-                  setWeight(num > 0 ? num : 1);
-                }}
-                dense
-              />
-              <Text>% weight</Text>
-            </View>
-            <FlatList
-              horizontal
-              data={clos}
-              // Adds padding at the start and end to prevent whitespace
-              // while scrolling
-              ListHeaderComponent={<View style={{width: 16}} />}
-              ListFooterComponent={<View style={{width: 16}} />}
-              style={{marginHorizontal: -16}}
-              renderItem={({item: c}) => {
-                const isAdded = added.find(a => c.id === a?.id);
+        {clos ? (
+          clos.length > 0 ? (
+            <>
+              <Caption style={{marginTop: 8}}>Add CLOs</Caption>
+              {clos.map((c, i) => {
+                const weight = getCloUsage(c.id);
                 return (
-                  <Chip
-                    icon={isAdded || c.weight >= 100 ? undefined : 'plus'}
-                    onPress={isAdded ? undefined : () => addClo(c, weight)}
-                    onClose={isAdded ? () => removeClo(c.id) : undefined}
-                    disabled={c.weight >= 100}
-                    style={[
-                      {margin: 4},
-                      isAdded
-                        ? {
-                            backgroundColor: colors.primaryLight,
-                            borderColor: colors.primaryDark,
-                            borderWidth: 2,
-                          }
-                        : {},
-                      c.weight >= 100 ? {opacity: 0.5} : {},
-                    ]}
-                    key={c.id}>
-                    <Text>
-                      {c.title} - {c.weight + (isAdded ? isAdded.weight : 0)}%
-                    </Text>
-                  </Chip>
+                  <WeightPicker
+                    title={`CLO ${c.number}`}
+                    description={`${weight}% Assigned`}
+                    onChange={weight => {
+                      added[i] = {...c, weight};
+                      setAdded([...added]);
+                    }}
+                    onRemove={() => {
+                      added[i] = undefined;
+                      setAdded([...added]);
+                    }}
+                    usedWeight={weight}
+                  />
                 );
-              }}
-              ListEmptyComponent={<ActivityIndicator />}
-            />
-          </>
+              })}
+            </>
+          ) : (
+            <Caption style={{color: colors.red}}>
+              No CLOs Available for this course!
+            </Caption>
+          )
+        ) : type ? (
+          <ActivityIndicator />
         ) : (
-          <Caption style={{color: colors.red}}>
-            No CLOs Available for this course!
-          </Caption>
+          <></>
         )}
         <Button
           style={{marginTop: 16}}
           icon="check"
           mode="contained"
           disabled={
-            !title || !description || !type || added.length === 0 || saving
+            !title ||
+            !description ||
+            !type ||
+            !added ||
+            added.length === 0 ||
+            saving
           }
           loading={saving}
           onPress={() => {
