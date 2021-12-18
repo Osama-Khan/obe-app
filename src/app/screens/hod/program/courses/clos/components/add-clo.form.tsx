@@ -2,19 +2,12 @@ import React, {useState} from 'react';
 import {CLOType, CourseType, PLOType} from '@app/types';
 import {colors} from '@app/styles';
 import {View} from 'react-native';
-import {
-  TextInput,
-  Switch,
-  Button,
-  Caption,
-  Divider,
-  Title,
-  List,
-} from 'react-native-paper';
+import {TextInput, Button, Caption, Divider, Title} from 'react-native-paper';
 import {ParamsType, PLOWeightedType} from '../add-clo.screen';
+import WeightPicker from '@app/components/WeightPicker';
 
 type ActiveType =
-  | (PLOType & {weight: string; usedWeight: number; number: number})
+  | (PLOType & {weight: number; usedWeight: number; number: number})
   | undefined;
 
 export default function AddCLOForm({
@@ -71,32 +64,19 @@ export default function AddCLOForm({
       <Divider />
       <Title>PLOs</Title>
       {plos.map((p, i) => (
-        <>
-          <List.Item
-            title={`PLO ${p.number}`}
-            description={`${p.weight}% Assigned`}
-            right={() => (
-              <Switch
-                value={!!active.find(a => a?.id === p.id)}
-                disabled={p.weight === 100}
-                style={{alignSelf: 'center'}}
-                onValueChange={v => {
-                  if (v) {
-                    active[i] = {...p, weight: '0', usedWeight: p.weight};
-                  } else {
-                    active[i] = undefined;
-                  }
-                  setActive([...active]);
-                }}
-              />
-            )}
-          />
-          {active[i] ? (
-            <CLOInput active={active} setActive={setActive} i={i} />
-          ) : (
-            <></>
-          )}
-        </>
+        <WeightPicker
+          title={`PLO ${p.number}`}
+          description={`${p.weight}% Assigned`}
+          onChange={weight => {
+            active[i] = {...p, weight, usedWeight: p.weight};
+            setActive([...active]);
+          }}
+          onRemove={() => {
+            active[i] = undefined;
+            setActive([...active]);
+          }}
+          usedWeight={p.weight}
+        />
       ))}
       <Divider />
       <Button
@@ -110,9 +90,7 @@ export default function AddCLOForm({
           active.some(
             a =>
               a &&
-              (!a.weight ||
-                parseInt(a.weight) <= 0 ||
-                parseInt(a.weight) + a.usedWeight > 100),
+              (!a.weight || a.weight <= 0 || a.weight + a.usedWeight > 100),
           )
         }
         onPress={() => {
@@ -120,9 +98,7 @@ export default function AddCLOForm({
             title,
             description: desc,
             course: {id: course.id} as CourseType,
-            maps: active
-              .filter(a => a)
-              .map(a => ({plo: a, weight: parseInt(a!.weight)})),
+            maps: active.filter(a => a).map(a => ({plo: a, weight: a!.weight})),
             number: parseInt(number),
           });
         }}>
@@ -131,41 +107,3 @@ export default function AddCLOForm({
     </View>
   );
 }
-
-const CLOInput = ({active, i, setActive}: any) => {
-  const current = active[i];
-  const weightLeft = 100 - current.usedWeight;
-  const overWeight = parseInt(current.weight) > weightLeft;
-  const underWeight = parseInt(current.weight) < 1;
-  return (
-    <>
-      <TextInput
-        mode="outlined"
-        label={`PLO ${current.number}`}
-        defaultValue={'0'}
-        value={current.weight}
-        onChangeText={txt => {
-          if (txt) {
-            const num = parseInt(txt);
-            if (num.toString() !== txt) {
-              return;
-            }
-          }
-          active[i] = {...current, weight: txt};
-          setActive([...active]);
-        }}
-        error={overWeight || underWeight}
-      />
-      {overWeight && (
-        <Caption style={{color: colors.red}}>
-          Max weight assignable is {weightLeft}%
-        </Caption>
-      )}
-      {underWeight && (
-        <Caption style={{color: colors.red}}>
-          Weight must be from 1 to {weightLeft}
-        </Caption>
-      )}
-    </>
-  );
-};
