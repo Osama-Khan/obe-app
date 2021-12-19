@@ -45,7 +45,7 @@ export default function WeightsCard(props: P) {
               selected.id !== c.id ? setSelected(c) : '';
             }}
             style={{marginTop: 8, marginHorizontal: 8}}>
-            {c.title}
+            CLO {c.number}
           </Chip>
         )}
       />
