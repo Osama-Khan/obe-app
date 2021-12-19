@@ -35,6 +35,8 @@ export default function AddActivityScreen() {
   const [description, setDescription] = useState('');
   const [type, setType] = useState<Partial<ActivityTypeType>>();
   const [clos, setClos] = useState<CLOType[]>();
+  const [cloWeights, setCloWeights] =
+    useState<{id: string; weight: number}[]>();
   const [saving, setSaving] = useState(false);
 
   const route = useRoute<{params: ParamsType; key: string; name: string}>();
@@ -44,15 +46,14 @@ export default function AddActivityScreen() {
   const [added, setAdded] = useState<any>(clos?.map(c => undefined));
 
   const getCloUsage = (id: string) => {
-    if (!clos || !assessments) return -1;
-    const clo = clos.find(c => c.id === id);
-    if (!clo) return -1;
-    let weight = 0;
-    assessments.forEach(a => {
-      if (a.clo.id === id) weight += a.weight;
-    });
-    return weight;
+    return cloWeights?.find(c => c.id === id)?.weight || 0;
   };
+
+  useEffect(() => {
+    activityService.getCloWeightsInSection(allocation.section!.id).then(r => {
+      setCloWeights(r.data);
+    });
+  }, []);
 
   useEffect(() => {
     if (!assessments || !type) return;
@@ -64,7 +65,7 @@ export default function AddActivityScreen() {
     setClos(clos);
   }, [type]);
 
-  return (
+  return cloWeights ? (
     <ScrollView>
       <Card style={{margin: 8, padding: 8}}>
         <TextInput
@@ -169,5 +170,7 @@ export default function AddActivityScreen() {
         </Button>
       </Card>
     </ScrollView>
+  ) : (
+    <ActivityIndicator style={{flex: 1}} />
   );
 }
