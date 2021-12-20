@@ -39,4 +39,9 @@ export default abstract class CrudService<Model> extends ApiService {
   delete(id: string) {
     return axios.delete(`${this.endpoint}/${id}`);
   }
+
+  /** Returns a count of the number of records found for given criteria */
+  count(criteria?: ManyCriteria<Model>): Promise<AxiosResponse<number>> {
+    return axios.post(`${this.endpoint}/meta/count`, criteria?.body);
+  }
 }
