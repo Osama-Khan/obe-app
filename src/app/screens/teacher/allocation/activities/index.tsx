@@ -5,7 +5,7 @@ import uiService from '@app/services/ui.service';
 import {ActivityType, AllocationType, ProgramType} from '@app/types';
 import {useNavigation, useRoute} from '@react-navigation/core';
 import React, {useEffect, useState} from 'react';
-import {FlatList} from 'react-native';
+import {FlatList, View} from 'react-native';
 import {ActivityIndicator, Caption, FAB} from 'react-native-paper';
 import ActivityCard from './activity-card';
 
@@ -41,6 +41,7 @@ export const ActivitiesScreen = () => {
               No Activities Found
             </Caption>
           }
+          ListFooterComponent={<View style={{height: 76}} />}
         />
       ) : (
         <Caption style={{alignSelf: 'center', marginVertical: 16}}>
