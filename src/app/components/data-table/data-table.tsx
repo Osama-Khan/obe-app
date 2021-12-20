@@ -44,6 +44,9 @@ export type DataTableProps<T> = {
   /** Style for the rows */
   rowStyle?: StyleProp<ViewStyle>;
 
+  /** Action for when a row is pressed */
+  rowOnPress?: (item: T, index: number) => void;
+
   /** Style for the footer or pagination */
   footerStyle?: StyleProp<ViewStyle>;
 };
@@ -58,7 +61,8 @@ export default class DataTable<ItemType> extends React.Component<
   state: S<ItemType> = {checked: [], page: 0};
 
   render() {
-    const {data, checkProperty, onCheckedChange, columns, filter} = this.props;
+    const {data, checkProperty, onCheckedChange, columns, filter, rowOnPress} =
+      this.props;
     const {page, checked} = this.state;
 
     const itemsPerPage = this.props.itemsPerPage || DEFAULT_ITEMS_PER_PAGE;
@@ -113,7 +117,10 @@ export default class DataTable<ItemType> extends React.Component<
 
         {items ? (
           items.map((item, index) => (
-            <PaperDataTable.Row key={index} style={this.props.rowStyle}>
+            <PaperDataTable.Row
+              key={index}
+              style={this.props.rowStyle}
+              onPress={rowOnPress && (() => rowOnPress(item, index))}>
               {checkProperty ? (
                 <PaperDataTable.Cell style={{maxWidth: 48}}>
                   <Checkbox
