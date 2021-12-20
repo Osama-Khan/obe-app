@@ -25,7 +25,7 @@ export const ActivitiesScreen = () => {
     activityService
       .get(activityCrit)
       .then(r => setActivities(r.data))
-      .catch(e => uiService.toastError('Could not fetch CLOs!'));
+      .catch(() => uiService.toastError('Could not fetch Activities!'));
   }, [updates]);
 
   return activities ? (
