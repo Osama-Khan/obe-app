@@ -1,4 +1,5 @@
 import {AddUserScreen, ViewUserScreen, Home} from '@app/screens/admin';
+import UserDetailScreen from '@app/screens/admin/user/detail-user.screen';
 import {RouteType} from '@app/types/route.type';
 
 export const homeRoute: RouteType = {
@@ -19,4 +20,10 @@ export const viewUsersRoute: RouteType = {
   component: ViewUserScreen,
 };
 
-export default [homeRoute, addUserRoute, viewUsersRoute];
+export const userDetailRoute: RouteType = {
+  id: 'user-detail',
+  name: 'User Detail',
+  component: UserDetailScreen,
+};
+
+export default [homeRoute, addUserRoute, viewUsersRoute, userDetailRoute];

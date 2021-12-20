@@ -3,8 +3,8 @@ import {ManyCriteria} from '@app/models/criteria';
 import userService from '@app/services/user.service';
 import UserType from '@app/types/user.type';
 import React, {useState} from 'react';
-import {addUserRoute} from '@app/routes/admin.routes';
 import {Button, Card} from 'react-native-paper';
+import {addUserRoute, userDetailRoute} from '@app/routes/admin.routes';
 import {ScrollView} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
 import RoleBadge from './components/RoleBadge';
@@ -33,6 +33,11 @@ export const ViewUserScreen = () => {
           criteria={criteria}
           key={updates}
           itemsPerPage={5}
+          rowOnPress={item => {
+            navigation.navigate(userDetailRoute.name, {
+              user: item,
+            });
+          }}
           columns={[
             {
               selector: 'username',
