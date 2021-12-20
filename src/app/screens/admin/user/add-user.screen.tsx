@@ -4,8 +4,9 @@ import roleService from '@app/services/role.service';
 import uiService from '@app/services/ui.service';
 import userService from '@app/services/user.service';
 import UserType from '@app/types/user.type';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {Formik} from 'formik';
-import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ScrollView} from 'react-native';
 import {
   ActivityIndicator,
@@ -20,10 +21,12 @@ type FormDataType = Partial<UserType> & {
   password: string;
 };
 
-let saving: boolean, setSaving: Dispatch<SetStateAction<boolean>>;
 export const AddUserScreen = () => {
   const [roles, setRoles] = useState<any[]>();
-  [saving, setSaving] = useState<boolean>(false);
+  const navigation = useNavigation();
+  const route = useRoute<any>();
+  const {onAdd} = route.params!;
+  const [saving, setSaving] = useState<boolean>(false);
   useEffect(() => {
     roleService
       .get()
@@ -44,7 +47,16 @@ export const AddUserScreen = () => {
           dateOfBirth: undefined,
           role: undefined,
         }}
-        onSubmit={handleSubmit}
+        onSubmit={data => {
+          setSaving(true);
+          handleSubmit(data).then(res => {
+            if (res) {
+              onAdd();
+              navigation.goBack();
+            }
+            setSaving(false);
+          });
+        }}
         children={({handleChange, handleSubmit, values}) => (
           <Card
             style={{
@@ -119,22 +131,19 @@ const isInvalid = (data: FormDataType) =>
   !data.password ||
   !data.dateOfBirth ||
   !data.role;
-const handleSubmit = (data: FormDataType) => {
-  setSaving(true);
+
+const handleSubmit = async (data: FormDataType) => {
   if (isInvalid(data)) {
     uiService.toastError('Invalid data');
-    return;
+    return false;
   }
-  const submission = {...data, role: data.role!.id};
-  userService
-    .insert(data)
-    .then(res => {
-      uiService.toastSuccess('Inserted with ID: ' + res.data.id);
-    })
-    .catch(() => {
-      uiService.toastError('Could not insert user!');
-    })
-    .finally(() => {
-      setSaving(false);
-    });
+
+  try {
+    const res = await userService.insert(data);
+    uiService.toastSuccess('Inserted with ID: ' + res.data.id);
+    return true;
+  } catch (_) {
+    uiService.toastError('Could not insert user!');
+    return false;
+  }
 };
