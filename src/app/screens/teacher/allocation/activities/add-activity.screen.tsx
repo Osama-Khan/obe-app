@@ -9,7 +9,7 @@ import {
   AllocationType,
   CLOType,
 } from '@app/types';
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {ScrollView} from 'react-native';
 import {
@@ -17,7 +17,7 @@ import {
   Button,
   Caption,
   Card,
-  TextInput,
+  Title,
 } from 'react-native-paper';
 import useAssessments from '@app/hooks/useAssessments';
 
@@ -30,26 +30,29 @@ type ParamsType = {
   onAdd: (activity: Partial<ActivityType>) => void;
 };
 
+type CountsType = {id: string; name: string; count: number};
+type CloWeightsType = {id: string; weight: number};
+
 export default function AddActivityScreen() {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const [counts, setCounts] = useState<CountsType[]>();
   const [type, setType] = useState<Partial<ActivityTypeType>>();
   const [clos, setClos] = useState<CLOType[]>();
-  const [cloWeights, setCloWeights] =
-    useState<{id: string; weight: number}[]>();
+  const [cloWeights, setCloWeights] = useState<CloWeightsType[]>();
   const [saving, setSaving] = useState(false);
-
   const route = useRoute<{params: ParamsType; key: string; name: string}>();
   const {allocation, onAdd} = route.params;
-
   const {assessments, types} = useAssessments(allocation.id);
-  const [added, setAdded] = useState<any>(clos?.map(c => undefined));
+  const [added, setAdded] = useState<any>();
+  const navigation = useNavigation();
 
   const getCloUsage = (id: string) => {
     return cloWeights?.find(c => c.id === id)?.weight || 0;
   };
 
   useEffect(() => {
+    activityService.getActivityTypeCounts(allocation.section!.id).then(c => {
+      setCounts(c.data);
+    });
     activityService.getCloWeightsInSection(allocation.section!.id).then(r => {
       setCloWeights(r.data);
     });
@@ -63,27 +66,21 @@ export default function AddActivityScreen() {
       if (a.type.id === type!.id) clos.push(a.clo);
     });
     setClos(clos);
+    setAdded(clos.map(c => undefined));
   }, [type]);
+
+  const count = counts ? counts.find(c => c.id === type?.id!)?.count || 0 : -1;
 
   return cloWeights ? (
     <ScrollView>
       <Card style={{margin: 8, padding: 8}}>
-        <TextInput
-          value={title}
-          style={{marginVertical: 4}}
-          mode="outlined"
-          label="Title"
-          onChangeText={setTitle}
-          dense
-        />
-        <TextInput
-          value={description}
-          style={{marginVertical: 4}}
-          mode="outlined"
-          label="Description"
-          onChangeText={setDescription}
-          dense
-        />
+        <Title>
+          {type
+            ? count !== -1
+              ? `${type.name} ${count + 1}`
+              : 'Loading...'
+            : 'Select Type'}
+        </Title>
         <Caption style={{marginTop: 8}}>Choose Type</Caption>
         {types ? (
           <ListSelect
@@ -133,31 +130,27 @@ export default function AddActivityScreen() {
           style={{marginTop: 16}}
           icon="check"
           mode="contained"
-          disabled={
-            !title ||
-            !description ||
-            !type ||
-            !added ||
-            added.length === 0 ||
-            saving
-          }
+          disabled={!type || !added || added.length === 0 || saving}
           loading={saving}
           onPress={() => {
             setSaving(true);
             const activity = {
-              title,
-              description,
+              title: type!.name! + (count + 1),
               type: {id: type!.id},
               section: {id: allocation.section!.id},
-              maps: added.map(c => ({
-                clo: {id: c!.id},
-                weight: c.weight,
-              })),
+              maps: added
+                .filter(c => c)
+                .map(c => ({
+                  clo: {id: c!.id},
+                  weight: c.weight,
+                })),
             };
             activityService
               .insert(activity)
               .then(r => {
                 onAdd(r.data);
+                uiService.toastSuccess('Added activity successfully!');
+                navigation.goBack();
               })
               .catch(e => {
                 uiService.toastError('Failed to add Activity!');
