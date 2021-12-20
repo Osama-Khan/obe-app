@@ -3,12 +3,11 @@ import {ManyCriteria} from '@app/models/criteria';
 import userService from '@app/services/user.service';
 import UserType from '@app/types/user.type';
 import React, {useState} from 'react';
-import {Button, Card, Text} from 'react-native-paper';
 import {addUserRoute} from '@app/routes/admin.routes';
+import {Button, Card} from 'react-native-paper';
 import {ScrollView} from 'react-native-gesture-handler';
-import {StyleSheet, View} from 'react-native';
-import {colors} from '@app/styles';
 import {useNavigation} from '@react-navigation/native';
+import RoleBadge from './components/RoleBadge';
 
 const criteria = new ManyCriteria<UserType>({relations: ['role']});
 
@@ -33,6 +32,7 @@ export const ViewUserScreen = () => {
           fetchMethod={criteria => userService.get(criteria)}
           criteria={criteria}
           key={updates}
+          itemsPerPage={5}
           columns={[
             {
               selector: 'username',
@@ -45,15 +45,7 @@ export const ViewUserScreen = () => {
             },
             {
               selector: ({item: user}) => (
-                <View style={[styles.roleView, getRoleStyle(user.role!.name)]}>
-                  <Text
-                    style={[
-                      {fontWeight: 'bold'},
-                      getRoleTextStyle(user.role!.name),
-                    ]}>
-                    {user.role!.name.toUpperCase()}
-                  </Text>
-                </View>
+                <RoleBadge roleName={user.role!.name} />
               ),
               title: 'Role',
               weight: 0.5,
@@ -64,60 +56,3 @@ export const ViewUserScreen = () => {
     </ScrollView>
   );
 };
-
-const getRoleStyle = (roleName: string) => {
-  switch (roleName) {
-    case 'admin':
-      return styles.roleAdminView;
-    case 'hod':
-      return styles.roleHodView;
-    case 'teacher':
-      return styles.roleTeacherView;
-    default:
-      return styles.roleStudentView;
-  }
-};
-
-const getRoleTextStyle = (roleName: string) => {
-  switch (roleName) {
-    case 'admin':
-      return styles.roleAdminText;
-    case 'hod':
-      return styles.roleHodText;
-    case 'teacher':
-      return styles.roleTeacherText;
-    default:
-      return styles.roleStudentText;
-  }
-};
-
-const styles = StyleSheet.create({
-  roleView: {
-    padding: 4,
-    borderRadius: 4,
-  },
-  roleAdminView: {
-    backgroundColor: colors.redSubtle,
-  },
-  roleAdminText: {
-    color: colors.redDark,
-  },
-  roleHodView: {
-    backgroundColor: colors.greenSubtle,
-  },
-  roleHodText: {
-    color: colors.greenDark,
-  },
-  roleTeacherView: {
-    backgroundColor: colors.yellowSubtle,
-  },
-  roleTeacherText: {
-    color: colors.yellowDark,
-  },
-  roleStudentView: {
-    backgroundColor: colors.slateSubtle,
-  },
-  roleStudentText: {
-    color: colors.slateDark,
-  },
-});
