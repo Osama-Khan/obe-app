@@ -18,6 +18,14 @@ class ActivityService extends CrudService<ActivityType> {
   getCloWeightsInSection(id: string) {
     return axios.get(`${this.endpoint}/maps/${id}`);
   }
+
+  /** Gets number of activity for given section grouped by type
+   * @param id ID of the section
+   * @returns Number of activities grouped by type in the given section
+   */
+  async getActivityTypeCounts(id: string) {
+    return axios.get(`${this.endpoint}/section-type-count/${id}`);
+  }
 }
 
 export default new ActivityService();
