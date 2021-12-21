@@ -135,7 +135,7 @@ export default function AddActivityScreen() {
           onPress={() => {
             setSaving(true);
             const activity = {
-              title: type!.name! + (count + 1),
+              title: `${type!.name!} ${count + 1}`,
               type: {id: type!.id},
               section: {id: allocation.section!.id},
               maps: added
