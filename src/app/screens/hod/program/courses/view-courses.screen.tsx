@@ -7,7 +7,14 @@ import {CourseType, ProgramType} from '@app/types';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useEffect, useMemo, useState} from 'react';
 import {FlatList, View} from 'react-native';
-import {Button, Caption, Card, IconButton, Title} from 'react-native-paper';
+import {
+  Button,
+  Caption,
+  Card,
+  Divider,
+  IconButton,
+  Title,
+} from 'react-native-paper';
 
 export default function ProgramCoursesScreen() {
   const [courses, setCourses] = useState<CourseType[]>();
@@ -54,8 +61,8 @@ export default function ProgramCoursesScreen() {
             </View>
             <Caption>{item.code}</Caption>
           </View>
+          <Divider />
           <Button
-            mode="outlined"
             icon="graph"
             style={{borderRadius: 0}}
             onPress={() => {

@@ -9,6 +9,7 @@ import {View} from 'react-native';
 import {
   Button,
   Card,
+  Divider,
   FAB,
   IconButton,
   Searchbar,
@@ -49,18 +50,18 @@ export const ViewProgramScreen = ({navigation}: P) => {
               </Title>
               <IconButton icon="chevron-right" />
             </View>
+            <Divider />
             <Button
               icon="graph"
-              mode="outlined"
               style={{borderRadius: 0}}
               onPress={() => {
                 navigation.navigate(programPlosRoute.name, {program: item});
               }}>
               PLOs
             </Button>
+            <Divider />
             <Button
               icon="bookshelf"
-              mode="outlined"
               style={{borderRadius: 0}}
               onPress={() => {
                 navigation.navigate(programCoursesRoute.name, {program: item});
