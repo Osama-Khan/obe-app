@@ -36,6 +36,7 @@ export const ViewUserScreen = () => {
           rowOnPress={item => {
             navigation.navigate(userDetailRoute.name, {
               user: item,
+              onUpdate: () => setUpdates(updates + 1),
             });
           }}
           columns={[
