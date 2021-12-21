@@ -67,22 +67,18 @@ export function AllocationScreen() {
           <Card style={{margin: 8}}>
             <DataTable
               data={allocs}
+              rowOnPress={item =>
+                navigation.navigate(allocationDetailRoute.name, {
+                  allocation: item,
+                })
+              }
               columns={[
                 {
                   selector: ({item}) => (
-                    <View>
-                      <TouchableOpacity
-                        onPress={() =>
-                          navigation.navigate(allocationDetailRoute.name, {
-                            allocation: item,
-                          })
-                        }>
-                        <Text>
-                          {item.program!.title}-{item.section!.semester}
-                          {item.section!.name}
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
+                    <Text>
+                      {item.program!.title}-{item.section!.semester}
+                      {item.section!.name}
+                    </Text>
                   ),
                   title: 'Section',
                 },
