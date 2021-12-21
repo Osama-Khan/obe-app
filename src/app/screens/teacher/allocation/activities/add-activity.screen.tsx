@@ -51,7 +51,7 @@ export default function AddActivityScreen() {
 
   useEffect(() => {
     activityService.getActivityTypeCounts(allocation.section!.id).then(c => {
-      setCounts(c.data);
+      setCounts(c.data || []);
     });
     activityService.getCloWeightsInSection(allocation.section!.id).then(r => {
       setCloWeights(r.data);
