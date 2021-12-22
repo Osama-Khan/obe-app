@@ -1,15 +1,12 @@
 import {Dropdown} from '@app/components/dropdown';
 import {colors} from '@app/styles';
-import {ActivityTypeType, AssessmentType, CLOType} from '@app/types';
 import React, {useState} from 'react';
-import {useWindowDimensions, ViewProps} from 'react-native';
+import {useWindowDimensions} from 'react-native';
 import {PieChart} from 'react-native-chart-kit';
 import {Caption, Card} from 'react-native-paper';
+import {WeightComponentPropType} from './types';
 
-type P = ViewProps & {
-  clos: CLOType[];
-  types: ActivityTypeType[];
-  assessments: AssessmentType[];
+type P = WeightComponentPropType & {
   chartWidth: number;
 };
 
