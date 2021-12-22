@@ -17,16 +17,15 @@ export const AssessmentScreen = () => {
     <View style={{flexGrow: 1}}>
       {assessments && clos && types ? (
         assessments.length > 0 ? (
-          <>
-            <List.Section title="CLO Distribution" />
-            <NavigationComponent
-              assessments={assessments}
-              types={types}
-              clos={clos}
-            />
-          </>
+          <NavigationComponent
+            assessments={assessments}
+            types={types}
+            clos={clos}
+          />
         ) : (
-          <Caption style={{alignSelf: 'center'}}>No Assessment Data</Caption>
+          <Caption style={{alignSelf: 'center', marginTop: 16}}>
+            No Assessment Data
+          </Caption>
         )
       ) : (
         <ActivityIndicator />
@@ -44,7 +43,7 @@ const NavigationComponent = ({
 
   const TableRoute = () => (
     <WeightsTable
-      style={{marginHorizontal: 16, overflow: 'hidden'}}
+      style={{marginVertical: 8, marginHorizontal: 16, overflow: 'hidden'}}
       assessments={assessments}
       clos={clos}
       types={types}
@@ -53,7 +52,7 @@ const NavigationComponent = ({
 
   const GraphRoute = () => (
     <WeightsGraph
-      style={{marginHorizontal: 16, overflow: 'hidden'}}
+      style={{marginVertical: 8, marginHorizontal: 16, overflow: 'hidden'}}
       assessments={assessments}
       clos={clos}
       types={types}
@@ -72,6 +71,7 @@ const NavigationComponent = ({
     table: TableRoute,
     graph: GraphRoute,
   });
+
   return (
     <BottomNavigation
       navigationState={{index, routes}}
