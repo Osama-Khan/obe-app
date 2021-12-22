@@ -25,7 +25,7 @@ export default function useAssessments(allocationId: string) {
         }
       }
       setTypes(t);
-      setClos(c);
+      setClos(clos?.sort((a, b) => a.number - b.number));
       setAssessments(r.data);
     });
   }, []);
