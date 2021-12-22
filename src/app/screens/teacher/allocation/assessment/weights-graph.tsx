@@ -1,9 +1,10 @@
+import {Dropdown} from '@app/components/dropdown';
 import {colors} from '@app/styles';
 import {ActivityTypeType, AssessmentType, CLOType} from '@app/types';
 import React, {useState} from 'react';
-import {FlatList, ViewProps} from 'react-native';
+import {useWindowDimensions, ViewProps} from 'react-native';
 import {PieChart} from 'react-native-chart-kit';
-import {Caption, Card, Chip} from 'react-native-paper';
+import {Caption, Card} from 'react-native-paper';
 
 type P = ViewProps & {
   clos: CLOType[];
@@ -21,7 +22,8 @@ const pieColors = [
   colors.primaryDark,
 ];
 
-export default function WeightsCard(props: P) {
+export default function WeightsGraph(props: P) {
+  const dimens = useWindowDimensions();
   const [selected, setSelected] = useState(props.clos[0]);
   const types = props.types.map(t => {
     const weights = props.assessments
@@ -35,19 +37,14 @@ export default function WeightsCard(props: P) {
       <Caption style={{marginTop: 8, marginLeft: 8}}>
         Select CLO to view weight distribution.
       </Caption>
-      <FlatList
-        horizontal
-        data={props.clos}
-        renderItem={({item: c}) => (
-          <Chip
-            selected={selected.id === c.id}
-            onPress={() => {
-              selected.id !== c.id ? setSelected(c) : '';
-            }}
-            style={{marginTop: 8, marginHorizontal: 8}}>
-            CLO {c.number}
-          </Chip>
-        )}
+      <Dropdown
+        options={props.clos.map(c => ({name: `CLO ${c.number}`, value: c.id}))}
+        onSelect={c => {
+          selected.id !== c.value
+            ? setSelected(props.clos.find(clo => clo.id === c.value)!)
+            : '';
+        }}
+        style={{marginHorizontal: 16}}
       />
       <PieChart
         data={types.map((c, i) => ({
@@ -57,7 +54,7 @@ export default function WeightsCard(props: P) {
           legendFontColor: '#7F7F7F',
           legendFontSize: 15,
         }))}
-        width={props.chartWidth}
+        width={props.chartWidth || dimens.width}
         height={220}
         chartConfig={{
           color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
