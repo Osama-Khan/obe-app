@@ -17,7 +17,7 @@ export const allocationDetailRoute: RouteType = {
 
 export const addActivityRoute: RouteType = {
   id: 'add-activity',
-  name: 'Add Activity',
+  name: 'Add Exam',
   component: AddActivityScreen,
 };
 

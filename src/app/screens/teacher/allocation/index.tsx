@@ -40,7 +40,7 @@ export default function AllocationDetail() {
   return (
     <Navigator>
       <Screen
-        name="Activities"
+        name="Exams"
         component={ActivitiesScreen}
         initialParams={{allocation}}
       />

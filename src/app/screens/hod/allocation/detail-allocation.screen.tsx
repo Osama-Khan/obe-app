@@ -71,7 +71,7 @@ export const AllocationDetailScreen = () => {
     activityService
       .getTypes()
       .then(r => setTypes(r.data))
-      .catch(e => uiService.toastError('Could not fetch Activity types!'));
+      .catch(e => uiService.toastError('Could not fetch Exam types!'));
   }, [updates]);
 
   const loaded = types && assessments && clos;

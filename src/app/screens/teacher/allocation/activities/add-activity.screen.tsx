@@ -149,11 +149,11 @@ export default function AddActivityScreen() {
               .insert(activity)
               .then(r => {
                 onAdd(r.data);
-                uiService.toastSuccess('Added activity successfully!');
+                uiService.toastSuccess('Added Exam successfully!');
                 navigation.goBack();
               })
               .catch(e => {
-                uiService.toastError('Failed to add Activity!');
+                uiService.toastError('Failed to add Exam!');
               })
               .finally(() => {
                 setSaving(false);

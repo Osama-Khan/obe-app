@@ -25,29 +25,21 @@ export const ActivitiesScreen = () => {
     activityService
       .get(activityCrit)
       .then(r => setActivities(r.data))
-      .catch(() => uiService.toastError('Could not fetch Activities!'));
+      .catch(() => uiService.toastError('Could not fetch Exams!'));
   }, [updates]);
 
   return activities ? (
     <>
-      {activities.length > 0 ? (
-        <FlatList
-          data={activities}
-          renderItem={({item}) => (
-            <ActivityCard key={item.id} activity={item} />
-          )}
-          ListEmptyComponent={
-            <Caption style={{alignSelf: 'center', marginVertical: 16}}>
-              No Activities Found
-            </Caption>
-          }
-          ListFooterComponent={<View style={{height: 76}} />}
-        />
-      ) : (
-        <Caption style={{alignSelf: 'center', marginVertical: 16}}>
-          No Activities Found
-        </Caption>
-      )}
+      <FlatList
+        data={activities}
+        renderItem={({item}) => <ActivityCard key={item.id} activity={item} />}
+        ListEmptyComponent={
+          <Caption style={{alignSelf: 'center', marginVertical: 16}}>
+            No Exams Found
+          </Caption>
+        }
+        ListFooterComponent={<View style={{height: 76}} />}
+      />
       <FAB
         icon="plus"
         style={{
