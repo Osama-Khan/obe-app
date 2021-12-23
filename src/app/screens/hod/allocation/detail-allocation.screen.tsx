@@ -7,10 +7,9 @@ import uiService from '@app/services/ui.service';
 import {colors} from '@app/styles';
 import {
   ActivityTypeType,
-  AllocationType,
   AssessmentType,
   CLOType,
-  ProgramType,
+  CourseType,
 } from '@app/types';
 import {useNavigation, useRoute} from '@react-navigation/core';
 import React, {useEffect, useMemo, useState} from 'react';
@@ -35,12 +34,7 @@ export const AllocationDetailScreen = () => {
   const [updates, setUpdates] = useState(0);
   const route = useRoute<any>();
   const navigation = useNavigation();
-  const allocation: AllocationType & {program: ProgramType} =
-    route.params!.allocation;
-
-  const sectionName = `${allocation.program!.title}-${
-    allocation.section!.semester
-  }${allocation.section!.name}`;
+  const course: CourseType = route.params!.course!;
 
   const getCloTotal = (id: string) => {
     if (!assessments || assessments.length === 0) return 0;
@@ -50,16 +44,16 @@ export const AllocationDetailScreen = () => {
   };
 
   useMemo(() => {
-    navigation.setOptions({headerTitle: sectionName + ' Assessment'});
+    navigation.setOptions({headerTitle: course.title + ' Assessment'});
   }, []);
 
   useEffect(() => {
     const criteria = new ManyCriteria<AssessmentType>();
     criteria.addRelation('clo');
     criteria.addRelation('type');
-    criteria.addCondition('allocation', allocation.id);
+    criteria.addCondition('course', course!.id);
     const courseCrit = new ManyCriteria<CLOType>();
-    courseCrit.addCondition('course', allocation.course!.id);
+    courseCrit.addCondition('course', course!.id);
     assessmentService
       .get(criteria)
       .then(r => setAssessments(r.data))
@@ -151,7 +145,7 @@ export const AllocationDetailScreen = () => {
               setModalShown(false);
             }}
             type={selectedType}
-            allocId={allocation.id}
+            courseId={course.id}
             clos={clos.map(c => ({...c, weight: getCloTotal(c.id)}))}
           />
         </Modal>

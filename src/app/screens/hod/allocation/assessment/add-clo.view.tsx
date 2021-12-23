@@ -10,15 +10,15 @@ import {Button, Caption, Divider, TextInput, Title} from 'react-native-paper';
 type P = {
   /** The activity type the CLO is being added for */
   type: ActivityTypeType;
-  /** ID of the allocation the assessment is for */
-  allocId: string;
+  /** ID of the course the assessment is for */
+  courseId: string;
   /** CLOs available */
   clos: (CLOType & {weight: number})[];
   /** Called with the assessment when an assessment is successfully added */
   onAdd: (assessment: Partial<AssessmentType>) => void;
 };
 
-export default function AddCLOView({onAdd, allocId, type, clos}: P) {
+export default function AddCLOView({onAdd, courseId, type, clos}: P) {
   const [weight, setWeight] = useState(25);
   const [clo, setClo] = useState<Partial<CLOType> & {weight: number}>(clos[0]);
   const [saving, setSaving] = useState(false);
@@ -68,7 +68,7 @@ export default function AddCLOView({onAdd, allocId, type, clos}: P) {
         onPress={() => {
           setSaving(true);
           const assessment = {
-            allocation: {id: allocId},
+            course: {id: courseId},
             type: {id: type.id},
             weight,
             clo,

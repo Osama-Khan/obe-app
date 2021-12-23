@@ -47,7 +47,7 @@ export default function AllocationDetail() {
       <Screen
         name="Assessment"
         component={AssessmentScreen}
-        initialParams={{allocation}}
+        initialParams={{course: allocation.course!}}
       />
       <Screen
         name="Students"

@@ -41,7 +41,7 @@ export default function AddActivityScreen() {
   const [saving, setSaving] = useState(false);
   const route = useRoute<{params: ParamsType; key: string; name: string}>();
   const {allocation, onAdd} = route.params;
-  const {assessments, types} = useAssessments(allocation.id);
+  const {assessments, types} = useAssessments(allocation.course!.id);
   const [added, setAdded] = useState<any>();
   const navigation = useNavigation();
 

@@ -69,7 +69,7 @@ export function AllocationScreen() {
               data={allocs}
               rowOnPress={item =>
                 navigation.navigate(allocationDetailRoute.name, {
-                  allocation: item,
+                  course: item.course,
                 })
               }
               columns={[

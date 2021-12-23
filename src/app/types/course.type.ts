@@ -1,3 +1,4 @@
+import AssessmentType from './assessment.type';
 import AllocationType from './allocation.type';
 import CLOType from './clo.type';
 import DbEntity from './db-entity.type';
@@ -10,6 +11,7 @@ type CourseType = DbEntity & {
   programs?: ProgramType[];
   clos?: CLOType[];
   allocations?: AllocationType[];
+  assessments?: AssessmentType[];
 };
 
 export default CourseType;

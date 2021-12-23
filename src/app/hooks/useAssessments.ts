@@ -3,8 +3,8 @@ import assessmentService from '@app/services/assessment.service';
 import {AssessmentType, ActivityTypeType, CLOType} from '@app/types';
 import {useState, useEffect} from 'react';
 
-/** Hook that provides assessments details for the given allocation */
-export default function useAssessments(allocationId: string) {
+/** Hook that provides assessment details for the given course */
+export default function useAssessments(courseId: string) {
   const [assessments, setAssessments] = useState<AssessmentType[]>();
   const [types, setTypes] = useState<ActivityTypeType[]>();
   const [clos, setClos] = useState<CLOType[]>();
@@ -12,7 +12,7 @@ export default function useAssessments(allocationId: string) {
     const crit = new ManyCriteria<AssessmentType>();
     crit.addRelation('clo');
     crit.addRelation('type');
-    crit.addCondition('allocation', allocationId);
+    crit.addCondition('course', courseId);
     assessmentService.get(crit).then(r => {
       const t: ActivityTypeType[] = [];
       const c: CLOType[] = [];

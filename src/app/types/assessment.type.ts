@@ -1,11 +1,11 @@
+import CourseType from './course.type';
 import {ActivityTypeType} from './activity.type';
-import AllocationType from './allocation.type';
 import CLOType from './clo.type';
 import DbEntity from './db-entity.type';
 
 type AssessmentType = DbEntity & {
-  /** The Allocation this assessment is for */
-  allocation: AllocationType;
+  /** The Course this assessment is for */
+  course: CourseType;
 
   /** The activity type this assessment is for */
   type: ActivityTypeType;

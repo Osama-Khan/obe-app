@@ -10,8 +10,8 @@ import {WeightComponentPropType} from './types';
 export const AssessmentScreen = () => {
   const route = useRoute<any>();
 
-  const allocation = route.params.allocation;
-  const {assessments, types, clos} = useAssessments(allocation.id);
+  const course = route.params.course;
+  const {assessments, types, clos} = useAssessments(course.id);
 
   return (
     <View style={{flexGrow: 1}}>
