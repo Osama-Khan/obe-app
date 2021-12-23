@@ -1,15 +1,29 @@
 import programService from '@app/services/program.service';
 import uiService from '@app/services/ui.service';
-import {PLOType} from '@app/types';
-import ProgramType from '@app/types/program.type';
+import {colors} from '@app/styles';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {ScrollView, View} from 'react-native';
-import {Button, Card, Chip, Text, TextInput, Title} from 'react-native-paper';
-import PloDropdown from './plo-dropdown';
+import {
+  Button,
+  Caption,
+  Card,
+  Chip,
+  Text,
+  TextInput,
+  Title,
+} from 'react-native-paper';
 
 export const AddProgramScreen = () => {
-  const [plos, setPlos] = useState<PLOType[]>();
   const [title, setTitle] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [dirty, setDirty] = useState(false);
+  const nav = useNavigation();
+  const r = useRoute<any>();
+  const {onAdd} = r.params!;
+
+  const error = dirty && !title;
+
   return (
     <ScrollView>
       <View style={{marginTop: 8}} />
@@ -24,59 +38,44 @@ export const AddProgramScreen = () => {
           label="Title"
           mode="outlined"
           value={title}
-          onChangeText={setTitle}
+          onChangeText={
+            dirty
+              ? setTitle
+              : t => {
+                  setDirty(true);
+                  setTitle(t);
+                }
+          }
+          error={error}
           style={{marginVertical: 4}}
         />
-        <Title>Add PLOs</Title>
-
-        <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-          {plos?.map(p => (
-            <Chip
-              style={{margin: 4}}
-              onClose={() => {
-                const arr = plos.filter(sp => sp.id !== p.id);
-                setPlos(arr);
-              }}>
-              <Text>{p.title}</Text>
-            </Chip>
-          ))}
-        </View>
-        <PloDropdown
-          onAdd={o => {
-            const arr = plos ? [...plos, o] : [o];
-            setPlos(arr);
-          }}
-          selectedPlos={plos || []}
-        />
+        {error && (
+          <Caption style={{color: colors.red}}>Please enter a title!</Caption>
+        )}
         <Button
           mode="contained"
           icon="check"
-          disabled={isInvalid({title})}
-          style={{marginVertical: 4, marginLeft: 'auto'}}
-          onPress={() => handleSubmit({title, plos})}>
-          Submit
+          disabled={!title}
+          style={{marginVertical: 4}}
+          onPress={() => {
+            setSaving(true);
+            programService
+              .insert({title})
+              .then(r => {
+                uiService.toastSuccess('Successfully added program!');
+                onAdd();
+                nav.goBack();
+              })
+              .catch(() => {
+                uiService.toastError('Could not add program!');
+              })
+              .finally(() => {
+                setSaving(false);
+              });
+          }}>
+          Add
         </Button>
       </Card>
     </ScrollView>
   );
-};
-
-const isInvalid = (data: Partial<ProgramType>) => !data.title;
-const handleSubmit = (data: Partial<ProgramType>) => {
-  if (isInvalid(data)) {
-    uiService.toastError('Invalid data');
-    return;
-  }
-  const submission = {
-    title: data.title,
-    plos: data.plos ? data.plos.map(p => ({id: p.id})) : [],
-  };
-  programService
-    .insert(submission)
-    .then(res => {
-      uiService.toastSuccess('Inserted with ID: ' + res.data.id);
-    })
-    .catch(e => {
-      uiService.toastError('Failed to insert!');
-    });
 };

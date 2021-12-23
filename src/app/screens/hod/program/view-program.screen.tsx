@@ -27,6 +27,7 @@ const criteria = new ManyCriteria<ProgramType>();
 criteria.addRelation('courses');
 export const ViewProgramScreen = ({navigation}: P) => {
   const [selected, setSelected] = useState<ProgramType[]>([]);
+  const [updates, setUpdates] = useState(0);
   const [modalShown, setModalShown] = useState(false);
   const [search, setSearch] = useState('');
   return (
@@ -38,6 +39,7 @@ export const ViewProgramScreen = ({navigation}: P) => {
         style={{margin: 16, marginBottom: 0}}
       />
       <FetchingFlatList
+        key={updates}
         fetchMethod={criteria => programService.get(criteria)}
         criteria={criteria}
         filter={item => item.title.includes(search)}
@@ -74,7 +76,11 @@ export const ViewProgramScreen = ({navigation}: P) => {
       <FAB
         icon="plus"
         style={{position: 'absolute', bottom: 8, right: 8}}
-        onPress={() => navigation.navigate(addProgramRoute.name)}
+        onPress={() =>
+          navigation.navigate(addProgramRoute.name, {
+            onAdd: () => setUpdates(updates + 1),
+          })
+        }
       />
 
       <ConfirmModal
