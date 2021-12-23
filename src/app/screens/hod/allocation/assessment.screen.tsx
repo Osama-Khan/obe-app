@@ -25,7 +25,7 @@ import {
 } from 'react-native-paper';
 import AddCLOView from './assessment/add-clo.view';
 
-export const AllocationDetailScreen = () => {
+export const AssessmentScreen = () => {
   const [assessments, setAssessments] = useState<AssessmentType[]>();
   const [clos, setClos] = useState<CLOType[]>();
   const [types, setTypes] = useState<ActivityTypeType[]>();

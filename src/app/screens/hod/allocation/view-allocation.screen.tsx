@@ -8,10 +8,7 @@ import {Criteria, ManyCriteria} from '@app/models/criteria';
 import {AllocationType, ProgramType, SectionType} from '@app/types';
 import {DataTable} from '@app/components/data-table';
 import {useNavigation} from '@react-navigation/core';
-import {
-  allocationDetailRoute,
-  allocationUploadRoute,
-} from '@app/routes/hod.routes';
+import {assessmentRoute, allocationUploadRoute} from '@app/routes/hod.routes';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 type AllocationProgramType = AllocationType & {program?: ProgramType};
@@ -68,7 +65,7 @@ export function AllocationScreen() {
             <DataTable
               data={allocs}
               rowOnPress={item =>
-                navigation.navigate(allocationDetailRoute.name, {
+                navigation.navigate(assessmentRoute.name, {
                   course: item.course,
                 })
               }

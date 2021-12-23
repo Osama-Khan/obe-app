@@ -5,7 +5,7 @@ import {
   ViewProgramScreen,
   Home,
   UploadAllocationScreen,
-  AllocationDetailScreen,
+  AssessmentScreen,
   ViewCoursesScreen,
   ViewClosScreen,
   AddCloScreen,
@@ -67,10 +67,10 @@ export const allocationRoute: RouteType = {
   component: AllocationScreen,
 };
 
-export const allocationDetailRoute: RouteType = {
-  id: 'allocation-detail',
-  name: 'Allocation Detail',
-  component: AllocationDetailScreen,
+export const assessmentRoute: RouteType = {
+  id: 'assessment',
+  name: 'Assessment',
+  component: AssessmentScreen,
 };
 
 export const allocationUploadRoute: RouteType = {
@@ -83,7 +83,7 @@ export default [
   homeRoute,
   addProgramRoute,
   allocationRoute,
-  allocationDetailRoute,
+  assessmentRoute,
   allocationUploadRoute,
   editProgramRoute,
   viewProgramRoute,
