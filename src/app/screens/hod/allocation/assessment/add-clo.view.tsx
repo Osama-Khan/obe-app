@@ -52,7 +52,7 @@ export default function AddCLOView({onAdd, courseId, type, clos}: P) {
           dense
         />
         <ListSelect
-          options={clos.map(c => ({name: c.title, value: c.id}))}
+          options={clos.map(c => ({name: `CLO ${c.number}`, value: c.id}))}
           onSelect={o => setClo(clos.find(c => c.id === o.value)!)}
         />
         <Caption style={weight <= weightFree ? {} : {color: colors.red}}>

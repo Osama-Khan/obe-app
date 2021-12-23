@@ -102,8 +102,8 @@ export const AssessmentScreen = () => {
                   .filter(a => a.type.id === t.id)
                   .map(a => (
                     <List.Item
-                      title={a.clo!.title}
-                      description={a.clo!.description}
+                      title={`CLO ${a.clo!.number}`}
+                      description={`${a.clo!.title}: ${a.clo!.description}`}
                       right={() => (
                         <Text
                           style={{
