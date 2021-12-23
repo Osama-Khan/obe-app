@@ -1,17 +1,9 @@
 import {useNavigation} from '@react-navigation/core';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {View} from 'react-native';
-import {
-  Caption,
-  Card,
-  Divider,
-  IconButton,
-  List,
-  Title,
-} from 'react-native-paper';
+import {Card, FAB, Title} from 'react-native-paper';
 import {allocationRoute, viewProgramRoute} from '@app/routes/hod.routes';
 import Icon from '@app/components/icon';
-import Modal from '@app/components/modal';
 import {useSelector} from 'react-redux';
 import {AppStateType} from '@app/store/state';
 import {colors} from '@app/styles';
@@ -19,19 +11,11 @@ import authService from '@app/services/auth.service';
 
 export const Home = () => {
   const user = useSelector((state: AppStateType) => state.user.userData);
-  const [visible, setVisible] = useState(false);
   const navigation = useNavigation();
   useEffect(() => {
     navigation.setOptions({
       headerTitleAlign: 'center',
       headerTitleAllowFontScaling: true,
-      headerRight: () => (
-        <IconButton
-          icon="account"
-          onPress={() => setVisible(true)}
-          color="#fff"
-        />
-      ),
     });
   }, []);
   const goto = (r: string) => navigation.navigate(r);
@@ -49,21 +33,16 @@ export const Home = () => {
           onPress={() => goto(allocationRoute.name)}
         />
       </View>
-      <Modal visible={visible} onDismiss={() => setVisible(false)}>
-        <View style={{padding: 8}}>
-          <Title>{user.username}</Title>
-          <Caption>{user.role?.name}</Caption>
-          <Divider style={{marginVertical: 8}} />
-          <List.Item
-            title="Log out"
-            titleStyle={{color: colors.red}}
-            left={() => <List.Icon icon="logout" color={colors.red} />}
-            onPress={() => {
-              authService.logout();
-            }}
-          />
-        </View>
-      </Modal>
+      <FAB
+        style={{
+          position: 'absolute',
+          bottom: 16,
+          right: 16,
+          backgroundColor: colors.red,
+        }}
+        onPress={authService.logout}
+        icon="logout"
+      />
     </>
   ) : (
     <></>
