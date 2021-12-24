@@ -10,6 +10,7 @@ import {
   ViewClosScreen,
   AddCloScreen,
   ViewPlosScreen,
+  PLOMappingsScreen,
 } from '@app/screens/hod';
 import {RouteType} from '@app/types/route.type';
 
@@ -41,6 +42,12 @@ export const programPlosRoute: RouteType = {
   id: 'view-plos',
   name: 'View PLOs',
   component: ViewPlosScreen,
+};
+
+export const ploMappingsRoute: RouteType = {
+  id: 'plo-mappings',
+  name: 'PLO Mappings',
+  component: PLOMappingsScreen,
 };
 
 export const programCoursesRoute: RouteType = {
@@ -88,6 +95,7 @@ export default [
   editProgramRoute,
   viewProgramRoute,
   programPlosRoute,
+  ploMappingsRoute,
   programCoursesRoute,
   viewClosRoute,
   addCloRoute,

@@ -1,5 +1,6 @@
 import {IconMessageView} from '@app/components/icon-message-view';
 import {ManyCriteria} from '@app/models/criteria';
+import {ploMappingsRoute} from '@app/routes/hod.routes';
 import programPloService from '@app/services/program-plo.service';
 import uiService from '@app/services/ui.service';
 import {colors} from '@app/styles';
@@ -9,11 +10,12 @@ import React, {useMemo, useState} from 'react';
 import {FlatList, useWindowDimensions, View} from 'react-native';
 import {
   ActivityIndicator,
+  Button,
   Caption,
   Card,
+  Divider,
   FAB,
   IconButton,
-  Text,
   Title,
 } from 'react-native-paper';
 import AddPloModal from './add-plo.modal';
@@ -22,7 +24,7 @@ export default function ProgramPlosScreen() {
   const [modal, setModal] = useState(false);
   const [maps, setMaps] = useState<ProgramPloType[]>();
   const route = useRoute<any>();
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const program = route.params!.program;
   const height = useWindowDimensions().height - 92;
 
@@ -48,19 +50,28 @@ export default function ProgramPlosScreen() {
               borderColor: colors.primary,
               margin: 16,
               marginVertical: 8,
-              padding: 8,
             }}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Title>PLO {item.number}</Title>
-              <IconButton
-                style={{marginLeft: 'auto'}}
-                color={colors.red}
-                icon="link-off"
-              />
+            <View style={{padding: 8}}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Title>PLO {item.number}</Title>
+                <IconButton
+                  style={{marginLeft: 'auto'}}
+                  color={colors.red}
+                  icon="link-off"
+                />
+              </View>
+              <Caption>
+                {item.plo!.title}: {item.plo!.description}
+              </Caption>
             </View>
-            <Caption>
-              {item.plo!.title}: {item.plo!.description}
-            </Caption>
+            <Divider />
+            <Button
+              icon="graph"
+              onPress={() => {
+                navigation.navigate(ploMappingsRoute.name, {plo: item.plo});
+              }}>
+              Mappings
+            </Button>
           </Card>
         )}
         ListEmptyComponent={
