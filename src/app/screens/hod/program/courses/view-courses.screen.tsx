@@ -8,6 +8,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useEffect, useMemo, useState} from 'react';
 import {FlatList, View} from 'react-native';
 import {
+  ActivityIndicator,
   Button,
   Caption,
   Card,
@@ -37,11 +38,12 @@ export default function ProgramCoursesScreen() {
       .catch(e => uiService.toastError('Could not fetch courses!'));
   }, []);
 
-  return (
+  return courses ? (
     <FlatList
       data={courses}
       renderItem={({item}) => (
         <Card
+          key={item.id}
           style={{
             borderTopWidth: 2,
             borderColor: colors.primary,
@@ -76,5 +78,7 @@ export default function ProgramCoursesScreen() {
         </Card>
       )}
     />
+  ) : (
+    <ActivityIndicator style={{flexGrow: 1}} />
   );
 }
