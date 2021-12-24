@@ -3,6 +3,7 @@ import AllocationType from './allocation.type';
 import AssessmentType from './assessment.type';
 import CLOType from './clo.type';
 import CourseType from './course.type';
+import ObjectiveMapType from './objective-map.type';
 import PLOType from './plo.type';
 import ProgramPloType from './program-plo.type';
 import ProgramType from './program.type';
@@ -18,6 +19,7 @@ export type {
   AssessmentType,
   CLOType,
   CourseType,
+  ObjectiveMapType,
   PLOType,
   ProgramType,
   ProgramPloType,
