@@ -7,6 +7,7 @@ import {
   UploadAllocationScreen,
   AssessmentScreen,
   AddCourseScreen,
+  EditCourseScreen,
   ViewCoursesScreen,
   ViewClosScreen,
   AddCloScreen,
@@ -63,6 +64,12 @@ export const addCourseRoute: RouteType = {
   component: AddCourseScreen,
 };
 
+export const editCourseRoute: RouteType = {
+  id: 'edit-course',
+  name: 'Edit Course',
+  component: EditCourseScreen,
+};
+
 export const viewClosRoute: RouteType = {
   id: 'view-clos',
   name: 'Course CLOs',
@@ -104,6 +111,7 @@ export default [
   programPlosRoute,
   ploMappingsRoute,
   addCourseRoute,
+  editCourseRoute,
   programCoursesRoute,
   viewClosRoute,
   addCloRoute,
