@@ -1,7 +1,7 @@
-import {PLOType} from '@app/types';
+import {ObjectiveMapType} from '@app/types';
 import CrudService from './crud.service';
 
-class ObjectiveMapService extends CrudService<PLOType> {
+class ObjectiveMapService extends CrudService<ObjectiveMapType> {
   constructor() {
     super('objective-map');
   }
