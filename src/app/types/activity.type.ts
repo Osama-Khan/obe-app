@@ -28,6 +28,9 @@ export type ActivityType = DbEntity & {
   /** A bit longer description of the activity */
   description: string;
 
+  /** Total marks obtainable in the activity */
+  marks: number;
+
   /** Maps of this Activity with CLOs along with weights */
   maps: ActivityMapType[];
 
