@@ -1,6 +1,5 @@
 import {Home} from '@app/screens/teacher';
-import AllocationDetail from '@app/screens/teacher/allocation';
-import AddActivityScreen from '@app/screens/teacher/allocation/activities/add-activity.screen';
+import {AddActivityScreen, AllocationDetailScreen} from '@app/screens/teacher';
 import {RouteType} from '@app/types/route.type';
 
 export const homeRoute: RouteType = {
@@ -12,7 +11,7 @@ export const homeRoute: RouteType = {
 export const allocationDetailRoute: RouteType = {
   id: 'allocation',
   name: 'Allocation',
-  component: AllocationDetail,
+  component: AllocationDetailScreen,
 };
 
 export const addActivityRoute: RouteType = {

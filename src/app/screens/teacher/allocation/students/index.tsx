@@ -13,7 +13,7 @@ import {
   Title,
 } from 'react-native-paper';
 
-export default function StudentsScreen() {
+export const StudentsScreen = () => {
   const [users, setUsers] = useState<UserType[]>();
   const [q, setQ] = useState('');
   const route = useRoute<any>();
@@ -72,4 +72,4 @@ export default function StudentsScreen() {
   ) : (
     <ActivityIndicator style={{margin: 16, alignSelf: 'center'}} />
   );
-}
+};
