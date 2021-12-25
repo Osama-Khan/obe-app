@@ -17,6 +17,7 @@ import {
   Button,
   Caption,
   Card,
+  TextInput,
   Title,
 } from 'react-native-paper';
 import useAssessments from '@app/hooks/useAssessments';
@@ -35,6 +36,7 @@ type CloWeightsType = {id: string; weight: number};
 
 export default function AddActivityScreen() {
   const [counts, setCounts] = useState<CountsType[]>();
+  const [marks, setMarks] = useState('');
   const [type, setType] = useState<Partial<ActivityTypeType>>();
   const [clos, setClos] = useState<CLOType[]>();
   const [cloWeights, setCloWeights] = useState<CloWeightsType[]>();
@@ -70,6 +72,7 @@ export default function AddActivityScreen() {
   }, [type]);
 
   const count = counts ? counts.find(c => c.id === type?.id!)?.count || 0 : -1;
+  const marksError = parseInt(marks) <= 0;
 
   return cloWeights ? (
     <ScrollView>
@@ -81,6 +84,26 @@ export default function AddActivityScreen() {
               : 'Loading...'
             : 'Select Type'}
         </Title>
+        <>
+          <TextInput
+            mode="outlined"
+            label="Total Marks"
+            onChangeText={txt => {
+              if (new RegExp('^[0-9]*$').test(txt)) {
+                setMarks(txt);
+              }
+            }}
+            error={marksError}
+            maxLength={3}
+            value={marks}
+            keyboardType="decimal-pad"
+          />
+          {marksError && (
+            <Caption style={{color: colors.red}}>
+              Marks must be greater than 0!
+            </Caption>
+          )}
+        </>
         <Caption style={{marginTop: 8}}>Choose Type</Caption>
         {types ? (
           <ListSelect
@@ -136,6 +159,7 @@ export default function AddActivityScreen() {
             setSaving(true);
             const activity = {
               title: `${type!.name!} ${count + 1}`,
+              marks,
               type: {id: type!.id},
               section: {id: allocation.section!.id},
               maps: added
