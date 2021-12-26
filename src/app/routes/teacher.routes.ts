@@ -1,5 +1,9 @@
-import {Home} from '@app/screens/teacher';
-import {AddActivityScreen, AllocationDetailScreen} from '@app/screens/teacher';
+import {
+  AddActivityScreen,
+  AllocationDetailScreen,
+  EvaluationScreen,
+  Home,
+} from '@app/screens/teacher';
 import {RouteType} from '@app/types/route.type';
 
 export const homeRoute: RouteType = {
@@ -20,4 +24,15 @@ export const addActivityRoute: RouteType = {
   component: AddActivityScreen,
 };
 
-export default [homeRoute, allocationDetailRoute, addActivityRoute];
+export const evaluationRoute: RouteType = {
+  id: 'evaluation',
+  name: 'Evaluation',
+  component: EvaluationScreen,
+};
+
+export default [
+  homeRoute,
+  allocationDetailRoute,
+  addActivityRoute,
+  evaluationRoute,
+];
