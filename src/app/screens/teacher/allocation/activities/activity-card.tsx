@@ -1,11 +1,14 @@
+import {evaluationRoute} from '@app/routes/teacher.routes';
 import {colors} from '@app/styles';
 import {ActivityType} from '@app/types';
+import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {View} from 'react-native';
-import {Caption, Card, List, Text, Title} from 'react-native-paper';
+import {Caption, Card, IconButton, List, Text, Title} from 'react-native-paper';
 
 export default function ActivityCard({activity}: {activity: ActivityType}) {
   const [expanded, setExpanded] = useState(false);
+  const navigation = useNavigation<any>();
   return (
     <Card
       style={{
@@ -14,14 +17,28 @@ export default function ActivityCard({activity}: {activity: ActivityType}) {
         overflow: 'hidden',
       }}>
       <View style={{padding: 16}}>
-        <Caption
+        <View
           style={{
-            fontWeight: 'bold',
-            textTransform: 'uppercase',
-            color: colors.primary,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
           }}>
-          {activity.type!.name}
-        </Caption>
+          <Caption
+            style={{
+              fontWeight: 'bold',
+              textTransform: 'uppercase',
+              color: colors.primary,
+            }}>
+            {activity.type!.name}
+          </Caption>
+          <IconButton
+            icon="table-plus"
+            style={{margin: 0}}
+            onPress={() => {
+              navigation.navigate(evaluationRoute.name, {activity});
+            }}
+          />
+        </View>
         <Title>{activity.title}</Title>
         <Caption
           onPress={() => setExpanded(!expanded)}
