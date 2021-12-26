@@ -21,6 +21,7 @@ export default function ActivitiesScreen() {
     const activityCrit = new ManyCriteria<ActivityType>();
     activityCrit.addRelation('maps');
     activityCrit.addRelation('type');
+    activityCrit.addRelation('evaluations');
     activityCrit.addCondition('section', allocation.section!.id);
     activityService
       .get(activityCrit)
