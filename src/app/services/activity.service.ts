@@ -23,8 +23,16 @@ class ActivityService extends CrudService<ActivityType> {
    * @param id ID of the section
    * @returns Number of activities grouped by type in the given section
    */
-  async getActivityTypeCounts(id: string) {
+  getActivityTypeCounts(id: string) {
     return axios.get(`${this.endpoint}/section-type-count/${id}`);
+  }
+
+  /** Sets evaluations for an activity */
+  setEvaluation(
+    activityId: string,
+    evaluations: {user: {id: string}; marks: number}[],
+  ) {
+    return axios.put(`${this.endpoint}/${activityId}/evaluations`, evaluations);
   }
 }
 
