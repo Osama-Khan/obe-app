@@ -1,3 +1,4 @@
+import {EvaluationType} from './activity.type';
 import AllocationType from './allocation.type';
 import DbEntity from './db-entity.type';
 import RoleType from './role.type';
@@ -10,6 +11,7 @@ type UserType = DbEntity & {
   role?: RoleType;
   sections?: SectionType[];
   allocations?: AllocationType[];
+  evaluations?: EvaluationType[];
 };
 
 export default UserType;

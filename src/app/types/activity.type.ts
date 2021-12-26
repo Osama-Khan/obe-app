@@ -1,6 +1,7 @@
 import SectionType from './section.type';
 import DbEntity from './db-entity.type';
-import {CLOType} from '.';
+import CLOType from './clo.type';
+import UserType from './user.type';
 
 export type ActivityTypeType = DbEntity & {
   /** Name of the activity type */
@@ -37,6 +38,20 @@ export type ActivityType = DbEntity & {
   /** Type of the activity */
   type: ActivityTypeType;
 
+  /** Evaluations of the activity */
+  evaluations?: EvaluationType[];
+
   /** The section this activity has been assigned to */
   section: SectionType;
+};
+
+export type EvaluationType = DbEntity & {
+  /** Obtained Marks */
+  marks: number;
+
+  /** Activity this evaluation is for */
+  activity?: ActivityType;
+
+  /** Student this evaluation belongs to */
+  user?: UserType;
 };
