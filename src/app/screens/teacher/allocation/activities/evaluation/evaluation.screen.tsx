@@ -1,18 +1,18 @@
-import {ManyCriteria} from '@app/models/criteria';
+import {Criteria, ManyCriteria} from '@app/models/criteria';
 import activityService from '@app/services/activity.service';
 import uiService from '@app/services/ui.service';
 import userService from '@app/services/user.service';
 import {colors} from '@app/styles';
-import {UserType} from '@app/types';
+import {ActivityType, UserType} from '@app/types';
+import {EvaluationType} from '@app/types/activity.type';
 import {useRoute} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {FlatList, ScrollView, View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import {
   ActivityIndicator,
   Button,
   Caption,
   Card,
-  TextInput,
   Title,
   Text,
   Divider,
@@ -33,20 +33,45 @@ const useStudents = () => {
   return students;
 };
 
+const useEvaluations = (activityId: string) => {
+  const [evaluations, setEvaluations] = useState<EvaluationType[]>();
+  useEffect(() => {
+    const crit = new Criteria<ActivityType>();
+    crit.addRelation('evaluations');
+    activityService.getOne(activityId, crit).then(a => {
+      setEvaluations(a.data.evaluations!);
+    });
+  }, []);
+  return evaluations;
+};
+
 export default function EvaluationScreen() {
   const [studentMarks, setStudentMarks] = useState<
     {id: string; marks: string}[]
   >([]);
   const [saving, setSaving] = useState(false);
-  const students = useStudents();
   const route = useRoute<any>();
   const {activity} = route.params;
+  const students = useStudents();
+  const evaluations = activity.evaluations
+    ? useEvaluations(activity.id)
+    : false;
 
   useEffect(() => {
-    if (students) {
-      setStudentMarks(students.map(s => ({id: s.id, marks: ''})));
+    if (students && (evaluations || evaluations === false)) {
+      setStudentMarks(
+        students.map(s => {
+          const evaluation = evaluations
+            ? evaluations.find(e => e.user!.id === s.id)
+            : false;
+          return {
+            id: s.id,
+            marks: evaluation ? evaluation.marks.toString() : '',
+          };
+        }),
+      );
     }
-  }, [students]);
+  }, [students, evaluations]);
 
   return (
     <ScrollView>
