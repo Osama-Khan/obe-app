@@ -81,7 +81,7 @@ export default function AddCloScreen() {
                 .insert(clo)
                 .then(r => {
                   uiService.toastSuccess('New CLO Added!');
-                  onAdd(clo);
+                  onAdd({...clo, ...r.data});
                   navigation.goBack();
                 })
                 .catch(() => {
