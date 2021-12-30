@@ -42,7 +42,9 @@ export type DataTableProps<T> = {
   headerStyle?: StyleProp<ViewStyle>;
 
   /** Style for the rows */
-  rowStyle?: StyleProp<ViewStyle>;
+  rowStyle?:
+    | StyleProp<ViewStyle>
+    | ((item: T, index: number) => StyleProp<ViewStyle>);
 
   /** Action for when a row is pressed */
   rowOnPress?: (item: T, index: number) => void;
@@ -61,8 +63,15 @@ export default class DataTable<ItemType> extends React.Component<
   state: S<ItemType> = {checked: [], page: 0};
 
   render() {
-    const {data, checkProperty, onCheckedChange, columns, filter, rowOnPress} =
-      this.props;
+    const {
+      data,
+      checkProperty,
+      onCheckedChange,
+      columns,
+      filter,
+      rowOnPress,
+      rowStyle,
+    } = this.props;
     const {page, checked} = this.state;
 
     const itemsPerPage = this.props.itemsPerPage || DEFAULT_ITEMS_PER_PAGE;
@@ -119,7 +128,11 @@ export default class DataTable<ItemType> extends React.Component<
           items.map((item, index) => (
             <PaperDataTable.Row
               key={index}
-              style={this.props.rowStyle}
+              style={
+                typeof rowStyle === 'function'
+                  ? rowStyle(item, index)
+                  : rowStyle
+              }
               onPress={rowOnPress && (() => rowOnPress(item, index))}>
               {checkProperty ? (
                 <PaperDataTable.Cell style={{maxWidth: 48}}>
