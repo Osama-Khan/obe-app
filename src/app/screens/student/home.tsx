@@ -18,7 +18,7 @@ export const Home = () => {
           <Caption>Your result is as follows</Caption>
           <Card>
             <FetchingDataTable
-              fetchMethod={c => userService.getResults(user!.id)}
+              fetchMethod={() => userService.getResults(user!.id)}
               columns={[
                 {
                   title: 'PLO',
@@ -36,7 +36,30 @@ export const Home = () => {
                     <Text>{item.achieved.toFixed(2)}%</Text>
                   ),
                 },
+                {
+                  title: 'Passing',
+                  selector: ({item}: any) => <Text>{item.plo.passing}%</Text>,
+                },
               ]}
+              rowStyle={(item: any) => {
+                const passing = item.plo.passing;
+                const maxAchievable = 100 - item.evaluated;
+                if (
+                  item.achieved < passing &&
+                  maxAchievable + item.achieved < passing
+                ) {
+                  return {
+                    backgroundColor: colors.redSubtle,
+                    borderLeftColor: colors.red,
+                    borderLeftWidth: 2,
+                  };
+                }
+                return {
+                  backgroundColor: colors.greenSubtle,
+                  borderLeftColor: colors.green,
+                  borderLeftWidth: 2,
+                };
+              }}
             />
           </Card>
         </View>
