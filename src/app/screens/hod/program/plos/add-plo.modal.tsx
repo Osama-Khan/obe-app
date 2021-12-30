@@ -131,7 +131,11 @@ const AddView = ({
   const [number, setNumber] = useState('');
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
+  const [passing, setPassing] = useState('75');
   const invalidNumber = !!maps.find(p => p.number === parseInt(number));
+  const invalidPassing =
+    passing === '' || parseInt(passing) < 0 || parseInt(passing) > 100;
+
   return (
     <View>
       <TextInput
@@ -168,11 +172,28 @@ const AddView = ({
         value={desc}
         onChangeText={setDesc}
       />
+      <TextInput
+        label="Passing Percentage"
+        mode="outlined"
+        style={{marginVertical: 4}}
+        value={passing}
+        maxLength={3}
+        onChangeText={txt => {
+          if (txt === '') setPassing(txt);
+          else if (parseInt(txt).toString() === txt) {
+            setPassing(txt);
+          }
+        }}
+        error={invalidPassing}
+      />
       <Button
         style={{alignSelf: 'flex-end'}}
-        disabled={!desc || !title || !number || invalidNumber}
+        disabled={invalidNumber || invalidPassing || !desc || !title || !number}
         onPress={() => {
-          onAdd({title, description: desc}, parseInt(number));
+          onAdd(
+            {title, description: desc, passing: parseInt(passing)},
+            parseInt(number),
+          );
         }}>
         Save
       </Button>
