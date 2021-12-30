@@ -1,8 +1,6 @@
 import {FetchingDataTable} from '@app/components/data-table';
-import {ManyCriteria} from '@app/models/criteria';
-import objectiveMapService from '@app/services/objective-map.service';
+import ploService from '@app/services/plo.service';
 import {PLOType, ProgramType} from '@app/types';
-import ObjectiveMapType from '@app/types/objective-map.type';
 import {useRoute} from '@react-navigation/native';
 import React from 'react';
 import {Alert, ScrollView, View} from 'react-native';
@@ -26,41 +24,27 @@ export default function PLOMappingsScreen() {
       <List.Section title="Mappings">
         <Card style={{margin: 8}}>
           <FetchingDataTable
-            criteria={getCriteria(plo.id)}
-            fetchMethod={c => objectiveMapService.get(c)}
+            fetchMethod={() => ploService.getMappings(plo.id)}
             columns={[
+              {
+                title: 'Course',
+                selector: ({item}) => <Text>{item.clo!.course!.title}</Text>,
+              },
               {
                 title: 'Name',
                 selector: ({item}) => <Text>CLO {item.clo!.number}</Text>,
-                weight: 0.5,
               },
               {
                 title: 'Weight (%)',
                 selector: 'weight',
-                weight: 0.5,
-              },
-              {
-                title: 'Description',
-                selector: ({item}) => (
-                  <Text
-                    onPress={() =>
-                      Alert.alert(item.clo!.title!, item.clo!.description)
-                    }>
-                    {item.clo!.title}: {item.clo!.description}
-                  </Text>
-                ),
               },
             ]}
+            rowOnPress={item =>
+              Alert.alert(item.clo!.title!, item.clo!.description)
+            }
           />
         </Card>
       </List.Section>
     </ScrollView>
   );
 }
-
-const getCriteria = (ploId: string) => {
-  const criteria = new ManyCriteria<ObjectiveMapType>();
-  criteria.addCondition('plo', ploId);
-  criteria.addRelation('clo');
-  return criteria;
-};
