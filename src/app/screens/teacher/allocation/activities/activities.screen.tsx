@@ -22,7 +22,7 @@ export default function ActivitiesScreen() {
     activityCrit.addRelation('maps');
     activityCrit.addRelation('type');
     activityCrit.addRelation('evaluations');
-    activityCrit.addCondition('section', allocation.section!.id);
+    activityCrit.addCondition('allocation', allocation.id);
     activityService
       .get(activityCrit)
       .then(r => setActivities(r.data))

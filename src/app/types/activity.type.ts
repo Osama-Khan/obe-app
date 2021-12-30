@@ -2,6 +2,7 @@ import SectionType from './section.type';
 import DbEntity from './db-entity.type';
 import CLOType from './clo.type';
 import UserType from './user.type';
+import {AllocationType} from '.';
 
 export type ActivityTypeType = DbEntity & {
   /** Name of the activity type */
@@ -41,8 +42,8 @@ export type ActivityType = DbEntity & {
   /** Evaluations of the activity */
   evaluations?: EvaluationType[];
 
-  /** The section this activity has been assigned to */
-  section: SectionType;
+  /** The allocation this activity has been assigned to */
+  allocation: AllocationType;
 };
 
 export type EvaluationType = DbEntity & {
