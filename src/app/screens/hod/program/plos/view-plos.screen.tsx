@@ -68,7 +68,11 @@ export default function ProgramPlosScreen() {
             <Button
               icon="graph"
               onPress={() => {
-                navigation.navigate(ploMappingsRoute.name, {plo: item.plo});
+                navigation.navigate(ploMappingsRoute.name, {
+                  plo: item.plo,
+                  program,
+                  ploNumber: item.number,
+                });
               }}>
               Mappings
             </Button>
