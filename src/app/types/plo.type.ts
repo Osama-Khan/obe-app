@@ -5,6 +5,7 @@ import {ProgramPloType} from '.';
 type PLOType = DbEntity & {
   title: string;
   description: string;
+  passing: number;
   maps?: ObjectiveMapType[];
   programMaps?: ProgramPloType[];
 };
