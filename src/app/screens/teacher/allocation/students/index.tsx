@@ -1,14 +1,17 @@
 import {ManyCriteria} from '@app/models/criteria';
+import {studentResultsRoute} from '@app/routes/shared.routes';
 import sectionService from '@app/services/section.service';
 import uiService from '@app/services/ui.service';
+import {colors} from '@app/styles';
 import {SectionType, UserType} from '@app/types';
-import {useRoute} from '@react-navigation/core';
+import {useNavigation, useRoute} from '@react-navigation/core';
 import React, {useEffect, useState} from 'react';
 import {FlatList, View} from 'react-native';
 import {
   ActivityIndicator,
   Caption,
   Card,
+  IconButton,
   Searchbar,
   Title,
 } from 'react-native-paper';
@@ -16,6 +19,7 @@ import {
 export const StudentsScreen = () => {
   const [users, setUsers] = useState<UserType[]>();
   const [q, setQ] = useState('');
+  const navigation = useNavigation<any>();
   const route = useRoute<any>();
   const section = route.params!.allocation.section;
   useEffect(() => {
@@ -67,6 +71,14 @@ export const StudentsScreen = () => {
               <Title>{item.username}</Title>
               <Caption>{item.id}</Caption>
             </View>
+            <IconButton
+              icon="table-check"
+              style={{backgroundColor: colors.primarySubtle}}
+              color={colors.primary}
+              onPress={() => {
+                navigation.navigate(studentResultsRoute.name, {user: item});
+              }}
+            />
           </View>
         </Card>
       )}
