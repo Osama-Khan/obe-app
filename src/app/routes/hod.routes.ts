@@ -13,9 +13,9 @@ import {
   AddCloScreen,
   ViewPlosScreen,
   PLOMappingsScreen,
+  SectionsScreen,
+  SectionDetailScreen,
 } from '@app/screens/hod';
-import SectionsScreen from '@app/screens/hod/sections';
-import {SectionDetailScreen} from '@app/screens/hod/sections/section-detail';
 import {RouteType} from '@app/types/route.type';
 import {studentResultsRoute} from './shared.routes';
 
