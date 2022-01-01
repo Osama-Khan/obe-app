@@ -43,7 +43,9 @@ export const StudentsScreen = () => {
       }
       ListEmptyComponent={
         <Caption style={{marginVertical: 16, alignSelf: 'center'}}>
-          This section has no students!
+          {q
+            ? 'No students found matching the search query!'
+            : 'This section has no students!'}
         </Caption>
       }
       data={users.filter(u => {
