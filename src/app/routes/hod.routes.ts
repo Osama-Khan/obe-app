@@ -15,6 +15,7 @@ import {
   PLOMappingsScreen,
 } from '@app/screens/hod';
 import SectionsScreen from '@app/screens/hod/sections';
+import {SectionDetailScreen} from '@app/screens/hod/sections/section-detail';
 import {RouteType} from '@app/types/route.type';
 import {studentResultsRoute} from './shared.routes';
 
@@ -108,6 +109,12 @@ export const sectionsRoute: RouteType = {
   component: SectionsScreen,
 };
 
+export const sectionDetailRoute: RouteType = {
+  id: 'section-detail',
+  name: 'Section Detail',
+  component: SectionDetailScreen,
+};
+
 export default [
   homeRoute,
   addProgramRoute,
@@ -125,4 +132,5 @@ export default [
   addCloRoute,
   studentResultsRoute,
   sectionsRoute,
+  sectionDetailRoute,
 ];

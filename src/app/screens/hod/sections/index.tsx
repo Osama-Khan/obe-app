@@ -1,14 +1,17 @@
 import {FetchingDataTable} from '@app/components/data-table';
 import {ManyCriteria} from '@app/models/criteria';
+import {sectionDetailRoute} from '@app/routes/hod.routes';
 import sectionService from '@app/services/section.service';
 import uiService from '@app/services/ui.service';
 import {SectionType} from '@app/types';
+import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {ScrollView} from 'react-native';
 import {Card, FAB, Text} from 'react-native-paper';
 import AddSectionModal from './add-section.modal';
 
 export default function SectionsScreen() {
+  const navigation = useNavigation<any>();
   const [updates, setUpdates] = useState(0);
   const [shown, setShown] = useState(false);
   const hideModal = () => setShown(false);
@@ -20,6 +23,9 @@ export default function SectionsScreen() {
             key={updates}
             criteria={new ManyCriteria<SectionType>({relations: ['program']})}
             fetchMethod={c => sectionService.get(c)}
+            rowOnPress={section => {
+              navigation.navigate(sectionDetailRoute.name, {section});
+            }}
             columns={[
               {
                 title: 'Program',
