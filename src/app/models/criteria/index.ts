@@ -50,7 +50,7 @@ export class Criteria<Entity> {
   addSelect = (name: keyof Entity) => {
     if (this.hasSelect(name)) return false;
     !this._criteria.select && (this._criteria.select = []);
-    return this._criteria.select.push(name.toString());
+    return this._criteria.select.push(name.toString() as keyof Entity);
   };
 
   hasSelect = (name: keyof Entity) =>
