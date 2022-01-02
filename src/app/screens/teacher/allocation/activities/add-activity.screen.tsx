@@ -52,10 +52,10 @@ export default function AddActivityScreen() {
   };
 
   useEffect(() => {
-    activityService.getActivityTypeCounts(allocation.section!.id).then(c => {
+    activityService.getActivityTypeCounts(allocation!.id).then(c => {
       setCounts(c.data || []);
     });
-    activityService.getCloWeightsInSection(allocation.section!.id).then(r => {
+    activityService.getCloWeightsInAllocation(allocation!.id).then(r => {
       setCloWeights(r.data);
     });
   }, []);
@@ -161,7 +161,7 @@ export default function AddActivityScreen() {
               title: `${type!.name!} ${count + 1}`,
               marks,
               type: {id: type!.id},
-              section: {id: allocation.section!.id},
+              allocation: {id: allocation.id},
               maps: added
                 .filter(c => c)
                 .map(c => ({

@@ -12,19 +12,19 @@ class ActivityService extends CrudService<ActivityType> {
     return axios.post(this.endpoint + '-type');
   }
 
-  /** Gets CLOs with their cumulative weights in given section
-   * @param id ID of the section
+  /** Gets CLOs with their cumulative weights in given allocation
+   * @param id ID of the allocation
    */
-  getCloWeightsInSection(id: string) {
+  getCloWeightsInAllocation(id: string) {
     return axios.get(`${this.endpoint}/maps/${id}`);
   }
 
-  /** Gets number of activity for given section grouped by type
-   * @param id ID of the section
-   * @returns Number of activities grouped by type in the given section
+  /** Gets number of activity for given allocation grouped by type
+   * @param id ID of the allocation
+   * @returns Number of activities grouped by type in the given allocation
    */
   getActivityTypeCounts(id: string) {
-    return axios.get(`${this.endpoint}/section-type-count/${id}`);
+    return axios.get(`${this.endpoint}/allocation-type-count/${id}`);
   }
 
   /** Sets evaluations for an activity */
