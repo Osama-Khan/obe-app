@@ -21,7 +21,7 @@ type P = {
   usedWeight: number;
 
   /** Called when weight changes in the text input */
-  onChange: (weight: number) => void;
+  onChange: (weight: number, error: boolean) => void;
 
   /** Called when switch is deactivated */
   onRemove: () => void;
@@ -49,7 +49,7 @@ export default function WeightPicker({
             style={{alignSelf: 'center'}}
             onValueChange={v => {
               if (v) {
-                onChange(0);
+                onChange(0, true);
               } else {
                 onRemove();
               }
@@ -60,9 +60,7 @@ export default function WeightPicker({
       />
       {enabled ? (
         <TextInput
-          onWeightChange={(weight: number) => {
-            onChange(weight);
-          }}
+          onWeightChange={onChange}
           usedWeight={usedWeight}
           label={inputLabel}
         />
@@ -81,7 +79,7 @@ type InputProps = {
   usedWeight: number;
 
   /** Called when weight input changes */
-  onWeightChange: (weight: number) => void;
+  onWeightChange: (weight: number, error: boolean) => void;
 };
 
 const TextInput = ({onWeightChange, usedWeight, label}: InputProps) => {
@@ -99,10 +97,14 @@ const TextInput = ({onWeightChange, usedWeight, label}: InputProps) => {
         onChangeText={txt => {
           if (txt) {
             const num = parseInt(txt);
+            const overWeight = num > weightLeft;
+            const underWeight = num < 1;
             if (num.toString() !== txt) {
               return;
             }
-            onWeightChange(num);
+            onWeightChange(num, underWeight || overWeight);
+          } else {
+            onWeightChange(0, true);
           }
           setWeight(txt);
         }}
