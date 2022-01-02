@@ -1,4 +1,4 @@
-import {FindConditions} from './Conditions';
+import {FindConditions, FindConditionSet} from './Conditions';
 import FindOperator from './Operators';
 import {FindManyOptions, FindOneOptions} from './Options';
 
@@ -26,6 +26,10 @@ export class Criteria<Entity> {
     !this._criteria.where && (this._criteria.where = []);
     this._criteria.where.push([cond]);
   };
+
+  addConditionSet = (set: FindConditionSet<Entity>) => {
+    !this._criteria.where && (this._criteria.where = []);
+    this._criteria.where.push(set.conditions);
   };
 
   addRelation = (name: keyof Entity) => {
