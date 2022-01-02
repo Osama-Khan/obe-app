@@ -1,14 +1,9 @@
 import {ManyCriteria} from '@app/models/criteria';
 import cloService from '@app/services/clo.service';
+import objectiveMapService from '@app/services/objective-map.service';
 import programPloService from '@app/services/program-plo.service';
 import uiService from '@app/services/ui.service';
-import {
-  CLOType,
-  CourseType,
-  PLOType,
-  ProgramPloType,
-  ProgramType,
-} from '@app/types';
+import {CLOType, CourseType, PLOType, ProgramType} from '@app/types';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {ScrollView} from 'react-native';
@@ -39,35 +34,29 @@ export default function AddCloScreen() {
 
   const {course, program, clos, onAdd} = route.params;
 
-  const getPloWeight = (ploId: string) => {
-    let weight = 0;
-    clos.forEach(c => {
-      const map = c.maps!.find(map => map.plo!.id === ploId);
-      if (map) weight += map.weight;
-    });
-    return weight;
-  };
-
   useEffect(() => {
     navigation.setOptions({headerTitle: `Add ${course.title} CLO`});
-    const criteria = new ManyCriteria<ProgramPloType>();
+
+    const criteria = new ManyCriteria<any>();
     criteria.addCondition('program', program.id);
     criteria.addRelation('plo');
 
-    programPloService.get(criteria).then(r =>
-      setPlos(
-        r.data.map(
-          d =>
-            ({
-              ...d.plo,
-              number: d.number,
-              weight: getPloWeight(d.plo!.id),
-            } as any),
-        ),
-      ),
-    );
+    programPloService.get(criteria).then(r => {
+      const plos: PLOWeightedType[] = r.data.map(d => ({
+        ...d.plo!,
+        number: d.number,
+        weight: 0,
+      }));
+      objectiveMapService.get(criteria).then(r => {
+        const maps = r.data;
+        maps.forEach(m => {
+          const ind = plos.findIndex(p => p.id === m.plo!.id);
+          plos[ind].weight += m.weight;
+        });
+        setPlos(sortPlos(plos));
+      });
+    });
   }, []);
-
   return (
     <ScrollView>
       <Card style={{margin: 8, padding: 8}}>
@@ -107,3 +96,6 @@ const SavingView = () => (
     <Caption style={{alignSelf: 'center'}}>Adding CLO</Caption>
   </>
 );
+
+const sortPlos = (plos: (PLOType & {number: number; weight: number})[]) =>
+  plos.sort((a, b) => a.number - b.number);
