@@ -6,10 +6,9 @@ import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {View} from 'react-native';
 import {
-  Badge,
   Caption,
   Card,
-  Chip,
+  Divider,
   IconButton,
   List,
   Text,
@@ -76,12 +75,17 @@ export default function ActivityCard({activity}: {activity: ActivityType}) {
           />
         </View>
         <Title>{activity.title}</Title>
-        <Caption
-          onPress={() => setExpanded(!expanded)}
-          numberOfLines={expanded ? undefined : 1}>
-          {activity.description}
-        </Caption>
+        {activity.description ? (
+          <Caption
+            onPress={() => setExpanded(!expanded)}
+            numberOfLines={expanded ? undefined : 1}>
+            {activity.description}
+          </Caption>
+        ) : (
+          <></>
+        )}
       </View>
+      <Divider />
       <List.Accordion title={'CLOs'} style={{backgroundColor: 'white'}}>
         {activity.maps
           .map(m => ({...m.clo, weight: m.weight}))
