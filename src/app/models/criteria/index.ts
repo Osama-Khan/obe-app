@@ -24,7 +24,8 @@ export class Criteria<Entity> {
       operator: operator || '=',
     });
     !this._criteria.where && (this._criteria.where = []);
-    this._criteria.where.push(cond);
+    this._criteria.where.push([cond]);
+  };
   };
 
   addRelation = (name: keyof Entity) => {

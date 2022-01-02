@@ -9,7 +9,7 @@ export interface FindOneOptions<Entity> {
   /**
    * Simple condition that should be applied to match entities.
    */
-  where?: FindConditions<Entity>[];
+  where?: FindConditions<Entity>[][];
   /**
    * Indicates what relations of entities should be loaded.
    */
