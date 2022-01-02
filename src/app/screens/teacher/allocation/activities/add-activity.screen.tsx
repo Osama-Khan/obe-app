@@ -126,13 +126,13 @@ export default function AddActivityScreen() {
                   <WeightPicker
                     title={`CLO ${c.number}`}
                     description={`${weight}% Assigned`}
-                    onChange={weight => {
-                      added[i] = {...c, weight};
-                      setAdded([...added]);
+                    onChange={(weight, err) => {
+                      added![i] = {...c, weight, err};
+                      setAdded([...added!]);
                     }}
                     onRemove={() => {
-                      added[i] = undefined;
-                      setAdded([...added]);
+                      added![i] = undefined;
+                      setAdded([...added!]);
                     }}
                     usedWeight={weight}
                   />
@@ -153,7 +153,15 @@ export default function AddActivityScreen() {
           style={{marginTop: 16}}
           icon="check"
           mode="contained"
-          disabled={!type || !added || added.length === 0 || saving}
+          disabled={
+            !type ||
+            !added ||
+            added.length === 0 ||
+            saving ||
+            !marks ||
+            marks === '0' ||
+            added.some(a => a && a.err)
+          }
           loading={saving}
           onPress={() => {
             setSaving(true);
@@ -162,11 +170,11 @@ export default function AddActivityScreen() {
               marks,
               type: {id: type!.id},
               allocation: {id: allocation.id},
-              maps: added
+              maps: added!
                 .filter(c => c)
                 .map(c => ({
                   clo: {id: c!.id},
-                  weight: c.weight,
+                  weight: c!.weight,
                 })),
             };
             activityService
