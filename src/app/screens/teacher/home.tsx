@@ -5,7 +5,6 @@ import {
   Card,
   FAB,
   IconButton,
-  Text,
   Title,
 } from 'react-native-paper';
 import {useSelector} from 'react-redux';
@@ -95,14 +94,18 @@ export const Home = () => {
             </Card>
           )}
           ListHeaderComponent={
-            <Caption style={{margin: 16, marginTop: 16}}>
-              My Allocations
-            </Caption>
+            allocations?.length > 0 ? (
+              <Caption style={{margin: 16, marginTop: 16}}>
+                My Allocations
+              </Caption>
+            ) : (
+              <></>
+            )
           }
           ListEmptyComponent={
-            <Text style={{alignSelf: 'center', margin: 16}}>
+            <Caption style={{alignSelf: 'center', margin: 16}}>
               You don't have any allocated courses
-            </Text>
+            </Caption>
           }
         />
       ) : (
