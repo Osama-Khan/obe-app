@@ -1,7 +1,6 @@
 import {IconMessageView} from '@app/components/icon-message-view';
-import {ManyCriteria} from '@app/models/criteria';
 import {addCloRoute} from '@app/routes/hod.routes';
-import cloService from '@app/services/clo.service';
+import objectiveMapService from '@app/services/objective-map.service';
 import uiService from '@app/services/ui.service';
 import {colors} from '@app/styles';
 import {CLOType, CourseType, ProgramType} from '@app/types';
@@ -29,13 +28,24 @@ export default function ViewClosScreen() {
   const height = useWindowDimensions().height - 92;
 
   useMemo(() => {
-    const criteria = new ManyCriteria<CLOType>();
-    criteria.addRelation('maps');
-    criteria.addCondition('course', course.id);
     navigation.setOptions({headerTitle: course.title + ' CLOs'});
-    cloService
-      .get(criteria)
-      .then(res => setClos(sortClos(res.data)))
+    objectiveMapService
+      .getCourseMaps(program.id, course.id)
+      .then(res => {
+        const maps = res.data;
+        let clos: CLOType[] = [];
+        for (const m of maps) {
+          let ind = clos.findIndex(c => c.id === m.clo!.id);
+          if (ind === -1) {
+            ind = clos.length;
+            clos.push(m.clo as CLOType);
+          }
+          if (!clos[ind].maps) clos[ind].maps = [];
+          clos[ind].maps!.push({...m, clo: undefined});
+        }
+
+        setClos(sortClos(clos as CLOType[]));
+      })
       .catch(() => uiService.toastError('Failed to fetch CLOs'));
   }, []);
 
