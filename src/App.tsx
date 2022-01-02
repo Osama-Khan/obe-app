@@ -26,7 +26,7 @@ const App = () => {
         setStack(routes.auth);
         return;
       }
-      const role = user.userData.role?.name;
+      const role = user.userData.role?.id;
       if (role === 'admin') {
         setStack(routes.admin);
         return;
