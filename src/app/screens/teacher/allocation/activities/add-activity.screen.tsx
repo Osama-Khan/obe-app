@@ -44,7 +44,10 @@ export default function AddActivityScreen() {
   const route = useRoute<{params: ParamsType; key: string; name: string}>();
   const {allocation, onAdd} = route.params;
   const {assessments, types} = useAssessments(allocation.course!.id);
-  const [added, setAdded] = useState<any>();
+  const [added, setAdded] =
+    useState<
+      ((Partial<CLOType> & {weight: number; err?: boolean}) | undefined)[]
+    >();
   const navigation = useNavigation();
 
   const getCloUsage = (id: string) => {
