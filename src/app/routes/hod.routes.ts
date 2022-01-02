@@ -13,8 +13,11 @@ import {
   AddCloScreen,
   ViewPlosScreen,
   PLOMappingsScreen,
+  SectionsScreen,
+  SectionDetailScreen,
 } from '@app/screens/hod';
 import {RouteType} from '@app/types/route.type';
+import {studentResultsRoute} from './shared.routes';
 
 export const homeRoute: RouteType = {
   id: 'home',
@@ -100,6 +103,18 @@ export const allocationUploadRoute: RouteType = {
   component: UploadAllocationScreen,
 };
 
+export const sectionsRoute: RouteType = {
+  id: 'sections',
+  name: 'Sections',
+  component: SectionsScreen,
+};
+
+export const sectionDetailRoute: RouteType = {
+  id: 'section-detail',
+  name: 'Section Detail',
+  component: SectionDetailScreen,
+};
+
 export default [
   homeRoute,
   addProgramRoute,
@@ -115,4 +130,7 @@ export default [
   programCoursesRoute,
   viewClosRoute,
   addCloRoute,
+  studentResultsRoute,
+  sectionsRoute,
+  sectionDetailRoute,
 ];

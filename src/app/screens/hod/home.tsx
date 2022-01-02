@@ -2,7 +2,11 @@ import {useNavigation} from '@react-navigation/core';
 import React, {useEffect} from 'react';
 import {View} from 'react-native';
 import {Card, FAB, Title} from 'react-native-paper';
-import {allocationRoute, viewProgramRoute} from '@app/routes/hod.routes';
+import {
+  allocationRoute,
+  sectionsRoute,
+  viewProgramRoute,
+} from '@app/routes/hod.routes';
 import Icon from '@app/components/icon';
 import {useSelector} from 'react-redux';
 import {AppStateType} from '@app/store/state';
@@ -31,6 +35,11 @@ export const Home = () => {
           icon="clipboard-account"
           title="Allocate Courses"
           onPress={() => goto(allocationRoute.name)}
+        />
+        <IconCard
+          icon="select-group"
+          title="Sections"
+          onPress={() => goto(sectionsRoute.name)}
         />
       </View>
       <FAB

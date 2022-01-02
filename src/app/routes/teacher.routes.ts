@@ -5,6 +5,7 @@ import {
   Home,
 } from '@app/screens/teacher';
 import {RouteType} from '@app/types/route.type';
+import {studentResultsRoute} from './shared.routes';
 
 export const homeRoute: RouteType = {
   id: 'home',
@@ -35,4 +36,5 @@ export default [
   allocationDetailRoute,
   addActivityRoute,
   evaluationRoute,
+  studentResultsRoute,
 ];
