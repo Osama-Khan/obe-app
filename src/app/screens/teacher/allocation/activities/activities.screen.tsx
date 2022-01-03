@@ -33,7 +33,9 @@ export default function ActivitiesScreen() {
     <>
       <FlatList
         data={activities}
-        renderItem={({item}) => <ActivityCard key={item.id} activity={item} />}
+        renderItem={({item}) => (
+          <ActivityCard key={item.id} activity={item} allocation={allocation} />
+        )}
         ListEmptyComponent={
           <Caption style={{alignSelf: 'center', marginVertical: 16}}>
             No Exams Found

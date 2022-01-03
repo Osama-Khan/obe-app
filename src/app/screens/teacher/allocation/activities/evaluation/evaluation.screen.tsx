@@ -1,9 +1,9 @@
 import {Criteria, ManyCriteria} from '@app/models/criteria';
 import activityService from '@app/services/activity.service';
+import sectionService from '@app/services/section.service';
 import uiService from '@app/services/ui.service';
-import userService from '@app/services/user.service';
 import {colors} from '@app/styles';
-import {ActivityType, UserType} from '@app/types';
+import {ActivityType, SectionType, UserType} from '@app/types';
 import {EvaluationType} from '@app/types/activity.type';
 import {useRoute} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
@@ -20,15 +20,17 @@ import {
 import {validateMarks} from './helpers';
 import {MarksInput} from './MarksInput';
 
-const useStudents = () => {
+const useStudents = (sectionId: string) => {
   const [students, setStudents] = useState<UserType[]>();
-  const criteria = new ManyCriteria<UserType>();
-  criteria.addCondition('role', 'c7cdabd3-c834-496f-b890-5bc0eadf1d86');
   useEffect(() => {
-    userService
-      .get(criteria)
-      .then(r => setStudents(r.data))
-      .catch(e => uiService.toastError('Failed to fetch students!'));
+    const crit = new ManyCriteria<SectionType>();
+    crit.addRelation('users');
+    sectionService
+      .getOne(sectionId, crit)
+      .then(r => {
+        setStudents(r.data.users);
+      })
+      .catch(e => uiService.toastError('Could not fetch students!'));
   }, []);
   return students;
 };
@@ -51,8 +53,8 @@ export default function EvaluationScreen() {
   >([]);
   const [saving, setSaving] = useState(false);
   const route = useRoute<any>();
-  const {activity} = route.params;
-  const students = useStudents();
+  const {activity, allocation} = route.params;
+  const students = useStudents(allocation.section.id);
   const evaluations = activity.evaluations
     ? useEvaluations(activity.id)
     : false;
@@ -94,7 +96,7 @@ export default function EvaluationScreen() {
               <Caption style={{width: '33%'}}>Obtained Marks</Caption>
             </View>
             <Divider />
-            {students?.map((item, index) => (
+            {students!.map((item, index) => (
               <>
                 <View
                   key={item.id}
@@ -123,6 +125,11 @@ export default function EvaluationScreen() {
               </>
             ))}
           </>
+        ) : students && students.length === 0 ? (
+          <Caption
+            style={{margin: 16, marginVertical: 16, alignSelf: 'center'}}>
+            No students found!
+          </Caption>
         ) : (
           <ActivityIndicator style={{margin: 16, alignSelf: 'center'}} />
         )}

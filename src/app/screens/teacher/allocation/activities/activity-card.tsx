@@ -1,7 +1,7 @@
 import Icon from '@app/components/icon';
 import {evaluationRoute} from '@app/routes/teacher.routes';
 import {colors} from '@app/styles';
-import {ActivityType} from '@app/types';
+import {ActivityType, AllocationType} from '@app/types';
 import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {View} from 'react-native';
@@ -33,7 +33,13 @@ const EvaluationDoneBadge = () => (
     <Icon name="check" color={colors.primary} size={20} />
   </View>
 );
-export default function ActivityCard({activity}: {activity: ActivityType}) {
+export default function ActivityCard({
+  activity,
+  allocation,
+}: {
+  activity: ActivityType;
+  allocation: AllocationType;
+}) {
   const [expanded, setExpanded] = useState(false);
   const navigation = useNavigation<any>();
   const done = activity.evaluations && activity.evaluations.length > 0;
@@ -70,7 +76,7 @@ export default function ActivityCard({activity}: {activity: ActivityType}) {
             }}
             color={done ? colors.primary : undefined}
             onPress={() => {
-              navigation.navigate(evaluationRoute.name, {activity});
+              navigation.navigate(evaluationRoute.name, {activity, allocation});
             }}
           />
         </View>
