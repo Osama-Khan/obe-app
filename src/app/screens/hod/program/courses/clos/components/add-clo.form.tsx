@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {CLOType, CourseType, PLOType} from '@app/types';
+import {CLOType, CourseType, PLOType, ProgramType} from '@app/types';
 import {colors} from '@app/styles';
 import {View} from 'react-native';
 import {TextInput, Button, Caption, Divider, Title} from 'react-native-paper';
@@ -13,10 +13,12 @@ type ActiveType =
 export default function AddCLOForm({
   onAdd,
   course,
+  program,
   clos,
   plos,
 }: Pick<ParamsType, 'onAdd'> & {
   course: CourseType;
+  program: ProgramType;
   clos: CLOType[];
   plos: PLOWeightedType[];
 }) {
@@ -98,7 +100,13 @@ export default function AddCLOForm({
             title,
             description: desc,
             course: {id: course.id} as CourseType,
-            maps: active.filter(a => a).map(a => ({plo: a, weight: a!.weight})),
+            maps: active
+              .filter(a => a)
+              .map(a => ({
+                plo: a,
+                weight: a!.weight,
+                program: {id: program.id},
+              })),
             number: parseInt(number),
           });
         }}>

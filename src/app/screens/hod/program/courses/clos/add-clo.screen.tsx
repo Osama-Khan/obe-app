@@ -80,7 +80,7 @@ export default function AddCloScreen() {
                   setSaving(false);
                 });
             }}
-            {...{course, clos, plos}}
+            {...{course, clos, plos, program}}
           />
         ) : (
           <ActivityIndicator style={{alignSelf: 'center', margin: 16}} />
