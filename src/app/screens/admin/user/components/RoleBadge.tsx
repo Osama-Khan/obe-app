@@ -4,6 +4,7 @@ import {StyleSheet, View} from 'react-native';
 import {Text} from 'react-native-paper';
 
 export default function RoleBadge({roleName}: {roleName: string}) {
+  roleName = roleName.toLowerCase();
   return (
     <View style={[styles.roleView, getRoleStyle(roleName)]}>
       <Text style={[{fontWeight: 'bold'}, getRoleTextStyle(roleName)]}>
