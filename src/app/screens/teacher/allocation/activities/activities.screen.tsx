@@ -8,6 +8,7 @@ import React, {useEffect, useState} from 'react';
 import {FlatList, View} from 'react-native';
 import {ActivityIndicator, Caption, FAB} from 'react-native-paper';
 import ActivityCard from './activity-card';
+import CLOSummary from './clo-summary.view';
 
 export default function ActivitiesScreen() {
   const [activities, setActivities] = useState<ActivityType[]>();
@@ -33,6 +34,16 @@ export default function ActivitiesScreen() {
     <>
       <FlatList
         data={activities}
+        ListHeaderComponent={
+          activities.length === 0 ? (
+            <></>
+          ) : (
+            <CLOSummary
+              courseId={allocation.course!.id}
+              activities={activities}
+            />
+          )
+        }
         renderItem={({item}) => (
           <ActivityCard key={item.id} activity={item} allocation={allocation} />
         )}
