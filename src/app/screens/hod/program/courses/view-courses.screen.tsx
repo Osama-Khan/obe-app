@@ -1,6 +1,7 @@
 import {ManyCriteria} from '@app/models/criteria';
 import {
   addCourseRoute,
+  assessmentRoute,
   editCourseRoute,
   viewClosRoute,
 } from '@app/routes/hod.routes';
@@ -91,6 +92,16 @@ export default function ProgramCoursesScreen() {
                 });
               }}>
               CLOs
+            </Button>
+            <Button
+              icon="table-check"
+              style={{borderRadius: 0}}
+              onPress={() => {
+                navigation.navigate(assessmentRoute.name, {
+                  course: item,
+                });
+              }}>
+              Assessment
             </Button>
           </Card>
         )}

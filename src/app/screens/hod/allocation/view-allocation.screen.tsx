@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, View} from 'react-native';
-import {Button, Card, IconButton, Text} from 'react-native-paper';
+import {Button, Card, Text} from 'react-native-paper';
 import uiService from '@app/services/ui.service';
 import allocationService from '@app/services/allocation.service';
 import sectionService from '@app/services/section.service';
@@ -8,8 +8,7 @@ import {Criteria, ManyCriteria} from '@app/models/criteria';
 import {AllocationType, ProgramType, SectionType} from '@app/types';
 import {DataTable} from '@app/components/data-table';
 import {useNavigation} from '@react-navigation/core';
-import {assessmentRoute, allocationUploadRoute} from '@app/routes/hod.routes';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {allocationUploadRoute} from '@app/routes/hod.routes';
 
 type AllocationProgramType = AllocationType & {program?: ProgramType};
 
@@ -64,11 +63,6 @@ export function AllocationScreen() {
           <Card style={{margin: 8}}>
             <DataTable
               data={allocs}
-              rowOnPress={item =>
-                navigation.navigate(assessmentRoute.name, {
-                  course: item.course,
-                })
-              }
               columns={[
                 {
                   selector: ({item}) => (
