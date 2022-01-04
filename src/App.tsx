@@ -12,6 +12,7 @@ import uiService from '@app/services/ui.service';
 import {initializeInterceptors} from '@app/interceptors';
 import authService from '@app/services/auth.service';
 import storageService from '@app/services/storage.service';
+import {SplashScreen} from '@app/screens/auth';
 
 const {Navigator, Screen} = createStackNavigator();
 initializeInterceptors();
@@ -60,17 +61,7 @@ const App = () => {
       });
   }, []);
   return restoring ? (
-    <View>
-      <StatusBar hidden />
-      <View
-        style={{
-          height: '100%',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <ActivityIndicator size="large" />
-      </View>
-    </View>
+    <SplashScreen />
   ) : (
     <>
       <ReduxProvider store={store}>
