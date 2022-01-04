@@ -5,12 +5,20 @@ import React from 'react';
 import {Text} from 'react-native-paper';
 import Icon from '@app/components/icon';
 import {FetchingDataTable} from '@app/components/data-table';
+import {DataTableProps} from '../data-table/data-table';
 
 /** Renders result table for given student ID */
-export default function StudentResultTable({id}: {id?: string}) {
+export default function StudentResultTable({
+  id,
+  ...props
+}: {id?: string} & Omit<
+  DataTableProps<any>,
+  'fetchMethod' | 'columns' | 'rowStyle'
+>) {
   if (!id) return <></>;
   return (
     <FetchingDataTable
+      {...props}
       fetchMethod={() => userService.getResults(id)}
       columns={[
         {
