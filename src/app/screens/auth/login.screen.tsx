@@ -11,6 +11,7 @@ import {
 } from 'react-native-paper';
 import uiService from '@app/services/ui.service';
 import authService from '@app/services/auth.service';
+import {colors} from '@app/styles';
 
 export const LoginScreen = () => {
   const [username, setUsername] = useState('');
@@ -20,12 +21,31 @@ export const LoginScreen = () => {
 
   return (
     <ScrollView>
-      <Image
-        source={require('@assets/logo.png')}
-        style={{alignSelf: 'center', width: '100%', margin: 8, height: 128}}
-        resizeMode="contain"
-      />
-      <Card style={{margin: 8, padding: 8}}>
+      <Card
+        elevation={8}
+        style={{
+          alignSelf: 'center',
+          width: 132,
+          margin: 8,
+          height: 132,
+          borderRadius: 32,
+          borderWidth: 2,
+          borderColor: colors.primary,
+        }}>
+        <Image
+          source={require('@assets/logo.png')}
+          style={{width: 128, height: 128}}
+          resizeMode="contain"
+        />
+      </Card>
+      <Card
+        style={{
+          margin: 8,
+          padding: 8,
+          overflow: 'hidden',
+          borderTopWidth: 2,
+          borderColor: colors.primary,
+        }}>
         <Title style={{fontWeight: 'bold'}}>Login</Title>
         <Caption>Enter your details</Caption>
         <Divider style={{marginVertical: 4}} />
@@ -49,13 +69,12 @@ export const LoginScreen = () => {
           <Text>Remember me</Text>
           <Switch value={remember} onValueChange={setRemember} />
         </View>
-        <Divider style={{marginVertical: 4}} />
         <Button
           icon="login"
           mode="contained"
-          style={{marginLeft: 'auto'}}
           disabled={!username || !password || loading}
           loading={loading}
+          style={{margin: -8, marginTop: 8, borderRadius: 0}}
           onPress={() => {
             setLoading(true);
             authService
