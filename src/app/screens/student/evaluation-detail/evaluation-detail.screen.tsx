@@ -4,13 +4,14 @@ import {AppStateType} from '@app/store/state';
 import {AppTheme, colors} from '@app/styles';
 import {CLOType} from '@app/types';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import React, {useMemo} from 'react';
+import React from 'react';
 import {View} from 'react-native';
 import {
   Card,
   Title,
   Caption,
   List,
+  Text,
   Divider,
   ProgressBar,
 } from 'react-native-paper';
@@ -22,15 +23,32 @@ export default function EvaluationDetailScreen() {
   const route = useRoute();
   const {plo, evaluated, achieved}: any = route.params;
 
-  useMemo(() => {
-    navigation.setOptions({headerTitle: `PLO${plo.number} Evaluation`});
-  }, []);
-
   return (
-    <FetchingFlatList<any>
-      fetchMethod={() => userService.getResultDetail(user.userData!.id, plo.id)}
-      ListHeaderComponent={
-        <Card style={{margin: 8, overflow: 'hidden'}}>
+    <>
+      <View
+        style={{
+          backgroundColor: colors.primary,
+          padding: 16,
+          paddingBottom: 32,
+        }}>
+        <Title
+          style={{
+            fontWeight: 'bold',
+            color: '#fff',
+          }}>
+          PLO{plo.number} Evaluation
+        </Title>
+        <Caption style={{color: '#ddd'}}>
+          Details of your evaluation of PLO {plo.number} are as follows
+        </Caption>
+        <Card
+          style={{
+            overflow: 'hidden',
+            position: 'absolute',
+            marginLeft: 16,
+            bottom: -16,
+            width: '100%',
+          }}>
           <Caption style={{alignSelf: 'center', marginTop: 8}}>
             {achieved}%/{evaluated}%
           </Caption>
@@ -52,31 +70,37 @@ export default function EvaluationDetailScreen() {
             }}
           />
         </Card>
-      }
-      renderItem={({item}) => (
-        <Card style={{margin: 8, overflow: 'hidden'}}>
-          <View
-            style={{
-              flexDirection: 'row',
-              margin: 16,
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
-            <Title>{item.activity.title}</Title>
-            <Caption style={{fontWeight: 'bold'}}>
-              {item.obtained}/{item.activity.marks}
-            </Caption>
-          </View>
-          <Divider />
-          <List.Accordion
-            style={{backgroundColor: AppTheme.colors.surface}}
-            title="CLOs">
-            {item.clos.map((c: CLOType) => (
-              <List.Item title={c.title} description={c.description} />
-            ))}
-          </List.Accordion>
-        </Card>
-      )}
-    />
+      </View>
+      <View style={{height: 16}} />
+      <FetchingFlatList<any>
+        fetchMethod={() =>
+          userService.getResultDetail(user.userData!.id, plo.id)
+        }
+        renderItem={({item}) => (
+          <Card style={{margin: 8, overflow: 'hidden'}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                margin: 16,
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
+              <Title>{item.activity.title}</Title>
+              <Caption style={{fontWeight: 'bold'}}>
+                {item.obtained}/{item.activity.marks}
+              </Caption>
+            </View>
+            <Divider />
+            <List.Accordion
+              style={{backgroundColor: AppTheme.colors.surface}}
+              title="CLOs">
+              {item.clos.map((c: CLOType) => (
+                <List.Item title={c.title} description={c.description} />
+              ))}
+            </List.Accordion>
+          </Card>
+        )}
+      />
+    </>
   );
 }

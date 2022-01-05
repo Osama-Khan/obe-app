@@ -15,22 +15,25 @@ export const Home = () => {
   return (
     <>
       <ScrollView>
-        <View style={{margin: 16}}>
-          <Title>Hello {user?.username}</Title>
-          <Caption>Your result is as follows</Caption>
-          <Card>
-            <StudentResultTable
-              id={user?.id}
-              rowOnPress={({plo, achieved, evaluated}) => {
-                navigation.navigate(evaluationDetailRoute.name, {
-                  plo,
-                  achieved,
-                  evaluated,
-                });
-              }}
-            />
-          </Card>
+        <View style={{padding: 16, backgroundColor: colors.primary}}>
+          <Title style={{color: '#fff', fontWeight: 'bold'}}>
+            Hello {user?.username}
+          </Title>
+          <Caption style={{color: '#ddd'}}>Your result is as follows</Caption>
+          <View style={{height: 64}} />
         </View>
+        <Card style={{margin: 8, position: 'relative', bottom: 80}}>
+          <StudentResultTable
+            id={user?.id}
+            rowOnPress={({plo, achieved, evaluated}) => {
+              navigation.navigate(evaluationDetailRoute.name, {
+                plo,
+                achieved,
+                evaluated,
+              });
+            }}
+          />
+        </Card>
       </ScrollView>
       <FAB
         style={{
