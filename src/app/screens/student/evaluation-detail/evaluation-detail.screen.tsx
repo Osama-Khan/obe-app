@@ -30,7 +30,7 @@ export default function EvaluationDetailScreen() {
     <FetchingFlatList<any>
       fetchMethod={() => userService.getResultDetail(user.userData!.id, plo.id)}
       ListHeaderComponent={
-        <View style={{margin: 8}}>
+        <Card style={{margin: 8, overflow: 'hidden'}}>
           <Caption style={{alignSelf: 'center', marginTop: 8}}>
             {achieved}%/{evaluated}%
           </Caption>
@@ -38,7 +38,6 @@ export default function EvaluationDetailScreen() {
             progress={evaluated / 100}
             style={{
               height: 8,
-              borderRadius: AppTheme.roundness,
             }}
             color={colors.primaryLight}
           />
@@ -47,13 +46,12 @@ export default function EvaluationDetailScreen() {
             color={colors.greenLight}
             style={{
               backgroundColor: '#0000',
-              position: 'relative',
-              top: -8,
+              position: 'absolute',
+              bottom: 0,
               height: 8,
-              borderRadius: AppTheme.roundness,
             }}
           />
-        </View>
+        </Card>
       }
       renderItem={({item}) => (
         <Card style={{margin: 8, overflow: 'hidden'}}>
