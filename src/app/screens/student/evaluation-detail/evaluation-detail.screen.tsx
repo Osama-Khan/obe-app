@@ -3,15 +3,14 @@ import userService from '@app/services/user.service';
 import {AppStateType} from '@app/store/state';
 import {AppTheme, colors} from '@app/styles';
 import {CLOType} from '@app/types';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useRoute} from '@react-navigation/native';
 import React from 'react';
-import {View} from 'react-native';
+import {useWindowDimensions, View} from 'react-native';
 import {
   Card,
   Title,
   Caption,
   List,
-  Text,
   Divider,
   ProgressBar,
 } from 'react-native-paper';
@@ -19,8 +18,8 @@ import {useSelector} from 'react-redux';
 
 export default function EvaluationDetailScreen() {
   const user = useSelector((state: AppStateType) => state.user);
-  const navigation = useNavigation<any>();
   const route = useRoute();
+  const width = useWindowDimensions().width;
   const {plo, evaluated, achieved}: any = route.params;
 
   return (
@@ -28,26 +27,26 @@ export default function EvaluationDetailScreen() {
       <View
         style={{
           backgroundColor: colors.primary,
-          padding: 16,
           paddingBottom: 32,
         }}>
         <Title
           style={{
             fontWeight: 'bold',
             color: '#fff',
+            marginLeft: 16,
           }}>
           PLO{plo.number} Evaluation
         </Title>
-        <Caption style={{color: '#ddd'}}>
+        <Caption style={{color: '#ddd', marginLeft: 16}}>
           Details of your evaluation of PLO {plo.number} are as follows
         </Caption>
         <Card
           style={{
             overflow: 'hidden',
+            marginHorizontal: 16,
             position: 'absolute',
-            marginLeft: 16,
+            width: width - 32,
             bottom: -16,
-            width: '100%',
           }}>
           <Caption style={{alignSelf: 'center', marginTop: 8}}>
             {achieved}%/{evaluated}%
