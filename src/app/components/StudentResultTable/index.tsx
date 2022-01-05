@@ -1,20 +1,19 @@
 import userService from '@app/services/user.service';
 import {colors} from '@app/styles';
-import {ObjectiveMapType} from '@app/types';
+import {ResultType} from '@app/types';
 import React from 'react';
 import {Text} from 'react-native-paper';
 import Icon from '@app/components/icon';
 import {FetchingDataTable} from '@app/components/data-table';
 import {DataTableProps} from '../data-table/data-table';
 
+type P = {id?: string} & Omit<
+  DataTableProps<ResultType>,
+  'data' | 'fetchMethod' | 'columns' | 'rowStyle'
+>;
+
 /** Renders result table for given student ID */
-export default function StudentResultTable({
-  id,
-  ...props
-}: {id?: string} & Omit<
-  DataTableProps<any>,
-  'fetchMethod' | 'columns' | 'rowStyle'
->) {
+export default function StudentResultTable({id, ...props}: P) {
   if (!id) return <></>;
   return (
     <FetchingDataTable
@@ -65,7 +64,7 @@ export default function StudentResultTable({
           },
         },
       ]}
-      rowStyle={(item: any) => {
+      rowStyle={item => {
         const passed = isPassed(item);
         return passed === false
           ? {
@@ -85,9 +84,7 @@ export default function StudentResultTable({
   );
 }
 
-const isPassed = (
-  item: ObjectiveMapType & {achieved: number; evaluated: number},
-) => {
+const isPassed = (item: ResultType) => {
   const {achieved, evaluated} = item;
   const passing = item.plo!.passing!;
   const maxAchievable = 100 - evaluated;
