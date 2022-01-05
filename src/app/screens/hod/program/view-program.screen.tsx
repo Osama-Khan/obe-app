@@ -21,14 +21,14 @@ import {
   programPlosRoute,
 } from '@app/routes/hod.routes';
 import {FetchingFlatList} from '@app/components/listing';
+import {colors} from '@app/styles';
 
 type P = {navigation: NavigationProp<any>};
 const criteria = new ManyCriteria<ProgramType>();
 criteria.addRelation('courses');
 export const ViewProgramScreen = ({navigation}: P) => {
-  const [selected, setSelected] = useState<ProgramType[]>([]);
+  const [deleting, setDeleting] = useState<ProgramType>();
   const [updates, setUpdates] = useState(0);
-  const [modalShown, setModalShown] = useState(false);
   const [search, setSearch] = useState('');
   return (
     <>
@@ -44,13 +44,33 @@ export const ViewProgramScreen = ({navigation}: P) => {
         criteria={criteria}
         filter={item => item.title.includes(search)}
         renderItem={({item}) => (
-          <Card style={{margin: 16, marginVertical: 8, overflow: 'hidden'}}>
+          <Card
+            style={{
+              margin: 16,
+              marginVertical: 8,
+              overflow: 'hidden',
+              borderTopWidth: 2,
+              borderColor: colors.primary,
+            }}>
             <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
               <Title style={{margin: 16, marginVertical: 16}}>
                 {item.title}
               </Title>
-              <IconButton icon="chevron-right" />
+              <View style={{flexDirection: 'row'}}>
+                <IconButton
+                  icon="delete"
+                  style={{backgroundColor: colors.redSubtle}}
+                  color={colors.red}
+                  onPress={() => {
+                    setDeleting(item);
+                  }}
+                />
+              </View>
             </View>
             <Divider />
             <Button
@@ -83,38 +103,34 @@ export const ViewProgramScreen = ({navigation}: P) => {
         }
       />
 
-      <ConfirmModal
-        title={`Delete ${
-          selected.length === 1 ? 'Program' : 'Multiple Programs'
-        }`}
-        description={`Are you sure you want to delete ${
-          selected.length === 1
-            ? `the program "${selected[0].title}"`
-            : `the ${selected.length} selected programs`
-        }?`}
-        visible={modalShown}
-        positiveButton={{
-          onPress: () => {
-            Promise.all(selected.map(p => programService.delete(p.id)))
-              .then(res => {
-                uiService.toastSuccess('Programs deleted!');
-              })
-              .catch(e => {
-                uiService.toastError('Could not delete all programs!');
-              });
-            setSelected([]);
-            setModalShown(false);
-          },
-        }}
-        negativeButton={{
-          onPress: () => {
-            setModalShown(false);
-          },
-        }}
-        onDismiss={() => {
-          setModalShown(false);
-        }}
-      />
+      {deleting && (
+        <ConfirmModal
+          title={'Delete Program?'}
+          description={`Are you sure you want to delete the program "${deleting.title}"?`}
+          visible={!!deleting}
+          positiveButton={{
+            onPress: () => {
+              programService
+                .delete(deleting!.id)
+                .then(res => {
+                  uiService.toastSuccess('Programs deleted!');
+                })
+                .catch(e => {
+                  uiService.toastError('Could not delete all programs!');
+                });
+              setDeleting(undefined);
+            },
+          }}
+          negativeButton={{
+            onPress: () => {
+              setDeleting(undefined);
+            },
+          }}
+          onDismiss={() => {
+            setDeleting(undefined);
+          }}
+        />
+      )}
     </>
   );
 };
