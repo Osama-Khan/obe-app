@@ -16,7 +16,8 @@ export const evaluationDetailRoute: RouteType = {
   name: 'Evaluation Detail',
   component: EvaluationDetailScreen,
   options: {
-    headerShown: false,
+    headerTitle: '',
+    headerShadowVisible: false,
   },
 };
 
