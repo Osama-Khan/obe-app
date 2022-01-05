@@ -12,6 +12,7 @@ import {
   Divider,
   FAB,
   IconButton,
+  Menu,
   Searchbar,
   Title,
 } from 'react-native-paper';
@@ -23,6 +24,7 @@ import {
 } from '@app/routes/hod.routes';
 import {FetchingFlatList} from '@app/components/listing';
 import {colors} from '@app/styles';
+import Icon from '@app/components/icon';
 
 type P = {navigation: NavigationProp<any>};
 const criteria = new ManyCriteria<ProgramType>();
@@ -31,6 +33,7 @@ export const ViewProgramScreen = ({navigation}: P) => {
   const [deleting, setDeleting] = useState<ProgramType>();
   const [updates, setUpdates] = useState(0);
   const [search, setSearch] = useState('');
+  const [menu, setMenu] = useState('');
   const reloadList = () => setUpdates(updates + 1);
 
   return (
@@ -64,27 +67,36 @@ export const ViewProgramScreen = ({navigation}: P) => {
               <Title style={{margin: 16, marginVertical: 16}}>
                 {item.title}
               </Title>
-              <View style={{flexDirection: 'row'}}>
-                <IconButton
-                  icon="delete"
-                  style={{backgroundColor: colors.redSubtle}}
-                  color={colors.red}
-                  onPress={() => {
-                    setDeleting(item);
-                  }}
-                />
-                <IconButton
+              <Menu
+                visible={menu === item.id}
+                anchor={
+                  <IconButton
+                    icon="dots-vertical"
+                    onPress={() => setMenu(item.id)}
+                  />
+                }
+                onDismiss={() => setMenu('')}>
+                <Menu.Item
+                  title="Edit"
                   icon="pencil"
-                  style={{backgroundColor: colors.primarySubtle}}
-                  color={colors.primary}
                   onPress={() => {
                     navigation.navigate(editProgramRoute.name, {
                       programId: item.id,
                       onEdit: reloadList,
                     });
+                    setMenu('');
                   }}
                 />
-              </View>
+                <Menu.Item
+                  title="Delete"
+                  icon={p => <Icon {...p} color={colors.red} name="delete" />}
+                  titleStyle={{color: colors.red}}
+                  onPress={() => {
+                    setDeleting(item);
+                    setMenu('');
+                  }}
+                />
+              </Menu>
             </View>
             <Divider />
             <Button
