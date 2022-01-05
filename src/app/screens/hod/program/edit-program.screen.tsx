@@ -1,7 +1,7 @@
 import programService from '@app/services/program.service';
 import uiService from '@app/services/ui.service';
 import {ProgramType} from '@app/types';
-import {RouteProp} from '@react-navigation/core';
+import {useNavigation, useRoute} from '@react-navigation/core';
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {
@@ -14,14 +14,13 @@ import {
   Title,
 } from 'react-native-paper';
 
-type P = {
-  route: RouteProp<any>;
-};
-
-export function EditProgramScreen({route}: P) {
+export function EditProgramScreen() {
   const [program, setProgram] = useState<ProgramType>();
   const [title, setTitle] = useState('');
   const [saving, setSaving] = useState(false);
+  const navigation = useNavigation();
+  const route = useRoute<any>();
+  const onEdit = route.params!.onEdit;
 
   useEffect(() => {
     const id = route.params!.programId;
@@ -47,18 +46,22 @@ export function EditProgramScreen({route}: P) {
             label="Program Title"
             value={title}
             onChangeText={setTitle}
+            mode="outlined"
           />
           <Button
             icon="floppy"
             mode="contained"
+            style={{marginTop: 8}}
             onPress={() => {
               setSaving(true);
               programService
                 .update(program.id, {title})
-                .then(res => {
+                .then(() => {
                   uiService.toastSuccess('Successfully updated data!');
+                  onEdit();
+                  navigation.goBack();
                 })
-                .catch(e => {
+                .catch(() => {
                   uiService.toastError('Failed to update data!');
                 })
                 .finally(() => setSaving(false));

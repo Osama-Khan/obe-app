@@ -73,6 +73,17 @@ export const ViewProgramScreen = ({navigation}: P) => {
                     setDeleting(item);
                   }}
                 />
+                <IconButton
+                  icon="pencil"
+                  style={{backgroundColor: colors.primarySubtle}}
+                  color={colors.primary}
+                  onPress={() => {
+                    navigation.navigate(editProgramRoute.name, {
+                      programId: item.id,
+                      onEdit: reloadList,
+                    });
+                  }}
+                />
               </View>
             </View>
             <Divider />
