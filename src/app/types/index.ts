@@ -7,6 +7,7 @@ import ObjectiveMapType from './objective-map.type';
 import PLOType from './plo.type';
 import ProgramPloType from './program-plo.type';
 import ProgramType from './program.type';
+import ResultType from './result.type';
 import RoleType from './role.type';
 import SectionType from './section.type';
 import UserType from './user.type';
@@ -23,6 +24,7 @@ export type {
   PLOType,
   ProgramType,
   ProgramPloType,
+  ResultType,
   RoleType,
   SectionType,
   UserType,
