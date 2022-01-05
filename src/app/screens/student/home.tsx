@@ -21,9 +21,11 @@ export const Home = () => {
           <Card>
             <StudentResultTable
               id={user?.id}
-              rowOnPress={({plo}) => {
+              rowOnPress={({plo, achieved, evaluated}) => {
                 navigation.navigate(evaluationDetailRoute.name, {
                   plo,
+                  achieved,
+                  evaluated,
                 });
               }}
             />

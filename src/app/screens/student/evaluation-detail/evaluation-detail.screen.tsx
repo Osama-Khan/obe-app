@@ -1,19 +1,26 @@
 import {FetchingFlatList} from '@app/components/listing';
 import userService from '@app/services/user.service';
 import {AppStateType} from '@app/store/state';
-import {AppTheme} from '@app/styles';
+import {AppTheme, colors} from '@app/styles';
 import {CLOType} from '@app/types';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useMemo} from 'react';
 import {View} from 'react-native';
-import {Card, Title, Caption, List, Divider} from 'react-native-paper';
+import {
+  Card,
+  Title,
+  Caption,
+  List,
+  Divider,
+  ProgressBar,
+} from 'react-native-paper';
 import {useSelector} from 'react-redux';
 
 export default function EvaluationDetailScreen() {
   const user = useSelector((state: AppStateType) => state.user);
   const navigation = useNavigation<any>();
   const route = useRoute();
-  const {plo}: any = route.params;
+  const {plo, evaluated, achieved}: any = route.params;
 
   useMemo(() => {
     navigation.setOptions({headerTitle: `PLO${plo.number} Evaluation`});
@@ -22,6 +29,32 @@ export default function EvaluationDetailScreen() {
   return (
     <FetchingFlatList<any>
       fetchMethod={() => userService.getResultDetail(user.userData!.id, plo.id)}
+      ListHeaderComponent={
+        <View style={{margin: 8}}>
+          <Caption style={{alignSelf: 'center', marginTop: 8}}>
+            {achieved}%/{evaluated}%
+          </Caption>
+          <ProgressBar
+            progress={evaluated / 100}
+            style={{
+              height: 8,
+              borderRadius: AppTheme.roundness,
+            }}
+            color={colors.primaryLight}
+          />
+          <ProgressBar
+            progress={achieved / 100}
+            color={colors.greenLight}
+            style={{
+              backgroundColor: '#0000',
+              position: 'relative',
+              top: -8,
+              height: 8,
+              borderRadius: AppTheme.roundness,
+            }}
+          />
+        </View>
+      }
       renderItem={({item}) => (
         <Card style={{margin: 8, overflow: 'hidden'}}>
           <View
