@@ -17,6 +17,7 @@ import {
 } from 'react-native-paper';
 import {
   addProgramRoute,
+  editProgramRoute,
   programCoursesRoute,
   programPlosRoute,
 } from '@app/routes/hod.routes';
@@ -30,6 +31,8 @@ export const ViewProgramScreen = ({navigation}: P) => {
   const [deleting, setDeleting] = useState<ProgramType>();
   const [updates, setUpdates] = useState(0);
   const [search, setSearch] = useState('');
+  const reloadList = () => setUpdates(updates + 1);
+
   return (
     <>
       <Searchbar
@@ -98,7 +101,7 @@ export const ViewProgramScreen = ({navigation}: P) => {
         style={{position: 'absolute', bottom: 8, right: 8}}
         onPress={() =>
           navigation.navigate(addProgramRoute.name, {
-            onAdd: () => setUpdates(updates + 1),
+            onAdd: reloadList,
           })
         }
       />
@@ -113,10 +116,11 @@ export const ViewProgramScreen = ({navigation}: P) => {
               programService
                 .delete(deleting!.id)
                 .then(res => {
-                  uiService.toastSuccess('Programs deleted!');
+                  uiService.toastSuccess('Program deleted!');
+                  reloadList();
                 })
                 .catch(e => {
-                  uiService.toastError('Could not delete all programs!');
+                  uiService.toastError('Could not delete program!');
                 });
               setDeleting(undefined);
             },
