@@ -1,5 +1,7 @@
 import {IconMessageView} from '@app/components/icon-message-view';
+import {ConfirmModal} from '@app/components/modal';
 import {addCloRoute} from '@app/routes/hod.routes';
+import cloService from '@app/services/clo.service';
 import objectiveMapService from '@app/services/objective-map.service';
 import uiService from '@app/services/ui.service';
 import {colors} from '@app/styles';
@@ -21,6 +23,7 @@ import {
 
 export default function ViewClosScreen() {
   const [clos, setClos] = useState<CLOType[]>();
+  const [deleting, setDeleting] = useState<CLOType>();
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
   const course: CourseType = route.params!.course;
@@ -81,7 +84,9 @@ export default function ViewClosScreen() {
                   style={{marginLeft: 'auto'}}
                   color={colors.red}
                   icon="link-off"
-                  onPress={() => {}}
+                  onPress={() => {
+                    setDeleting(item);
+                  }}
                 />
               </View>
               <Caption>
@@ -126,6 +131,35 @@ export default function ViewClosScreen() {
         style={{position: 'absolute', bottom: 16, right: 16}}
         onPress={gotoAdd}
       />
+      {deleting && (
+        <ConfirmModal
+          title={'Delete CLO?'}
+          description={`Are you sure you want to delete the clo "${deleting.title}"?`}
+          visible={!!deleting}
+          positiveButton={{
+            onPress: () => {
+              cloService
+                .delete(deleting!.id)
+                .then(res => {
+                  uiService.toastSuccess('CLO deleted!');
+                  setClos(clos.filter(c => c.id !== res.data.id));
+                })
+                .catch(() => {
+                  uiService.toastError('Could not delete CLO!');
+                });
+              setDeleting(undefined);
+            },
+          }}
+          negativeButton={{
+            onPress: () => {
+              setDeleting(undefined);
+            },
+          }}
+          onDismiss={() => {
+            setDeleting(undefined);
+          }}
+        />
+      )}
     </>
   ) : (
     <ActivityIndicator style={{flexGrow: 1, alignSelf: 'center'}} />
