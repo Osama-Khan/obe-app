@@ -24,19 +24,19 @@ export default abstract class CrudService<Model> extends ApiService {
   }
 
   /** Sends a put request with the given data */
-  insert(data: Partial<Model>) {
+  insert(data: Partial<Model>): Promise<AxiosResponse<Model>> {
     return axios.put(this.endpoint, data);
   }
 
   /** Sends a patch request for the item corresponding to the given
    * id with the given data in body
    */
-  update(id: string, data: Partial<Model>) {
+  update(id: string, data: Partial<Model>): Promise<AxiosResponse<Model>> {
     return axios.patch(`${this.endpoint}/${id}`, data);
   }
 
   /** Sends a delete request for the item */
-  delete(id: string) {
+  delete(id: string): Promise<AxiosResponse<Model>> {
     return axios.delete(`${this.endpoint}/${id}`);
   }
 
