@@ -161,7 +161,7 @@ export default function ProgramCoursesScreen() {
                   setCourses(courses.filter(c => c.id !== res.data.id));
                 })
                 .catch(() => {
-                  uiService.toastError('Could not delete program!');
+                  uiService.toastError('Could not delete course!');
                 });
               setDeleting(undefined);
             },
