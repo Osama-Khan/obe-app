@@ -1,4 +1,5 @@
 import {IconMessageView} from '@app/components/icon-message-view';
+import {ConfirmModal} from '@app/components/modal';
 import {ManyCriteria} from '@app/models/criteria';
 import {ploMappingsRoute} from '@app/routes/hod.routes';
 import programPloService from '@app/services/program-plo.service';
@@ -22,6 +23,7 @@ import AddPloModal from './add-plo.modal';
 
 export default function ProgramPlosScreen() {
   const [modal, setModal] = useState(false);
+  const [deleting, setDeleting] = useState<ProgramPloType>();
   const [maps, setMaps] = useState<ProgramPloType[]>();
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
@@ -58,6 +60,9 @@ export default function ProgramPlosScreen() {
                   style={{marginLeft: 'auto'}}
                   color={colors.red}
                   icon="link-off"
+                  onPress={() => {
+                    setDeleting(item);
+                  }}
                 />
               </View>
               <Caption>
@@ -108,6 +113,37 @@ export default function ProgramPlosScreen() {
           setModal(false);
         }}
       />
+      {deleting && (
+        <ConfirmModal
+          title={`Unlink PLO ${deleting.number}?`}
+          description={`Are you sure you want to unlink the PLO "${
+            deleting.plo!.title
+          }"?`}
+          visible={!!deleting}
+          positiveButton={{
+            onPress: () => {
+              programPloService
+                .delete(deleting!.id)
+                .then(res => {
+                  uiService.toastSuccess('PLO unlinked!');
+                  setMaps(maps.filter(m => m.id !== res.data.id));
+                })
+                .catch(() => {
+                  uiService.toastError('Could not unlink PLO!');
+                });
+              setDeleting(undefined);
+            },
+          }}
+          negativeButton={{
+            onPress: () => {
+              setDeleting(undefined);
+            },
+          }}
+          onDismiss={() => {
+            setDeleting(undefined);
+          }}
+        />
+      )}
     </>
   ) : (
     <ActivityIndicator style={{flexGrow: 1, alignSelf: 'center'}} />
