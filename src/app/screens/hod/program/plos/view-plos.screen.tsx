@@ -1,3 +1,4 @@
+import {DataTable} from '@app/components/data-table';
 import {IconMessageView} from '@app/components/icon-message-view';
 import {ConfirmModal} from '@app/components/modal';
 import {ManyCriteria} from '@app/models/criteria';
@@ -8,16 +9,13 @@ import {colors} from '@app/styles';
 import {ProgramPloType} from '@app/types';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useMemo, useState} from 'react';
-import {FlatList, useWindowDimensions, View} from 'react-native';
+import {useWindowDimensions, View} from 'react-native';
 import {
   ActivityIndicator,
-  Button,
-  Caption,
   Card,
-  Divider,
   FAB,
   IconButton,
-  Title,
+  Text,
 } from 'react-native-paper';
 import AddPloModal from './add-plo.modal';
 
@@ -43,61 +41,60 @@ export default function ProgramPlosScreen() {
 
   return maps ? (
     <>
-      <FlatList
-        data={maps}
-        renderItem={({item}) => (
-          <Card
-            style={{
-              borderTopWidth: 2,
-              borderColor: colors.primary,
-              margin: 16,
-              marginVertical: 8,
-            }}>
-            <View style={{padding: 8}}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Title>PLO {item.number}</Title>
-                <IconButton
-                  style={{marginLeft: 'auto'}}
-                  color={colors.red}
-                  icon="link-off"
-                  onPress={() => {
-                    setDeleting(item);
-                  }}
-                />
-              </View>
-              <Caption>
-                {item.plo!.title}: {item.plo!.description}
-              </Caption>
-            </View>
-            <Divider />
-            <Button
-              icon="graph"
-              onPress={() => {
-                navigation.navigate(ploMappingsRoute.name, {
-                  plo: item.plo,
-                  program,
-                  ploNumber: item.number,
-                });
-              }}>
-              Mappings
-            </Button>
-          </Card>
-        )}
-        ListEmptyComponent={
-          <View style={{height, justifyContent: 'center'}}>
-            <IconMessageView
-              icon="graph"
-              caption="This program has no PLOs. Start by adding one."
-              title="No PLOs"
-              btnProps={{
-                icon: 'plus',
-                text: 'Add PLO',
-                action: () => setModal(true),
-              }}
-            />
-          </View>
-        }
-      />
+      {maps.length > 0 ? (
+        <Card style={{margin: 8}}>
+          <DataTable
+            data={maps}
+            rowOnPress={item => {
+              navigation.navigate(ploMappingsRoute.name, {
+                plo: item.plo,
+                program,
+                ploNumber: item.number,
+              });
+            }}
+            columns={[
+              {
+                title: 'Number',
+                selector: ({item}) => <Text>PLO {item.number}</Text>,
+                weight: 0.2,
+              },
+              {
+                title: 'Title',
+                selector: ({item}) => <Text>{item.plo!.title}</Text>,
+                weight: 0.6,
+              },
+              {
+                title: 'Unlink',
+                selector: ({item}) => (
+                  <View style={{alignSelf: 'center'}}>
+                    <IconButton
+                      color={colors.red}
+                      icon="link-off"
+                      onPress={() => {
+                        setDeleting(item);
+                      }}
+                    />
+                  </View>
+                ),
+                weight: 0.2,
+              },
+            ]}
+          />
+        </Card>
+      ) : (
+        <View style={{height, justifyContent: 'center'}}>
+          <IconMessageView
+            icon="graph"
+            caption="This program has no PLOs. Start by adding one."
+            title="No PLOs"
+            btnProps={{
+              icon: 'plus',
+              text: 'Add PLO',
+              action: () => setModal(true),
+            }}
+          />
+        </View>
+      )}
       <FAB
         icon="plus"
         style={{position: 'absolute', bottom: 16, right: 16}}
