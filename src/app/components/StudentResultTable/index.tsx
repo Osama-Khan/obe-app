@@ -6,6 +6,8 @@ import {Text} from 'react-native-paper';
 import Icon from '@app/components/icon';
 import {FetchingDataTable} from '@app/components/data-table';
 import {DataTableProps} from '../data-table/data-table';
+import {evaluationDetailRoute} from '@app/routes/shared.routes';
+import {useNavigation} from '@react-navigation/native';
 
 type P = {id?: string} & Omit<
   DataTableProps<ResultType>,
@@ -15,26 +17,29 @@ type P = {id?: string} & Omit<
 /** Renders result table for given student ID */
 export default function StudentResultTable({id, ...props}: P) {
   if (!id) return <></>;
+  const navigation = useNavigation<any>();
   return (
     <FetchingDataTable
       {...props}
       fetchMethod={() => userService.getResults(id)}
+      rowOnPress={({plo, achieved, evaluated}) => {
+        navigation.navigate(evaluationDetailRoute.name, {
+          plo,
+          achieved,
+          evaluated,
+          userId: id,
+        });
+      }}
       columns={[
         {
-          title: 'PLO',
+          title: 'PLO #',
           selector: ({item}: any) => <Text>PLO {item.plo.number}</Text>,
+          weight: 0.2,
         },
         {
-          title: 'Evaluated',
-          selector: ({item}: any) => <Text>{item.evaluated.toFixed(2)}%</Text>,
-        },
-        {
-          title: 'Achieved',
-          selector: ({item}: any) => <Text>{item.achieved.toFixed(2)}%</Text>,
-        },
-        {
-          title: 'Passing',
-          selector: ({item}: any) => <Text>{item.plo.passing}%</Text>,
+          title: 'Description',
+          selector: ({item}: any) => <Text>{item.plo.title}</Text>,
+          weight: 0.6,
         },
         {
           title: '',
