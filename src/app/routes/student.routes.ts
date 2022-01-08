@@ -1,6 +1,6 @@
 import {Home} from '@app/screens/student';
-import {EvaluationDetailScreen} from '@app/screens/student/evaluation-detail';
 import {RouteType} from '@app/types/route.type';
+import {evaluationDetailRoute} from './shared.routes';
 
 export const homeRoute: RouteType = {
   id: 'home',
@@ -8,16 +8,6 @@ export const homeRoute: RouteType = {
   component: Home,
   options: {
     headerShown: false,
-  },
-};
-
-export const evaluationDetailRoute: RouteType = {
-  id: 'evaluation-detail',
-  name: 'Evaluation Detail',
-  component: EvaluationDetailScreen,
-  options: {
-    headerTitle: '',
-    headerShadowVisible: false,
   },
 };
 
