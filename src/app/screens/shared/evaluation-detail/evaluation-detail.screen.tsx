@@ -1,6 +1,6 @@
 import {FetchingFlatList} from '@app/components/listing';
 import userService from '@app/services/user.service';
-import {AppStateType} from '@app/store/state';
+import store from '@app/store';
 import {AppTheme, colors} from '@app/styles';
 import {CLOType} from '@app/types';
 import {useRoute} from '@react-navigation/native';
@@ -14,13 +14,12 @@ import {
   Divider,
   ProgressBar,
 } from 'react-native-paper';
-import {useSelector} from 'react-redux';
 
 export default function EvaluationDetailScreen() {
-  const user = useSelector((state: AppStateType) => state.user);
   const route = useRoute();
   const width = useWindowDimensions().width;
-  const {plo, evaluated, achieved}: any = route.params;
+  const {plo, evaluated, achieved, userId}: any = route.params;
+  const isSelf = store.getState().user.userData?.id === userId;
 
   return (
     <>
@@ -38,7 +37,8 @@ export default function EvaluationDetailScreen() {
           PLO{plo.number} Evaluation
         </Title>
         <Caption style={{color: '#ddd', marginLeft: 16}}>
-          Details of your evaluation of PLO {plo.number} are as follows
+          Details of {isSelf ? 'your ' : ''}evaluation of PLO {plo.number}{' '}
+          {isSelf ? '' : `for ${userId} `}are as follows
         </Caption>
         <Card
           style={{
@@ -72,9 +72,7 @@ export default function EvaluationDetailScreen() {
       </View>
       <View style={{height: 16}} />
       <FetchingFlatList<any>
-        fetchMethod={() =>
-          userService.getResultDetail(user.userData!.id, plo.id)
-        }
+        fetchMethod={() => userService.getResultDetail(userId, plo.id)}
         renderItem={({item}) => (
           <Card style={{margin: 8, overflow: 'hidden'}}>
             <View
