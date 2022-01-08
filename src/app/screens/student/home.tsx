@@ -6,12 +6,9 @@ import {colors} from '@app/styles';
 import authService from '@app/services/auth.service';
 import {ScrollView, View} from 'react-native';
 import StudentResultTable from '@app/components/StudentResultTable';
-import {useNavigation} from '@react-navigation/native';
-import {evaluationDetailRoute} from '@app/routes/student.routes';
 
 export const Home = () => {
   const user = useSelector((state: AppStateType) => state.user.userData);
-  const navigation = useNavigation<any>();
   return (
     <>
       <ScrollView>
@@ -23,16 +20,7 @@ export const Home = () => {
           <View style={{height: 64}} />
         </View>
         <Card style={{margin: 8, position: 'relative', bottom: 80}}>
-          <StudentResultTable
-            id={user?.id}
-            rowOnPress={({plo, achieved, evaluated}) => {
-              navigation.navigate(evaluationDetailRoute.name, {
-                plo,
-                achieved,
-                evaluated,
-              });
-            }}
-          />
+          <StudentResultTable id={user?.id} />
         </Card>
       </ScrollView>
       <FAB
