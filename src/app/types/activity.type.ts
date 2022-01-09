@@ -1,8 +1,8 @@
-import SectionType from './section.type';
 import DbEntity from './db-entity.type';
 import CLOType from './clo.type';
 import UserType from './user.type';
-import {AllocationType} from '.';
+import AllocationType from './allocation.type';
+import QuestionType from './question.type';
 
 export type ActivityTypeType = DbEntity & {
   /** Name of the activity type */
@@ -44,6 +44,9 @@ export type ActivityType = DbEntity & {
 
   /** The allocation this activity has been assigned to */
   allocation: AllocationType;
+
+  /** Questions in the activity */
+  questions?: QuestionType[];
 };
 
 export type EvaluationType = DbEntity & {
