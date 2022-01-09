@@ -236,7 +236,7 @@ export default function AddActivityScreen() {
       </ScrollView>
       {clos && modal && (
         <AddQuestionModal
-          visible={false}
+          visible={modal}
           onAdd={q => {
             setQuestions([...questions, q]);
           }}
