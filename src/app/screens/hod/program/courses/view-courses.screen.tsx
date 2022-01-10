@@ -120,6 +120,7 @@ export default function ProgramCoursesScreen() {
               }}>
               CLOs
             </Button>
+            <Divider />
             <Button
               icon="table-check"
               style={{borderRadius: 0}}
