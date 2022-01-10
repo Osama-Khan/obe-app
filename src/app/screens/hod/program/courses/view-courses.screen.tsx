@@ -3,10 +3,10 @@ import {ConfirmModal} from '@app/components/modal';
 import {ManyCriteria} from '@app/models/criteria';
 import {
   addCourseRoute,
-  assessmentRoute,
   editCourseRoute,
   viewClosRoute,
 } from '@app/routes/hod.routes';
+import {assessmentRoute} from '@app/routes/shared.routes';
 import courseService from '@app/services/course.service';
 import programService from '@app/services/program.service';
 import uiService from '@app/services/ui.service';

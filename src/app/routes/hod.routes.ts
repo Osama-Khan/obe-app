@@ -17,7 +17,11 @@ import {
   SectionDetailScreen,
 } from '@app/screens/hod';
 import {RouteType} from '@app/types/route.type';
-import {evaluationDetailRoute, studentResultsRoute} from './shared.routes';
+import {
+  assessmentRoute,
+  evaluationDetailRoute,
+  studentResultsRoute,
+} from './shared.routes';
 
 export const homeRoute: RouteType = {
   id: 'home',
@@ -91,12 +95,6 @@ export const allocationRoute: RouteType = {
   component: AllocationScreen,
 };
 
-export const assessmentRoute: RouteType = {
-  id: 'assessment',
-  name: 'Assessment',
-  component: AssessmentScreen,
-};
-
 export const allocationUploadRoute: RouteType = {
   id: 'allocation-upload',
   name: 'Upload Allocation',
@@ -119,7 +117,6 @@ export default [
   homeRoute,
   addProgramRoute,
   allocationRoute,
-  assessmentRoute,
   allocationUploadRoute,
   editProgramRoute,
   viewProgramRoute,
@@ -134,4 +131,5 @@ export default [
   sectionsRoute,
   sectionDetailRoute,
   evaluationDetailRoute,
+  assessmentRoute,
 ];
