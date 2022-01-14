@@ -1,7 +1,7 @@
-import ProgramType from '@app/types/program.type';
+import {RoleType} from '@app/types';
 import CrudService from './crud.service';
 
-class RoleService extends CrudService<ProgramType> {
+class RoleService extends CrudService<RoleType> {
   constructor() {
     super('role');
   }
