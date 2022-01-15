@@ -4,7 +4,10 @@ import {AssessmentType, ActivityTypeType, CLOType} from '@app/types';
 import {useState, useEffect} from 'react';
 
 /** Hook that provides assessment details for the given course */
-export default function useAssessments(courseId: string) {
+export default function useAssessments(
+  courseId: string,
+  deps?: Array<unknown>,
+) {
   const [assessments, setAssessments] = useState<AssessmentType[]>();
   const [types, setTypes] = useState<ActivityTypeType[]>();
   const [clos, setClos] = useState<CLOType[]>();
@@ -28,6 +31,6 @@ export default function useAssessments(courseId: string) {
       setClos(c.sort((a, b) => a.number - b.number));
       setAssessments(r.data);
     });
-  }, []);
+  }, deps || []);
   return {assessments, types, clos};
 }
