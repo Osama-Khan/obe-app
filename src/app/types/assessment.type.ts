@@ -15,6 +15,9 @@ type AssessmentType = DbEntity & {
 
   /** The CLO hit by the activity type allocation */
   clo: CLOType;
+
+  /** If the assessment is approved by relevant HOD */
+  isApproved: boolean;
 };
 
 export default AssessmentType;
