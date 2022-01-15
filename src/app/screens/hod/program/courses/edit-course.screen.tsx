@@ -13,11 +13,12 @@ import {
   Title,
 } from 'react-native-paper';
 
-type FormData = Pick<CourseType, 'title' | 'code' | 'creditHours'>;
+type FormData = Pick<CourseType, 'title' | 'id' | 'theoryHours' | 'labHours'>;
 const initialData = {
   title: '',
-  code: '',
-  creditHours: '',
+  id: '',
+  theoryHours: '',
+  labHours: '',
 };
 
 export default function EditCourseScreen() {
@@ -35,8 +36,13 @@ export default function EditCourseScreen() {
       .getOne(id)
       .then(res => {
         setCourse(res.data);
-        const {title, code, creditHours: hrs} = res.data;
-        setData({title, code, creditHours: (hrs as number).toString()});
+        const {titleShort: title, id, theoryHours, labHours} = res.data;
+        setData({
+          title,
+          id,
+          theoryHours: (theoryHours as number).toString(),
+          labHours: (labHours as number).toString(),
+        });
       })
       .catch(e => {
         uiService.toastError('Failed to load course data!');
@@ -59,15 +65,22 @@ export default function EditCourseScreen() {
           <TextInput
             style={{marginVertical: 4}}
             label="Course Code"
-            value={data.code}
-            onChangeText={code => setData({...data, code})}
+            value={data.id}
+            onChangeText={id => setData({...data, id})}
             mode="outlined"
           />
           <TextInput
             style={{marginVertical: 4}}
-            label="Credit Hours"
-            value={data.creditHours.toString()}
-            onChangeText={creditHours => setData({...data, creditHours})}
+            label="Theory Hours"
+            value={data.theoryHours.toString()}
+            onChangeText={theoryHours => setData({...data, theoryHours})}
+            mode="outlined"
+          />
+          <TextInput
+            style={{marginVertical: 4}}
+            label="Lab Hours"
+            value={data.labHours.toString()}
+            onChangeText={labHours => setData({...data, labHours})}
             mode="outlined"
           />
           <Button
@@ -77,8 +90,9 @@ export default function EditCourseScreen() {
             onPress={async () => {
               setSaving(true);
               let d: Partial<FormData> = {};
-              data.code && (d.code = data.code);
-              data.creditHours && (d.creditHours = parseInt(data.creditHours));
+              data.id && (d.id = data.id);
+              data.theoryHours && (d.theoryHours = parseInt(data.theoryHours));
+              data.labHours && (d.labHours = parseInt(data.labHours));
               data.title && (d.title = data.title);
               try {
                 await courseService.update(course.id, d);
@@ -104,6 +118,7 @@ export default function EditCourseScreen() {
 }
 
 const hasNoChange = (data: typeof initialData, course: CourseType) =>
-  data.title === course.title &&
-  data.code === course.code &&
-  data.creditHours === course.creditHours.toString();
+  data.title === course.titleShort &&
+  data.id === course.id &&
+  data.theoryHours === course.theoryHours.toString() &&
+  data.labHours === course.labHours.toString();

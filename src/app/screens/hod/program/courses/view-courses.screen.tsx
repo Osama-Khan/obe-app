@@ -71,7 +71,7 @@ export default function ProgramCoursesScreen() {
                   alignItems: 'center',
                   justifyContent: 'space-between',
                 }}>
-                <Title>{item.title}</Title>
+                <Title>{item.titleShort}</Title>
                 <Menu
                   visible={menu === item.id}
                   anchor={
@@ -106,7 +106,7 @@ export default function ProgramCoursesScreen() {
                   />
                 </Menu>
               </View>
-              <Caption>{item.code}</Caption>
+              <Caption>{item.id}</Caption>
             </View>
             <Divider />
             <Button
@@ -151,7 +151,7 @@ export default function ProgramCoursesScreen() {
       {deleting && (
         <ConfirmModal
           title={'Delete Course?'}
-          description={`Are you sure you want to delete the course "${deleting.title}"?`}
+          description={`Are you sure you want to delete the course "${deleting.titleShort}"?`}
           visible={!!deleting}
           positiveButton={{
             onPress: () => {

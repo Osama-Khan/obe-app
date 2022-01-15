@@ -18,8 +18,9 @@ import ProgramDropdown from './program-dropdown';
 
 type FormDataType = {
   title: string;
-  code: string;
-  creditHours: string;
+  id: string;
+  theoryHours: string;
+  labHours: string;
   programs?: ProgramType[];
 };
 
@@ -30,8 +31,9 @@ export default function AddCourseScreen() {
 
   const [programs, setPrograms] = useState<Partial<ProgramType>[]>([]);
   const [title, setTitle] = useState('');
-  const [code, setCode] = useState('');
-  const [creditHours, setCreditHours] = useState('');
+  const [id, setId] = useState('');
+  const [theoryHours, setTheoryHours] = useState('');
+  const [labHours, setLabHours] = useState('');
   const [saving, setSaving] = useState(false);
 
   return (
@@ -55,16 +57,24 @@ export default function AddCourseScreen() {
         <TextInput
           label="Code"
           mode="outlined"
-          value={code}
-          onChangeText={setCode}
+          value={id}
+          onChangeText={setId}
           style={{marginVertical: 4}}
         />
         <TextInput
-          label="Credit Hours"
+          label="Theory Hours"
           keyboardType="numeric"
           mode="outlined"
-          value={creditHours}
-          onChangeText={setCreditHours}
+          value={theoryHours}
+          onChangeText={setTheoryHours}
+          style={{marginVertical: 4}}
+        />
+        <TextInput
+          label="Lab Hours"
+          keyboardType="numeric"
+          mode="outlined"
+          value={labHours}
+          onChangeText={setLabHours}
           style={{marginVertical: 4}}
         />
 
@@ -95,18 +105,19 @@ export default function AddCourseScreen() {
           mode="contained"
           icon="check"
           style={{marginVertical: 4, marginLeft: 'auto'}}
-          disabled={saving || isInvalid({title, code, creditHours})}
+          disabled={saving || isInvalid({title, id: id, theoryHours, labHours})}
           loading={saving}
           onPress={async () => {
             setSaving(true);
             const r = await handleSubmit({
               title,
-              code,
-              creditHours,
+              id,
+              theoryHours,
+              labHours,
               programs,
             });
             if (r) {
-              onAdd({title, code, creditHours}, programs);
+              onAdd({title, id, theoryHours, labHours}, programs);
               navigation.goBack();
             }
             setSaving(false);
@@ -119,16 +130,23 @@ export default function AddCourseScreen() {
 }
 
 const isInvalid = (data: FormDataType) =>
-  !data.code || !data.title || !data.creditHours || !isNumber(data.creditHours);
+  !data.id ||
+  !data.title ||
+  !data.theoryHours ||
+  !isNumber(data.theoryHours) ||
+  !data.labHours ||
+  !isNumber(data.labHours);
 
 const isNumber = (str: string) => parseInt(str).toString() === str;
+
 const handleSubmit = async (data: FormDataType) => {
   if (isInvalid(data)) {
     uiService.toastError('Invalid data!');
     return false;
   }
-  const creditHours = parseInt(data.creditHours);
-  const submission = {...data, creditHours};
+  const theoryHours = parseInt(data.theoryHours);
+  const labHours = parseInt(data.labHours);
+  const submission = {...data, theoryHours, labHours};
   try {
     const res = await courseService.insert(submission);
     uiService.toastSuccess('Inserted with ID: ' + res.data.id);

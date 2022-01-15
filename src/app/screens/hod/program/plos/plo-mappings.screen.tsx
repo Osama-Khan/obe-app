@@ -28,7 +28,9 @@ export default function PLOMappingsScreen() {
             columns={[
               {
                 title: 'Course',
-                selector: ({item}) => <Text>{item.clo!.course!.title}</Text>,
+                selector: ({item}) => (
+                  <Text>{item.clo!.course!.titleShort}</Text>
+                ),
               },
               {
                 title: 'Name',

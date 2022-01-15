@@ -35,7 +35,7 @@ export default function AddCloScreen() {
   const {course, program, clos, onAdd} = route.params;
 
   useEffect(() => {
-    navigation.setOptions({headerTitle: `Add ${course.title} CLO`});
+    navigation.setOptions({headerTitle: `Add ${course.titleShort} CLO`});
 
     const criteria = new ManyCriteria<any>();
     criteria.addCondition('program', program.id);

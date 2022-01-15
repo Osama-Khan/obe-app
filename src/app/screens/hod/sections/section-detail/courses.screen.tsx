@@ -1,13 +1,11 @@
 import {DataTable} from '@app/components/data-table';
-import {studentResultsRoute} from '@app/routes/shared.routes';
-import {AllocationType, CourseType, UserType} from '@app/types';
+import {AllocationType, CourseType} from '@app/types';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, Card} from 'react-native-paper';
+import {ActivityIndicator, Card, Text} from 'react-native-paper';
 
 export default function CoursesScreen() {
   const route = useRoute<any>();
-  const navigation = useNavigation<any>();
   const [courses, setCourses] = useState<CourseType[]>([]);
   const allocations: AllocationType[] = route.params!.allocations;
 
@@ -28,9 +26,16 @@ export default function CoursesScreen() {
       <DataTable
         data={courses}
         columns={[
-          {title: 'Code', selector: 'code'},
+          {title: 'Code', selector: 'id'},
           {title: 'Name', selector: 'title'},
-          {title: 'Credit Hours', selector: 'creditHours'},
+          {
+            title: 'Credit Hours',
+            selector: ({item: {theoryHours: t, labHours: l}}) => (
+              <Text>
+                {Math.floor(t + l / 2)} ({t}-{l})
+              </Text>
+            ),
+          },
         ]}
       />
     </Card>

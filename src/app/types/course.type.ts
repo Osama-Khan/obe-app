@@ -6,8 +6,10 @@ import ProgramType from './program.type';
 
 type CourseType = DbEntity & {
   title: string;
-  code: string;
-  creditHours: number;
+  titleShort: string;
+  id: string;
+  theoryHours: number;
+  labHours: number;
   programs?: ProgramType[];
   clos?: CLOType[];
   allocations?: AllocationType[];

@@ -76,7 +76,7 @@ export const Home = () => {
                 }}>
                 <View>
                   <Title style={{margin: 16, marginTop: 16}}>
-                    {item.course!.title}
+                    {item.course!.titleShort}
                   </Title>
                   <Caption style={{margin: 16, marginBottom: 16}}>
                     Teaching in {item.program!.title}-{item.section!.semester}

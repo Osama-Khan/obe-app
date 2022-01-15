@@ -22,7 +22,9 @@ export default function AllocationDetail() {
     navigation.setOptions({
       headerTitle: () => (
         <View style={{flexDirection: 'row'}}>
-          <Title style={{color: 'white'}}>{allocation.course!.title}</Title>
+          <Title style={{color: 'white'}}>
+            {allocation.course!.titleShort}
+          </Title>
           <Caption
             style={{
               alignSelf: 'flex-end',

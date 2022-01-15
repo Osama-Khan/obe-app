@@ -31,7 +31,7 @@ export default function ViewClosScreen() {
   const height = useWindowDimensions().height - 92;
 
   useMemo(() => {
-    navigation.setOptions({headerTitle: course.title + ' CLOs'});
+    navigation.setOptions({headerTitle: course.titleShort + ' CLOs'});
     objectiveMapService
       .getCourseMaps(program.id, course.id)
       .then(res => {
