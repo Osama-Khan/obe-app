@@ -3,6 +3,7 @@ import {
   AllocationDetailScreen,
   EvaluationScreen,
   Home,
+  ManageAssessmentScreen,
 } from '@app/screens/teacher';
 import {RouteType} from '@app/types/route.type';
 import {evaluationDetailRoute, studentResultsRoute} from './shared.routes';
@@ -17,6 +18,12 @@ export const allocationDetailRoute: RouteType = {
   id: 'allocation',
   name: 'Allocation',
   component: AllocationDetailScreen,
+};
+
+export const manageAssessmentRoute: RouteType = {
+  id: 'manage-assessment',
+  name: 'Manage Assessments',
+  component: ManageAssessmentScreen,
 };
 
 export const addActivityRoute: RouteType = {
@@ -34,6 +41,7 @@ export const evaluationRoute: RouteType = {
 export default [
   homeRoute,
   allocationDetailRoute,
+  manageAssessmentRoute,
   addActivityRoute,
   evaluationRoute,
   studentResultsRoute,
