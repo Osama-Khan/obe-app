@@ -24,6 +24,7 @@ import {
   FAB,
   IconButton,
   Menu,
+  Searchbar,
   Title,
 } from 'react-native-paper';
 
@@ -31,6 +32,7 @@ export default function ProgramCoursesScreen() {
   const [deleting, setDeleting] = useState<CourseType>();
   const [menu, setMenu] = useState('');
   const [courses, setCourses] = useState<CourseType[]>();
+  const [search, setSearch] = useState('');
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
   const program = route.params!.program;
@@ -52,8 +54,20 @@ export default function ProgramCoursesScreen() {
 
   return courses ? (
     <>
+      <Searchbar
+        value={search}
+        onChangeText={setSearch}
+        style={{margin: 8}}
+        editable={courses.length > 0}
+        placeholder="Search Courses..."
+      />
       <FlatList
-        data={courses}
+        data={courses.filter(
+          c =>
+            c.title.includes(search) ||
+            c.titleShort.includes(search) ||
+            c.id.includes(search),
+        )}
         renderItem={({item, index}) => (
           <Card
             key={item.id}
@@ -106,7 +120,9 @@ export default function ProgramCoursesScreen() {
                   />
                 </Menu>
               </View>
-              <Caption>{item.id}</Caption>
+              <Caption>
+                {item.id} | {item.title}
+              </Caption>
             </View>
             <Divider />
             <Button
