@@ -15,13 +15,10 @@ import {
   SectionsScreen,
   SectionDetailScreen,
   AbstractMappingScreen,
+  AssessmentScreen,
 } from '@app/screens/hod';
 import {RouteType} from '@app/types/route.type';
-import {
-  assessmentRoute,
-  evaluationDetailRoute,
-  studentResultsRoute,
-} from './shared.routes';
+import {evaluationDetailRoute, studentResultsRoute} from './shared.routes';
 
 export const homeRoute: RouteType = {
   id: 'home',
@@ -117,6 +114,12 @@ export const sectionDetailRoute: RouteType = {
   id: 'section-detail',
   name: 'Section Detail',
   component: SectionDetailScreen,
+};
+
+export const assessmentRoute: RouteType = {
+  id: 'assessment',
+  name: 'Assessment',
+  component: AssessmentScreen,
 };
 
 export default [
