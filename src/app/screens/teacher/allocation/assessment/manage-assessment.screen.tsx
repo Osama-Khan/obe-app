@@ -35,7 +35,6 @@ export const ManageAssessmentScreen = () => {
   const route = useRoute<any>();
   const navigation = useNavigation();
   const course: CourseType = route.params!.course!;
-  const onChange = route.params!.onChange;
 
   const getCloTotal = (id: string) => {
     if (!assessments || assessments.length === 0) return 0;
@@ -46,6 +45,10 @@ export const ManageAssessmentScreen = () => {
 
   useMemo(() => {
     navigation.setOptions({headerTitle: course.titleShort + ' Assessment'});
+    navigation.addListener('beforeRemove', () => {
+      // Updates previous screen
+      route.params!.onChange && route.params!.onChange();
+    });
   }, []);
 
   useEffect(() => {
@@ -143,7 +146,6 @@ export const ManageAssessmentScreen = () => {
           <AddCLOView
             onAdd={() => {
               setUpdates(updates + 1);
-              onChange();
               setModalShown(false);
             }}
             type={selectedType}
