@@ -2,6 +2,7 @@ import Icon from '@app/components/icon';
 import {ConfirmModal} from '@app/components/modal';
 import {ManyCriteria} from '@app/models/criteria';
 import {
+  abstractMappingRoute,
   addCourseRoute,
   editCourseRoute,
   viewClosRoute,
@@ -124,6 +125,18 @@ export default function ProgramCoursesScreen() {
                 {item.id} | {item.title}
               </Caption>
             </View>
+            <Divider />
+            <Button
+              icon="graphql"
+              style={{borderRadius: 0}}
+              onPress={() => {
+                navigation.navigate(abstractMappingRoute.name, {
+                  course: item,
+                  program,
+                });
+              }}>
+              Abstract Mapping
+            </Button>
             <Divider />
             <Button
               icon="graph"

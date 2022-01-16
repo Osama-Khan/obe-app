@@ -5,7 +5,6 @@ import {
   ViewProgramScreen,
   Home,
   UploadAllocationScreen,
-  AssessmentScreen,
   AddCourseScreen,
   EditCourseScreen,
   ViewCoursesScreen,
@@ -15,6 +14,7 @@ import {
   PLOMappingsScreen,
   SectionsScreen,
   SectionDetailScreen,
+  AbstractMappingScreen,
 } from '@app/screens/hod';
 import {RouteType} from '@app/types/route.type';
 import {
@@ -83,6 +83,12 @@ export const viewClosRoute: RouteType = {
   component: ViewClosScreen,
 };
 
+export const abstractMappingRoute: RouteType = {
+  id: 'abstract-mapping',
+  name: 'Abstract Mapping',
+  component: AbstractMappingScreen,
+};
+
 export const addCloRoute: RouteType = {
   id: 'add-clo',
   name: 'Add CLO',
@@ -126,6 +132,7 @@ export default [
   editCourseRoute,
   programCoursesRoute,
   viewClosRoute,
+  abstractMappingRoute,
   addCloRoute,
   studentResultsRoute,
   sectionsRoute,

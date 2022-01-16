@@ -1,6 +1,6 @@
 import DbEntity from './db-entity.type';
 import ObjectiveMapType from './objective-map.type';
-import {ProgramPloType} from '.';
+import {CourseType, ProgramPloType} from '.';
 
 type PLOType = DbEntity & {
   title: string;
@@ -8,6 +8,7 @@ type PLOType = DbEntity & {
   passing: number;
   maps?: ObjectiveMapType[];
   programMaps?: ProgramPloType[];
+  courses?: CourseType[];
 };
 
 export default PLOType;
