@@ -12,11 +12,6 @@ import {
   Switch,
 } from 'react-native-paper';
 import {ParamsType, PLOWeightedType} from '../add-clo.screen';
-import WeightPicker from '@app/components/WeightPicker';
-
-type ActiveType =
-  | (PLOType & {weight: number; usedWeight: number; number: number})
-  | undefined;
 
 export default function AddCLOForm({
   onAdd,

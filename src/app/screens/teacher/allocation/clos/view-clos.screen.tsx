@@ -1,28 +1,15 @@
 import {CLOList} from '@app/components/CloList';
-import Icon from '@app/components/icon';
 import {IconMessageView} from '@app/components/icon-message-view';
 import {ConfirmModal} from '@app/components/modal';
-import {addCloRoute} from '@app/routes/hod.routes';
+import {addCloRoute} from '@app/routes/teacher.routes';
 import cloService from '@app/services/clo.service';
 import objectiveMapService from '@app/services/objective-map.service';
 import uiService from '@app/services/ui.service';
-import {colors} from '@app/styles';
 import {CLOType, CourseType, ProgramType} from '@app/types';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useMemo, useState} from 'react';
-import {FlatList, useWindowDimensions, View} from 'react-native';
-import {
-  ActivityIndicator,
-  Badge,
-  Caption,
-  Card,
-  Divider,
-  FAB,
-  IconButton,
-  List,
-  Text,
-  Title,
-} from 'react-native-paper';
+import {useWindowDimensions, View} from 'react-native';
+import {ActivityIndicator, FAB} from 'react-native-paper';
 
 export default function ViewClosScreen() {
   const [clos, setClos] = useState<CLOType[]>();
