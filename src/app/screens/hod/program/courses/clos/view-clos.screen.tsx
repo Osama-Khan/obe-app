@@ -11,7 +11,6 @@ import {ActivityIndicator} from 'react-native-paper';
 
 export default function ViewClosScreen() {
   const [clos, setClos] = useState<CLOType[]>();
-  const [updates, setUpdates] = useState(0);
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
   const course: CourseType = route.params!.course;
@@ -38,16 +37,17 @@ export default function ViewClosScreen() {
         setClos(sortClos(clos as CLOType[]));
       })
       .catch(() => uiService.toastError('Failed to fetch CLOs'));
-  }, [updates]);
+  }, []);
 
-  const gotoEdit = () => {
+  const gotoEdit = (clo: CLOType) => {
     if (!clos) return;
     navigation.navigate(editCloRoute.name, {
-      course,
       program,
-      clos,
-      onEdit: () => {
-        setUpdates(updates + 1);
+      clo,
+      onEdit: (clo: CLOType) => {
+        const idx = clos.findIndex(c => c.id === clo.id);
+        clos[idx] = clo;
+        setClos(sortClos(clos));
       },
     });
   };
