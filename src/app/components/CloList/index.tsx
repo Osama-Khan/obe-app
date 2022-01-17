@@ -16,9 +16,10 @@ import {CLOType} from '@app/types';
 
 type P = Omit<FlatListProps<CLOType>, 'data' | 'renderItem'> & {
   clos: CLOType[];
-  onDelete: (item: CLOType) => void;
+  onDelete?: (item: CLOType) => void;
+  onEdit?: (item: CLOType) => void;
 };
-export const CLOList = ({clos, onDelete, ...props}: P) => (
+export const CLOList = ({clos, onDelete, onEdit, ...props}: P) => (
   <FlatList
     {...props}
     data={clos}
@@ -35,12 +36,22 @@ export const CLOList = ({clos, onDelete, ...props}: P) => (
         <View style={{padding: 8}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Title>CLO {item.number}</Title>
-            <IconButton
-              style={{marginLeft: 'auto'}}
-              color={colors.red}
-              icon="link-off"
-              onPress={() => onDelete(item)}
-            />
+            {!!onDelete && (
+              <IconButton
+                style={{marginLeft: 'auto'}}
+                color={colors.red}
+                icon="link-off"
+                onPress={() => onDelete(item)}
+              />
+            )}
+            {!!onEdit && (
+              <IconButton
+                style={{marginLeft: 'auto'}}
+                color={colors.primary}
+                icon="pencil"
+                onPress={() => onEdit(item)}
+              />
+            )}
           </View>
           {item.maps![0].weight === 0 && (
             <Badge
