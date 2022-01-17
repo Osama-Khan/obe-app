@@ -136,7 +136,7 @@ export const ManageAssessmentScreen = () => {
                 <Button
                   icon="plus"
                   mode="outlined"
-                  disabled={noClos || invalidPartial}
+                  disabled={noClos || invalidFull}
                   style={{
                     alignSelf: 'center',
                     margin: 8,
@@ -164,8 +164,8 @@ export const ManageAssessmentScreen = () => {
             type={selectedType}
             courseId={course.id}
             clos={clos
-              .map(c => ({...c, weight: getCloTotal(c.id)}))
-              .filter(c => c.weight > 0)}
+              .filter(c => c.maps!.every(m => m.weight > 0))
+              .map(c => ({...c, weight: getCloTotal(c.id)}))}
           />
         </Modal>
       )}
