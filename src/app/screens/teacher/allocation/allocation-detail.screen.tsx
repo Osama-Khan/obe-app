@@ -3,6 +3,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import React, {useMemo} from 'react';
 import {View} from 'react-native';
 import {Caption, Title} from 'react-native-paper';
+import {ViewClosScreen} from './clos';
 import {ActivitiesScreen} from './activities';
 import {AssessmentScreen} from './assessment';
 import {StudentsScreen} from './students';
@@ -50,6 +51,14 @@ export default function AllocationDetail() {
         name="Assessment"
         component={AssessmentScreen}
         initialParams={{course: allocation.course!}}
+      />
+      <Screen
+        name="CLOs"
+        component={ViewClosScreen}
+        initialParams={{
+          course: allocation.course!,
+          program: allocation.program!,
+        }}
       />
       <Screen
         name="Students"

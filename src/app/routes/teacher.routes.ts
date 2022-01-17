@@ -1,5 +1,6 @@
 import {
   AddActivityScreen,
+  AddCloScreen,
   AllocationDetailScreen,
   EvaluationScreen,
   Home,
@@ -32,6 +33,12 @@ export const addActivityRoute: RouteType = {
   component: AddActivityScreen,
 };
 
+export const addCloRoute: RouteType = {
+  id: 'add-clo',
+  name: 'Add CLO',
+  component: AddCloScreen,
+};
+
 export const evaluationRoute: RouteType = {
   id: 'evaluation',
   name: 'Evaluation',
@@ -43,6 +50,7 @@ export default [
   allocationDetailRoute,
   manageAssessmentRoute,
   addActivityRoute,
+  addCloRoute,
   evaluationRoute,
   studentResultsRoute,
   evaluationDetailRoute,
