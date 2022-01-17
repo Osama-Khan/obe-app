@@ -58,6 +58,7 @@ export const ManageAssessmentScreen = () => {
     criteria.addCondition('course', course!.id);
     const courseCrit = new ManyCriteria<CLOType>();
     courseCrit.addCondition('course', course!.id);
+    courseCrit.addRelation('maps');
     assessmentService
       .get(criteria)
       .then(r => setAssessments(r.data))
@@ -73,17 +74,29 @@ export const ManageAssessmentScreen = () => {
   }, [updates]);
 
   const loaded = types && assessments && clos;
+  const noClos = clos ? clos.length === 0 : false;
+  const invalidPartial = clos
+    ? clos.some(c => c.maps!.some(m => m.weight === 0))
+    : false;
+  const invalidFull =
+    invalidPartial &&
+    (clos ? clos.every(c => c.maps!.every(m => m.weight === 0)) : false);
   return loaded ? (
     <>
-      {clos.length === 0 ? (
+      {noClos || invalidPartial ? (
         <Caption
           style={{
             textAlign: 'center',
             color: 'white',
             marginVertical: 0,
-            backgroundColor: colors.red,
+            backgroundColor:
+              invalidPartial && !invalidFull ? colors.yellow : colors.red,
           }}>
-          This course has no CLOs.
+          {noClos
+            ? 'This course has no CLOs.'
+            : `${
+                invalidFull ? 'The' : 'Some of the'
+              } CLOs of this course need weights from HOD.`}
         </Caption>
       ) : (
         <></>
@@ -123,7 +136,7 @@ export const ManageAssessmentScreen = () => {
                 <Button
                   icon="plus"
                   mode="outlined"
-                  disabled={clos.length === 0}
+                  disabled={noClos || invalidPartial}
                   style={{
                     alignSelf: 'center',
                     margin: 8,
@@ -150,7 +163,9 @@ export const ManageAssessmentScreen = () => {
             }}
             type={selectedType}
             courseId={course.id}
-            clos={clos.map(c => ({...c, weight: getCloTotal(c.id)}))}
+            clos={clos
+              .map(c => ({...c, weight: getCloTotal(c.id)}))
+              .filter(c => c.weight > 0)}
           />
         </Modal>
       )}
