@@ -9,7 +9,7 @@ import {
   EditCourseScreen,
   ViewCoursesScreen,
   ViewClosScreen,
-  AddCloScreen,
+  EditCloScreen,
   ViewPlosScreen,
   PLOMappingsScreen,
   SectionsScreen,
@@ -86,10 +86,10 @@ export const abstractMappingRoute: RouteType = {
   component: AbstractMappingScreen,
 };
 
-export const addCloRoute: RouteType = {
-  id: 'add-clo',
-  name: 'Add CLO',
-  component: AddCloScreen,
+export const editCloRoute: RouteType = {
+  id: 'edit-clo',
+  name: 'Edit CLO',
+  component: EditCloScreen,
 };
 
 export const allocationRoute: RouteType = {
@@ -136,7 +136,7 @@ export default [
   programCoursesRoute,
   viewClosRoute,
   abstractMappingRoute,
-  addCloRoute,
+  editCloRoute,
   studentResultsRoute,
   sectionsRoute,
   sectionDetailRoute,
