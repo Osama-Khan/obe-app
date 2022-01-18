@@ -1,5 +1,4 @@
 import {
-  AssessmentScreen,
   EvaluationDetailScreen,
   StudentResultsScreen,
 } from '@app/screens/shared';
@@ -19,10 +18,4 @@ export const evaluationDetailRoute: RouteType = {
     headerTitle: '',
     headerShadowVisible: false,
   },
-};
-
-export const assessmentRoute: RouteType = {
-  id: 'assessment',
-  name: 'Assessment',
-  component: AssessmentScreen,
 };
