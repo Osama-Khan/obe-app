@@ -49,7 +49,7 @@ export default function EvaluationDetailScreen() {
             bottom: -16,
           }}>
           <Caption style={{alignSelf: 'center', marginTop: 8}}>
-            {achieved}%/{evaluated}%
+            {achieved.toFixed(2)}%/{evaluated.toFixed(2)}%
           </Caption>
           <ProgressBar
             progress={evaluated / 100}
