@@ -129,18 +129,6 @@ export default function ProgramCoursesScreen() {
             </View>
             <Divider />
             <CourseCardButton
-              icon="graphql"
-              text="Abstract Mapping"
-              onPress={() => {
-                navigation.navigate(abstractMappingRoute.name, {
-                  course: item,
-                  program,
-                });
-              }}
-              warning={item.needsPlos}
-            />
-            <Divider />
-            <CourseCardButton
               icon="graph"
               text="CLOs"
               onPress={() => {
@@ -149,7 +137,8 @@ export default function ProgramCoursesScreen() {
                   program,
                 });
               }}
-              warning={!!item.needsClos}
+              disabled={item.needsPlos}
+              warning={!item.needsPlos && !!item.needsClos}
             />
             <Divider />
             <CourseCardButton
@@ -160,7 +149,20 @@ export default function ProgramCoursesScreen() {
                   course: item,
                 });
               }}
-              warning={!!item.needsAssessment}
+              disabled={item.needsPlos}
+              warning={!item.needsPlos && !!item.needsAssessment}
+            />
+            <Divider />
+            <CourseCardButton
+              icon="graphql"
+              text="Abstract Mapping"
+              onPress={() => {
+                navigation.navigate(abstractMappingRoute.name, {
+                  course: item,
+                  program,
+                });
+              }}
+              warning={item.needsPlos}
             />
           </Card>
         )}

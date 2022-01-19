@@ -11,8 +11,8 @@ export default function ActionIndicator() {
         backgroundColor: colors.primarySubtle,
         justifyContent: 'center',
         position: 'absolute',
-        right: 0,
-        height: '100%',
+        right: 8,
+        borderRadius: 100,
       }}>
       <Icon name="exclamation" color={colors.primary} size={32} />
     </View>

@@ -11,16 +11,25 @@ type P = {
   /** Text to show in button */
   text: string;
   /** If warning should be shown next to button */
-  warning: boolean;
+  warning?: boolean;
+  /** If button should be disabled */
+  disabled?: boolean;
 };
 
-export default function CourseCardButton({onPress, icon, text, warning}: P) {
+export default function CourseCardButton({
+  onPress,
+  icon,
+  text,
+  warning,
+  disabled,
+}: P) {
   return (
-    <View style={{flexDirection: 'row'}}>
+    <View style={{flexDirection: 'row', alignItems: 'center'}}>
       <Button
         icon={icon}
         style={{borderRadius: 0, flexGrow: 1}}
-        onPress={onPress}>
+        onPress={onPress}
+        disabled={disabled}>
         {text}
       </Button>
       {warning && <ActionIndicator />}
