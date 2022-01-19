@@ -42,7 +42,7 @@ export const ViewProgramScreen = ({navigation}: P) => {
         placeholder="Search Programs..."
         value={search}
         onChangeText={setSearch}
-        style={{margin: 16, marginBottom: 0}}
+        style={{borderRadius: 0}}
       />
       <FetchingFlatList
         key={updates}

@@ -36,7 +36,7 @@ export default function ProgramCoursesScreen() {
       <Searchbar
         value={search}
         onChangeText={setSearch}
-        style={{margin: 8}}
+        style={{borderRadius: 0}}
         editable={courses.length > 0}
         placeholder="Search Courses..."
       />
