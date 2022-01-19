@@ -25,7 +25,7 @@ import {
   Searchbar,
   Title,
 } from 'react-native-paper';
-import {CourseCardButton, CourseCardMenu} from './components';
+import {CourseCard, CourseCardButton, CourseCardMenu} from './components';
 
 export default function ProgramCoursesScreen() {
   const [deleting, setDeleting] = useState<CourseType>();
@@ -66,78 +66,20 @@ export default function ProgramCoursesScreen() {
             c.id.includes(search),
         )}
         renderItem={({item, index}) => (
-          <Card
-            key={item.id}
-            style={{
-              borderTopWidth: 2,
-              borderColor: colors.primary,
-              margin: 16,
-              marginVertical: 8,
-              overflow: 'hidden',
-            }}>
-            <View style={{padding: 8}}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}>
-                <Title>{item.titleShort}</Title>
-                <CourseCardMenu
-                  onEdit={() => {
-                    navigation.navigate(editCourseRoute.name, {
-                      courseId: item.id,
-                      onEdit: (course: Partial<CourseType>) => {
-                        courses[index] = {...item, ...course};
-                        setCourses([...courses]);
-                      },
-                    });
-                  }}
-                  onDelete={() => setDeleting(item)}
-                />
-              </View>
-              <Caption>
-                {item.id} | {item.title}
-              </Caption>
-            </View>
-            <Divider />
-            <CourseCardButton
-              icon="graph"
-              text="CLOs"
-              onPress={() => {
-                navigation.navigate(viewClosRoute.name, {
-                  course: item,
-                  program,
-                });
-              }}
-              disabled={item.needsPlos}
-              warning={!item.needsPlos && !!item.needsClos}
-            />
-            <Divider />
-            <CourseCardButton
-              icon="table-check"
-              text="Assessment"
-              onPress={() => {
-                navigation.navigate(assessmentRoute.name, {
-                  course: item,
-                });
-              }}
-              disabled={item.needsPlos}
-              warning={!item.needsPlos && !!item.needsAssessment}
-            />
-            <Divider />
-            <CourseCardButton
-              icon="graphql"
-              text="Abstract Mapping"
-              onPress={() => {
-                navigation.navigate(abstractMappingRoute.name, {
-                  course: item,
-                  program,
-                });
-              }}
-              warning={item.needsPlos}
-            />
-          </Card>
+          <CourseCard
+            course={item}
+            program={program}
+            onEdit={() => {
+              navigation.navigate(editCourseRoute.name, {
+                courseId: item.id,
+                onEdit: (course: Partial<CourseType>) => {
+                  courses[index] = {...item, ...course};
+                  setCourses([...courses]);
+                },
+              });
+            }}
+            onDelete={() => setDeleting(item)}
+          />
         )}
       />
       <FAB
