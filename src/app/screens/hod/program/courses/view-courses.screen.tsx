@@ -11,7 +11,6 @@ import {CourseCard} from './components';
 
 export default function ProgramCoursesScreen() {
   const [deleting, setDeleting] = useState<CourseType>();
-  const [menu, setMenu] = useState('');
   const [courses, setCourses] = useState<CourseWithActionType[]>();
   const [search, setSearch] = useState('');
   const route = useRoute<any>();
