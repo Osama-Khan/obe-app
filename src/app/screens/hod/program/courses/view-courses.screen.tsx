@@ -25,7 +25,7 @@ import {
   Searchbar,
   Title,
 } from 'react-native-paper';
-import {CourseCardButton} from './components';
+import {CourseCardButton, CourseCardMenu} from './components';
 
 export default function ProgramCoursesScreen() {
   const [deleting, setDeleting] = useState<CourseType>();
@@ -89,39 +89,18 @@ export default function ProgramCoursesScreen() {
                   justifyContent: 'space-between',
                 }}>
                 <Title>{item.titleShort}</Title>
-                <Menu
-                  visible={menu === item.id}
-                  anchor={
-                    <IconButton
-                      icon="dots-vertical"
-                      onPress={() => setMenu(item.id)}
-                    />
-                  }
-                  onDismiss={() => setMenu('')}>
-                  <Menu.Item
-                    title="Edit"
-                    icon="pencil"
-                    onPress={() => {
-                      navigation.navigate(editCourseRoute.name, {
-                        courseId: item.id,
-                        onEdit: (course: Partial<CourseType>) => {
-                          courses[index] = {...item, ...course};
-                          setCourses([...courses]);
-                        },
-                      });
-                      setMenu('');
-                    }}
-                  />
-                  <Menu.Item
-                    title="Delete"
-                    icon={p => <Icon {...p} color={colors.red} name="delete" />}
-                    titleStyle={{color: colors.red}}
-                    onPress={() => {
-                      setDeleting(item);
-                      setMenu('');
-                    }}
-                  />
-                </Menu>
+                <CourseCardMenu
+                  onEdit={() => {
+                    navigation.navigate(editCourseRoute.name, {
+                      courseId: item.id,
+                      onEdit: (course: Partial<CourseType>) => {
+                        courses[index] = {...item, ...course};
+                        setCourses([...courses]);
+                      },
+                    });
+                  }}
+                  onDelete={() => setDeleting(item)}
+                />
               </View>
               <Caption>
                 {item.id} | {item.title}
