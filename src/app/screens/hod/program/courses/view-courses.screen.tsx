@@ -1,6 +1,5 @@
 import Icon from '@app/components/icon';
 import {ConfirmModal} from '@app/components/modal';
-import {ManyCriteria} from '@app/models/criteria';
 import {
   abstractMappingRoute,
   addCourseRoute,
@@ -9,7 +8,6 @@ import {
   viewClosRoute,
 } from '@app/routes/hod.routes';
 import courseService from '@app/services/course.service';
-import programService from '@app/services/program.service';
 import uiService from '@app/services/ui.service';
 import {colors} from '@app/styles';
 import {CourseType, ProgramType} from '@app/types';
@@ -18,7 +16,6 @@ import React, {useEffect, useMemo, useState} from 'react';
 import {FlatList, View} from 'react-native';
 import {
   ActivityIndicator,
-  Button,
   Caption,
   Card,
   Divider,
@@ -28,11 +25,18 @@ import {
   Searchbar,
   Title,
 } from 'react-native-paper';
+import {CourseCardButton} from './components';
 
 export default function ProgramCoursesScreen() {
   const [deleting, setDeleting] = useState<CourseType>();
   const [menu, setMenu] = useState('');
-  const [courses, setCourses] = useState<CourseType[]>();
+  const [courses, setCourses] = useState<
+    (CourseType & {
+      needsPlos: boolean;
+      needsClos?: boolean;
+      needsAssessment?: boolean;
+    })[]
+  >();
   const [search, setSearch] = useState('');
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
@@ -43,12 +47,10 @@ export default function ProgramCoursesScreen() {
   }, []);
 
   useEffect(() => {
-    const criteria = new ManyCriteria<ProgramType>();
-    criteria.addRelation('courses');
-    programService
-      .getOne(program.id, criteria)
+    courseService
+      .getWithActions(program.id)
       .then(r => {
-        setCourses(r.data.courses!);
+        setCourses(r.data!);
       })
       .catch(e => uiService.toastError('Could not fetch courses!'));
   }, []);
@@ -126,40 +128,40 @@ export default function ProgramCoursesScreen() {
               </Caption>
             </View>
             <Divider />
-            <Button
+            <CourseCardButton
               icon="graphql"
-              style={{borderRadius: 0}}
+              text="Abstract Mapping"
               onPress={() => {
                 navigation.navigate(abstractMappingRoute.name, {
                   course: item,
                   program,
                 });
-              }}>
-              Abstract Mapping
-            </Button>
+              }}
+              warning={item.needsPlos}
+            />
             <Divider />
-            <Button
+            <CourseCardButton
               icon="graph"
-              style={{borderRadius: 0}}
+              text="CLOs"
               onPress={() => {
                 navigation.navigate(viewClosRoute.name, {
                   course: item,
                   program,
                 });
-              }}>
-              CLOs
-            </Button>
+              }}
+              warning={!!item.needsClos}
+            />
             <Divider />
-            <Button
+            <CourseCardButton
               icon="table-check"
-              style={{borderRadius: 0}}
+              text="Assessment"
               onPress={() => {
                 navigation.navigate(assessmentRoute.name, {
                   course: item,
                 });
-              }}>
-              Assessment
-            </Button>
+              }}
+              warning={!!item.needsAssessment}
+            />
           </Card>
         )}
       />
@@ -170,7 +172,7 @@ export default function ProgramCoursesScreen() {
           navigation.navigate(addCourseRoute.name, {
             onAdd: (course: CourseType, programs: Partial<ProgramType>[]) => {
               if (programs.find(p => p.id === program.id)) {
-                courses.push(course);
+                courses.push({...course, needsPlos: true});
                 setCourses([...courses]);
               }
             },
