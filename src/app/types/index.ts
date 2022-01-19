@@ -2,7 +2,7 @@ import {ActivityType, ActivityMapType, ActivityTypeType} from './activity.type';
 import AllocationType from './allocation.type';
 import AssessmentType from './assessment.type';
 import CLOType from './clo.type';
-import CourseType from './course.type';
+import CourseType, {CourseWithActionType} from './course.type';
 import ObjectiveMapType from './objective-map.type';
 import PLOType from './plo.type';
 import ProgramPloType from './program-plo.type';
@@ -21,6 +21,7 @@ export type {
   AssessmentType,
   CLOType,
   CourseType,
+  CourseWithActionType,
   ObjectiveMapType,
   PLOType,
   ProgramType,

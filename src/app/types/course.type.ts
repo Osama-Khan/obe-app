@@ -18,4 +18,10 @@ type CourseType = DbEntity & {
   plos: PLOType[];
 };
 
+export type CourseWithActionType = CourseType & {
+  needsPlos: boolean;
+  needsClos?: boolean;
+  needsAssessment?: boolean;
+};
+
 export default CourseType;

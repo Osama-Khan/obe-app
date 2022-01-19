@@ -10,7 +10,7 @@ import {
 import courseService from '@app/services/course.service';
 import uiService from '@app/services/ui.service';
 import {colors} from '@app/styles';
-import {CourseType, ProgramType} from '@app/types';
+import {CourseType, CourseWithActionType, ProgramType} from '@app/types';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useEffect, useMemo, useState} from 'react';
 import {FlatList, View} from 'react-native';
@@ -30,13 +30,7 @@ import {CourseCardButton, CourseCardMenu} from './components';
 export default function ProgramCoursesScreen() {
   const [deleting, setDeleting] = useState<CourseType>();
   const [menu, setMenu] = useState('');
-  const [courses, setCourses] = useState<
-    (CourseType & {
-      needsPlos: boolean;
-      needsClos?: boolean;
-      needsAssessment?: boolean;
-    })[]
-  >();
+  const [courses, setCourses] = useState<CourseWithActionType[]>();
   const [search, setSearch] = useState('');
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
