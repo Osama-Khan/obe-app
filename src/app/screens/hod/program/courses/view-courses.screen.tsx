@@ -1,31 +1,13 @@
-import Icon from '@app/components/icon';
 import {ConfirmModal} from '@app/components/modal';
-import {
-  abstractMappingRoute,
-  addCourseRoute,
-  assessmentRoute,
-  editCourseRoute,
-  viewClosRoute,
-} from '@app/routes/hod.routes';
+import {addCourseRoute, editCourseRoute} from '@app/routes/hod.routes';
 import courseService from '@app/services/course.service';
 import uiService from '@app/services/ui.service';
-import {colors} from '@app/styles';
 import {CourseType, CourseWithActionType, ProgramType} from '@app/types';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useEffect, useMemo, useState} from 'react';
-import {FlatList, View} from 'react-native';
-import {
-  ActivityIndicator,
-  Caption,
-  Card,
-  Divider,
-  FAB,
-  IconButton,
-  Menu,
-  Searchbar,
-  Title,
-} from 'react-native-paper';
-import {CourseCard, CourseCardButton, CourseCardMenu} from './components';
+import {FlatList} from 'react-native';
+import {ActivityIndicator, FAB, Searchbar} from 'react-native-paper';
+import {CourseCard} from './components';
 
 export default function ProgramCoursesScreen() {
   const [deleting, setDeleting] = useState<CourseType>();
