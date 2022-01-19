@@ -3,8 +3,12 @@ import React, {useState} from 'react';
 import {Menu, IconButton} from 'react-native-paper';
 import Icon from '@app/components/icon';
 
-type P = {onEdit: () => void; onDelete: () => void};
-export default function CourseCardMenu({onEdit, onDelete}: P) {
+export type CourseCardMenuProps = {onEdit: () => void; onDelete: () => void};
+
+export default function CourseCardMenu({
+  onEdit,
+  onDelete,
+}: CourseCardMenuProps) {
   const [vis, setVis] = useState(false);
   const show = () => setVis(true);
   const hide = () => setVis(false);
