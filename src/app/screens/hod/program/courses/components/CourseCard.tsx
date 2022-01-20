@@ -13,11 +13,18 @@ import {CourseCardMenu, CourseCardButton} from '.';
 import {CourseCardMenuProps} from './CourseCardMenu';
 
 type P = CourseCardMenuProps & {
+  onChanges: () => void;
   course: CourseWithActionType;
   program: ProgramType;
 };
 
-export default function CourseCard({course, program, onEdit, onDelete}: P) {
+export default function CourseCard({
+  course,
+  program,
+  onChanges,
+  onEdit,
+  onDelete,
+}: P) {
   const navigation = useNavigation<any>();
   return (
     <Card
@@ -49,8 +56,9 @@ export default function CourseCard({course, program, onEdit, onDelete}: P) {
         text="CLOs"
         onPress={() => {
           navigation.navigate(viewClosRoute.name, {
-            course: course,
+            course,
             program,
+            onChanges,
           });
         }}
         disabled={course.needsPlos}
@@ -62,7 +70,8 @@ export default function CourseCard({course, program, onEdit, onDelete}: P) {
         text="Assessment"
         onPress={() => {
           navigation.navigate(assessmentRoute.name, {
-            course: course,
+            course,
+            onChanges,
           });
         }}
         disabled={course.needsPlos}
@@ -74,8 +83,9 @@ export default function CourseCard({course, program, onEdit, onDelete}: P) {
         text="Abstract Mapping"
         onPress={() => {
           navigation.navigate(abstractMappingRoute.name, {
-            course: course,
+            course,
             program,
+            onChanges,
           });
         }}
         warning={course.needsPlos}

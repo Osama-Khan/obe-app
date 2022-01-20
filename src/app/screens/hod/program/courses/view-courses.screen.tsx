@@ -13,6 +13,7 @@ export default function ProgramCoursesScreen() {
   const [deleting, setDeleting] = useState<CourseType>();
   const [courses, setCourses] = useState<CourseWithActionType[]>();
   const [search, setSearch] = useState('');
+  const [changes, setChanges] = useState(0);
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
   const program = route.params!.program;
@@ -36,7 +37,7 @@ export default function ProgramCoursesScreen() {
         );
       })
       .catch(e => uiService.toastError('Could not fetch courses!'));
-  }, []);
+  }, [changes]);
 
   return courses ? (
     <>
@@ -58,6 +59,7 @@ export default function ProgramCoursesScreen() {
           <CourseCard
             course={item}
             program={program}
+            onChanges={() => setChanges(changes + 1)}
             onEdit={() => {
               navigation.navigate(editCourseRoute.name, {
                 courseId: item.id,
