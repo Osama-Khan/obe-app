@@ -13,7 +13,6 @@ import {
   Caption,
   Card,
   List,
-  Text,
 } from 'react-native-paper';
 
 const usePlos = (program: ProgramType) => {
@@ -34,21 +33,30 @@ const usePlos = (program: ProgramType) => {
 
 const useMappings = (course: CourseType) => {
   const [ids, setIds] = useState<string[]>();
+  const [locked, setLocked] = useState(false);
   useEffect(() => {
     const crit = new Criteria<CourseType>();
     crit.addRelation('plos');
+    crit.addSelect('id');
     courseService.getOne(course.id, crit).then(res => {
       setIds(res.data.plos.map(r => r.id));
+      setLocked(res.data.plos.length > 0);
     });
   }, []);
-  return {ids, setIds};
+  return {ids, setIds, locked, setLocked};
 };
 
 export default function AbstractMappingScreen() {
   const route = useRoute<any>();
   const {program, course} = route.params;
+  const onChanges = route.params.onChanges;
   const plos = usePlos(program);
-  const {ids: mapped, setIds: setMapped} = useMappings(course);
+  const {
+    ids: mapped,
+    setIds: setMapped,
+    locked,
+    setLocked,
+  } = useMappings(course);
   const [saving, setSaving] = useState(false);
   const navigation = useNavigation();
 
@@ -58,50 +66,60 @@ export default function AbstractMappingScreen() {
     });
   }, []);
 
+  const mappedPlos = plos?.filter(p => mapped?.includes(p.id));
+
   return plos && mapped ? (
     <ScrollView>
       <Card style={{margin: 8}}>
         <Caption style={{margin: 8, marginTop: 8}}>
-          Select PLOs to map to {course.title}
+          {locked
+            ? 'This course has already been abstract mapped.'
+            : `Select PLOs to map to ${course.title}.`}
         </Caption>
-        {plos.map(p => (
+        {(locked ? mappedPlos! : plos).map(p => (
           <List.Item
             title={`PLO ${p.number}`}
             description={p.title}
-            right={() => (
-              <Switch
-                value={!!mapped.find(id => id === p.id)}
-                disabled={saving}
-                onValueChange={() => {
-                  if (mapped.find(id => id === p.id)) {
-                    setMapped(mapped.filter(id => id !== p.id));
-                  } else {
-                    setMapped([...mapped, p.id]);
-                  }
-                }}
-              />
-            )}
+            right={
+              locked
+                ? undefined
+                : () => (
+                    <Switch
+                      value={!!mapped.find(id => id === p.id)}
+                      disabled={saving || locked}
+                      onValueChange={() => {
+                        if (mapped.find(id => id === p.id)) {
+                          setMapped(mapped.filter(id => id !== p.id));
+                        } else {
+                          setMapped([...mapped, p.id]);
+                        }
+                      }}
+                    />
+                  )
+            }
           />
         ))}
-        <Button
-          icon="floppy"
-          onPress={async () => {
-            setSaving(true);
-            try {
-              await courseService.update(course.id, {
-                plos: mapped.map(id => ({id})),
-              });
-              uiService.toastSuccess('Successfully updated mappings!');
-            } catch (_) {
-              uiService.toastError('Failed to update mapping!');
-            } finally {
-              setSaving(false);
-            }
-          }}
-          disabled={saving}
-          loading={saving}>
-          Save
-        </Button>
+        {!locked && (
+          <Button
+            icon="floppy"
+            onPress={async () => {
+              setSaving(true);
+              try {
+                await courseService.addAbstractMapping(course.id, mapped);
+                uiService.toastSuccess('Successfully created mappings!');
+                onChanges && onChanges();
+                setLocked(true);
+              } catch (_) {
+                uiService.toastError('Failed to create mapping!');
+              } finally {
+                setSaving(false);
+              }
+            }}
+            disabled={saving || locked || mapped.length === 0}
+            loading={saving}>
+            Save
+          </Button>
+        )}
       </Card>
     </ScrollView>
   ) : (
