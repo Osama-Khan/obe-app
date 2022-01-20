@@ -1,7 +1,6 @@
-import {ManyCriteria} from '@app/models/criteria';
+import {Criteria} from '@app/models/criteria';
 import cloService from '@app/services/clo.service';
-import objectiveMapService from '@app/services/objective-map.service';
-import programPloService from '@app/services/program-plo.service';
+import courseService from '@app/services/course.service';
 import uiService from '@app/services/ui.service';
 import {CLOType, CourseType, PLOType, ProgramType} from '@app/types';
 import {useNavigation, useRoute} from '@react-navigation/native';
@@ -24,10 +23,8 @@ export type ParamsType = {
   program: ProgramType;
 };
 
-export type PLOWeightedType = PLOType & {number: number; weight: number};
-
 export default function AddCloScreen() {
-  const [plos, setPlos] = useState<PLOWeightedType[]>();
+  const [plos, setPlos] = useState<PLOType[]>();
   const [saving, setSaving] = useState(false);
   const route = useRoute<{params: ParamsType; key: string; name: string}>();
   const navigation = useNavigation();
@@ -36,27 +33,11 @@ export default function AddCloScreen() {
 
   useEffect(() => {
     navigation.setOptions({headerTitle: `Add ${course.titleShort} CLO`});
-
-    const criteria = new ManyCriteria<any>();
-    criteria.addCondition('program', program.id);
-    criteria.addRelation('plo');
-
-    programPloService.get(criteria).then(r => {
-      const plos: PLOWeightedType[] = r.data.map(d => ({
-        ...d.plo!,
-        number: d.number,
-        weight: 0,
-      }));
-      objectiveMapService.get(criteria).then(r => {
-        const maps = r.data;
-        maps.forEach(m => {
-          const ind = plos.findIndex(p => p.id === m.plo!.id);
-          plos[ind].weight += m.weight;
-        });
-        setPlos(sortPlos(plos));
-      });
+    fetchPlos(course.id).then(plos => {
+      setPlos(plos);
     });
   }, []);
+
   return (
     <ScrollView>
       <Card style={{margin: 8, padding: 8}}>
@@ -97,5 +78,14 @@ const SavingView = () => (
   </>
 );
 
-const sortPlos = (plos: (PLOType & {number: number; weight: number})[]) =>
-  plos.sort((a, b) => a.number - b.number);
+const fetchPlos = async (courseId: string) => {
+  const courseCrit = new Criteria<CourseType>();
+  courseCrit.addRelation('plos');
+  courseCrit.addSelect('id');
+  const course = await courseService.getOne(courseId, courseCrit);
+  if (!course) {
+    uiService.toastError('Course not found!');
+    return undefined;
+  }
+  return course.data.plos;
+};

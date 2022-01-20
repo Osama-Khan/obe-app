@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {CLOType, CourseType, PLOType, ProgramType} from '@app/types';
 import {colors} from '@app/styles';
-import {View} from 'react-native';
+import {Alert, View} from 'react-native';
 import {
   TextInput,
   Button,
@@ -11,7 +11,7 @@ import {
   List,
   Switch,
 } from 'react-native-paper';
-import {ParamsType, PLOWeightedType} from '../add-clo.screen';
+import {ParamsType} from '../add-clo.screen';
 
 export default function AddCLOForm({
   onAdd,
@@ -23,7 +23,7 @@ export default function AddCLOForm({
   course: CourseType;
   program: ProgramType;
   clos: CLOType[];
-  plos: PLOWeightedType[];
+  plos: PLOType[];
 }) {
   const [number, setNumber] = useState('');
   const [title, setTitle] = useState('');
@@ -72,12 +72,12 @@ export default function AddCLOForm({
         return (
           <>
             <List.Item
-              title={`PLO ${p.number}`}
-              description={`${p.weight}% Assigned`}
+              title={p.title}
+              description={p.description}
+              onPress={() => Alert.alert(p.title, p.description)}
               right={() => (
                 <Switch
                   value={!!active?.find(a => a === p.id)}
-                  disabled={p.weight === 100}
                   style={{alignSelf: 'center'}}
                   onValueChange={() => {
                     if (active?.find(a => a === p.id)) {
