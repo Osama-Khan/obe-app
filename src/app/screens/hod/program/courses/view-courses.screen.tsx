@@ -25,7 +25,15 @@ export default function ProgramCoursesScreen() {
     courseService
       .getWithActions(program.id)
       .then(r => {
-        setCourses(r.data!);
+        setCourses(
+          r.data!.sort((a, b) =>
+            a.needsPlos || a.needsClos || a.needsAssessment
+              ? -1
+              : b.needsPlos || b.needsClos || b.needsAssessment
+              ? 1
+              : 0,
+          ),
+        );
       })
       .catch(e => uiService.toastError('Could not fetch courses!'));
   }, []);
