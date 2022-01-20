@@ -13,6 +13,14 @@ class CourseService extends CrudService<CourseType> {
   getWithActions(id: string): Promise<AxiosResponse<CourseWithActionType[]>> {
     return axios.get(`${this.endpoint}/with-actions/${id}`);
   }
+
+  /** Sets Abstract Mapping for a course
+   * @param id ID of the course
+   * @param plos List of plo IDs
+   */
+  addAbstractMapping(id: string, plos: string[]) {
+    return axios.put(`${this.endpoint}/${id}/abstract-mapping`, plos);
+  }
 }
 
 export default new CourseService();
