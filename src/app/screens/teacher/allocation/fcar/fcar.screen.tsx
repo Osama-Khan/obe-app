@@ -5,7 +5,7 @@ import uiService from '@app/services/ui.service';
 import {ActivityType, AllocationType, CLOType} from '@app/types';
 import {useRoute} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {ScrollView} from 'react-native';
+import {Alert, ScrollView, View} from 'react-native';
 import {
   Text,
   Card,
@@ -13,6 +13,7 @@ import {
   Caption,
   Divider,
   ActivityIndicator,
+  Button,
 } from 'react-native-paper';
 import FCARTable from './fcar.table';
 
@@ -21,6 +22,7 @@ const useClos = (courseId: string) => {
   useEffect(() => {
     const criteria = new ManyCriteria<CLOType>();
     criteria.addCondition('course', courseId);
+    criteria.addRelation('maps');
     criteria.addRelation('activityMaps');
     cloService
       .get(criteria)
@@ -68,9 +70,26 @@ export default function FCARScreen() {
           clos.map(c => (
             <>
               <Divider style={{marginTop: 12}} />
-              <Caption style={{margin: 8, textAlign: 'center'}}>
-                CLO {c.number}
-              </Caption>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}>
+                <Text style={{margin: 8, fontWeight: 'bold'}}>
+                  CLO {c.number}
+                </Text>
+                <Button
+                  icon="eye"
+                  onPress={() =>
+                    Alert.alert(
+                      `CLO ${c.number} PLOs`,
+                      c.maps!.map(m => m.plo!.title).join('\n'),
+                    )
+                  }>
+                  PLOs
+                </Button>
+              </View>
               <Card style={{margin: 8, overflow: 'hidden'}} mode="outlined">
                 <FCARTable
                   activities={activities.filter(a =>
