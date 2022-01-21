@@ -1,5 +1,6 @@
 import {
   EvaluationDetailScreen,
+  ManageAssessmentScreen,
   StudentResultsScreen,
 } from '@app/screens/shared';
 import {RouteType} from '@app/types/route.type';
@@ -18,4 +19,10 @@ export const evaluationDetailRoute: RouteType = {
     headerTitle: '',
     headerShadowVisible: false,
   },
+};
+
+export const manageAssessmentRoute: RouteType = {
+  id: 'manage-assessment',
+  name: 'Manage Assessments',
+  component: ManageAssessmentScreen,
 };
