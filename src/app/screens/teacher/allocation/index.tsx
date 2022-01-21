@@ -3,3 +3,4 @@ export * from './activities';
 export * from './assessment';
 export * from './clos';
 export * from './students';
+export * from './fcar';

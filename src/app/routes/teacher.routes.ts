@@ -3,6 +3,7 @@ import {
   AddCloScreen,
   AllocationDetailScreen,
   EvaluationScreen,
+  FCARScreen,
   Home,
 } from '@app/screens/teacher';
 import {RouteType} from '@app/types/route.type';
@@ -42,6 +43,12 @@ export const evaluationRoute: RouteType = {
   component: EvaluationScreen,
 };
 
+export const fcarRoute: RouteType = {
+  id: 'fcar',
+  name: 'FCAR',
+  component: FCARScreen,
+};
+
 export default [
   homeRoute,
   allocationDetailRoute,
@@ -51,4 +58,5 @@ export default [
   evaluationRoute,
   studentResultsRoute,
   evaluationDetailRoute,
+  fcarRoute,
 ];
