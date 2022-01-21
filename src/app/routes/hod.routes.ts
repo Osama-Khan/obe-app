@@ -18,7 +18,11 @@ import {
   AssessmentScreen,
 } from '@app/screens/hod';
 import {RouteType} from '@app/types/route.type';
-import {evaluationDetailRoute, studentResultsRoute} from './shared.routes';
+import {
+  evaluationDetailRoute,
+  manageAssessmentRoute,
+  studentResultsRoute,
+} from './shared.routes';
 
 export const homeRoute: RouteType = {
   id: 'home',
@@ -142,4 +146,5 @@ export default [
   sectionDetailRoute,
   evaluationDetailRoute,
   assessmentRoute,
+  manageAssessmentRoute,
 ];
