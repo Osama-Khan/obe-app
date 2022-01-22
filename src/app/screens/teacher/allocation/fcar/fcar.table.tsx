@@ -54,7 +54,7 @@ export default function FCARTable({activities}: P) {
               {grades.map(g => (
                 <DataTable.Cell>{g.total || '—'}</DataTable.Cell>
               ))}
-              <DataTable.Cell>{avg}</DataTable.Cell>
+              <DataTable.Cell>{parseFloat(avg) || '—'}</DataTable.Cell>
             </DataTable.Row>
           );
         })
