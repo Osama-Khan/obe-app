@@ -5,7 +5,7 @@ import uiService from '@app/services/ui.service';
 import {ActivityType, AllocationType, CLOType} from '@app/types';
 import {useRoute} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {Alert, ScrollView, View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import {
   Text,
   Card,
@@ -13,7 +13,6 @@ import {
   Caption,
   Divider,
   ActivityIndicator,
-  Button,
 } from 'react-native-paper';
 import FCARTable from './fcar.table';
 
@@ -67,38 +66,34 @@ export default function FCARScreen() {
         </Title>
         <Text style={{textAlign: 'center'}}>{allocation.course!.title}</Text>
         {clos && activities ? (
-          clos.map(c => (
-            <>
-              <Divider style={{marginTop: 12}} />
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}>
-                <Text style={{margin: 8, fontWeight: 'bold'}}>
-                  CLO {c.number}
-                </Text>
-                <Button
-                  icon="eye"
-                  onPress={() =>
-                    Alert.alert(
-                      `CLO ${c.number} PLOs`,
-                      c.maps!.map(m => m.plo!.title).join('\n'),
-                    )
-                  }>
-                  PLOs
-                </Button>
-              </View>
-              <Card style={{margin: 8, overflow: 'hidden'}} mode="outlined">
-                <FCARTable
-                  activities={activities.filter(a =>
-                    c.activityMaps.some(m => m.activity.id === a.id),
-                  )}
-                />
-              </Card>
-            </>
-          ))
+          <>
+            <Divider style={{marginTop: 12}} />
+            <Header>CLO-PLO Mapping</Header>
+            {clos.map(c => (
+              <>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Title style={{marginHorizontal: 8}}>CLO {c.number}</Title>
+                  <Caption style={{marginHorizontal: 8}}>
+                    {c.maps!.map(m => m.plo!.title).join('\n')}
+                  </Caption>
+                </View>
+                <Divider />
+              </>
+            ))}
+            {clos.map(c => (
+              <>
+                <Divider style={{marginTop: 12}} />
+                <Header>CLO {c.number}</Header>
+                <Card style={{margin: 8, overflow: 'hidden'}} mode="outlined">
+                  <FCARTable
+                    activities={activities.filter(a =>
+                      c.activityMaps.some(m => m.activity.id === a.id),
+                    )}
+                  />
+                </Card>
+              </>
+            ))}
+          </>
         ) : (
           <ActivityIndicator style={{margin: 16, alignSelf: 'center'}} />
         )}
@@ -106,3 +101,9 @@ export default function FCARScreen() {
     </ScrollView>
   );
 }
+
+const Header = ({children}: any) => (
+  <Text style={{margin: 8, fontWeight: 'bold', textAlign: 'center'}}>
+    {children}
+  </Text>
+);
