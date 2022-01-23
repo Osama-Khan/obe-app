@@ -1,6 +1,7 @@
+import {colors} from '@app/styles';
 import React from 'react';
-import {StatusBar, View} from 'react-native';
-import {ActivityIndicator, Text} from 'react-native-paper';
+import {Image, StatusBar, View} from 'react-native';
+import {ActivityIndicator, Card} from 'react-native-paper';
 
 export default function SplashScreen() {
   return (
@@ -13,9 +14,17 @@ export default function SplashScreen() {
           justifyContent: 'center',
           backgroundColor: '#fff',
         }}>
-        <ActivityIndicator size="large" />
-        <Text style={{marginTop: 16}}>{'  '}Logging you in...</Text>
+        <Card style={imgStyle} elevation={8}>
+          <Image source={require('@assets/logo.png')} style={imgStyle} />
+        </Card>
+        <ActivityIndicator
+          size="large"
+          color={colors.primary}
+          style={{marginTop: 48}}
+        />
       </View>
     </View>
   );
 }
+
+const imgStyle = {width: 144, height: 144};
