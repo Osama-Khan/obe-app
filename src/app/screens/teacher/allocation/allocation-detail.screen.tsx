@@ -56,6 +56,7 @@ export default function AllocationDetail() {
       />
       <Screen
         name="Assessment"
+        options={() => ({tabBarLabelStyle: {fontSize: 10}})}
         component={AssessmentScreen}
         initialParams={{course: allocation.course!}}
       />
