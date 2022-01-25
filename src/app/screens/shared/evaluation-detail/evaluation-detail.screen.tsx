@@ -3,8 +3,8 @@ import userService from '@app/services/user.service';
 import store from '@app/store';
 import {AppTheme, colors} from '@app/styles';
 import {CLOType} from '@app/types';
-import {useRoute} from '@react-navigation/native';
-import React from 'react';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import React, {useMemo} from 'react';
 import {useWindowDimensions, View} from 'react-native';
 import {
   Card,
@@ -17,9 +17,14 @@ import {
 
 export default function EvaluationDetailScreen() {
   const route = useRoute();
+  const navigation = useNavigation<any>();
   const width = useWindowDimensions().width;
   const {plo, evaluated, achieved, userId}: any = route.params;
   const isSelf = store.getState().user.userData?.id === userId;
+
+  useMemo(() => {
+    navigation.setOptions({headerTitle: `PLO${plo.number} Evaluation`});
+  }, []);
 
   return (
     <>
@@ -28,14 +33,6 @@ export default function EvaluationDetailScreen() {
           backgroundColor: colors.primary,
           paddingBottom: 32,
         }}>
-        <Title
-          style={{
-            fontWeight: 'bold',
-            color: '#fff',
-            marginLeft: 16,
-          }}>
-          PLO{plo.number} Evaluation
-        </Title>
         <Caption style={{color: '#ddd', marginLeft: 16}}>
           Details of {isSelf ? 'your ' : ''}evaluation of PLO {plo.number}{' '}
           {isSelf ? '' : `for ${userId} `}are as follows
