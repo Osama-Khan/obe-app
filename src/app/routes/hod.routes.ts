@@ -22,6 +22,7 @@ import {
   evaluationDetailRoute,
   manageAssessmentRoute,
   studentResultsRoute,
+  transcriptRoute,
 } from './shared.routes';
 
 export const homeRoute: RouteType = {
@@ -145,6 +146,7 @@ export default [
   sectionsRoute,
   sectionDetailRoute,
   evaluationDetailRoute,
+  transcriptRoute,
   assessmentRoute,
   manageAssessmentRoute,
 ];

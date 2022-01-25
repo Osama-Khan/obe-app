@@ -11,6 +11,7 @@ import {
   evaluationDetailRoute,
   manageAssessmentRoute,
   studentResultsRoute,
+  transcriptRoute,
 } from './shared.routes';
 
 export const homeRoute: RouteType = {
@@ -58,5 +59,6 @@ export default [
   evaluationRoute,
   studentResultsRoute,
   evaluationDetailRoute,
+  transcriptRoute,
   fcarRoute,
 ];
