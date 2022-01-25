@@ -82,7 +82,10 @@ export default function EvaluationDetailScreen() {
                 justifyContent: 'space-between',
                 alignItems: 'center',
               }}>
-              <Title>{item.activity.title}</Title>
+              <View>
+                <Title>{item.activity.title}</Title>
+                <Caption>{item.course.title}</Caption>
+              </View>
               <Caption style={{fontWeight: 'bold'}}>
                 {item.obtained}/{item.activity.marks}
               </Caption>
