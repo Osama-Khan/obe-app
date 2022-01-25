@@ -1,4 +1,5 @@
 import {ResultType} from '@app/types';
+import TranscriptType from '@app/types/transcript.type';
 import UserType from '@app/types/user.type';
 import axios, {AxiosResponse} from 'axios';
 import CrudService from './crud.service';
@@ -25,6 +26,15 @@ class UserService extends CrudService<UserType> {
    */
   getResultDetail(id: string, ploId: string) {
     return axios.get(`${this.endpoint}/${id}/result/plo/${ploId}`);
+  }
+
+  /**
+   * Returns course based PLO result of the student
+   * @param id ID of the student
+   * @returns Result represented by percentage of PLOs obtained in Courses
+   */
+  async getTranscript(id: string): Promise<AxiosResponse<TranscriptType>> {
+    return axios.get(`${this.endpoint}/${id}/transcript`);
   }
 }
 
