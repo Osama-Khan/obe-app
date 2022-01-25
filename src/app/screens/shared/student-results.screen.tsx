@@ -1,13 +1,28 @@
-import React from 'react';
-import {Caption, Card, Title} from 'react-native-paper';
+import React, {useMemo} from 'react';
+import {Caption, Card, IconButton, Title} from 'react-native-paper';
 import {ScrollView, View} from 'react-native';
 import StudentResultTable from '@app/components/StudentResultTable';
 import {UserType} from '@app/types';
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {transcriptRoute} from '@app/routes/shared.routes';
 
 export const StudentResultsScreen = () => {
+  const navigation = useNavigation<any>();
   const route = useRoute<any>();
   const user: UserType = route.params!.user;
+  useMemo(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <IconButton
+          icon="file-table"
+          onPress={() =>
+            navigation.navigate(transcriptRoute.name, {id: user.id})
+          }
+          color="white"
+        />
+      ),
+    });
+  }, []);
   return (
     <ScrollView>
       <View style={{margin: 16}}>
