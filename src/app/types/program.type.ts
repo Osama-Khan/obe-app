@@ -1,4 +1,4 @@
-import {ProgramPloType} from '.';
+import ProgramPloType from './program-plo.type';
 import CourseType from './course.type';
 import DbEntity from './db-entity.type';
 import SectionType from './section.type';

@@ -1,4 +1,4 @@
-import {ActivityMapType} from '.';
+import {ActivityMapType} from './activity.type';
 import CourseType from './course.type';
 import DbEntity from './db-entity.type';
 import ObjectiveMapType from './objective-map.type';

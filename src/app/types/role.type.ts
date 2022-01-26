@@ -1,4 +1,4 @@
-import {UserType} from '.';
+import UserType from './user.type';
 import DbEntity from './db-entity.type';
 
 type RoleType = DbEntity & {

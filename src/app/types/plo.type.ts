@@ -1,6 +1,7 @@
 import DbEntity from './db-entity.type';
 import ObjectiveMapType from './objective-map.type';
-import {CourseType, ProgramPloType} from '.';
+import CourseType from './course.type';
+import ProgramPloType from './program-plo.type';
 
 type PLOType = DbEntity & {
   title: string;

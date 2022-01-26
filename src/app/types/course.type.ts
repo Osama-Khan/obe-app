@@ -3,7 +3,7 @@ import AllocationType from './allocation.type';
 import CLOType from './clo.type';
 import DbEntity from './db-entity.type';
 import ProgramType from './program.type';
-import {PLOType} from '.';
+import PLOType from './plo.type';
 
 type CourseType = DbEntity & {
   title: string;
