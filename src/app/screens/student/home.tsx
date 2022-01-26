@@ -37,8 +37,8 @@ export const Home = () => {
       <FAB
         style={{
           position: 'absolute',
-          right: 8,
-          bottom: 8,
+          right: 16,
+          bottom: 16,
           backgroundColor: colors.red,
         }}
         icon="logout"

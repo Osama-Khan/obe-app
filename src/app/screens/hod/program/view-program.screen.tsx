@@ -121,7 +121,7 @@ export const ViewProgramScreen = ({navigation}: P) => {
       />
       <FAB
         icon="plus"
-        style={{position: 'absolute', bottom: 8, right: 8}}
+        style={{position: 'absolute', bottom: 16, right: 16}}
         onPress={() =>
           navigation.navigate(addProgramRoute.name, {
             onAdd: reloadList,
