@@ -51,7 +51,16 @@ export default function AddCloScreen() {
                 .insert(clo)
                 .then(r => {
                   uiService.toastSuccess('New CLO Added!');
-                  onAdd({...clo, ...r.data});
+                  onAdd({
+                    ...clo,
+                    ...r.data,
+                    maps: [
+                      ...clo.maps!.map(c => ({
+                        ...c,
+                        plo: plos.find(p => p.id === c.plo!.id!),
+                      })),
+                    ] as any,
+                  });
                   navigation.goBack();
                 })
                 .catch(() => {
