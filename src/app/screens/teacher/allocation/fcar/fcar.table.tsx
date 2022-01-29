@@ -28,11 +28,8 @@ export default function FCARTable({activities}: P) {
       </DataTable.Header>
       {has ? (
         activities.map(a => {
-          const evalsAboveF = a.evaluations!.filter(
-            e => e.marks >= a.marks * 0.4,
-          );
           const grades = gradesCrit.map((c, i) => {
-            const total = evalsAboveF.filter(
+            const total = a.evaluations!.filter(
               e =>
                 e.marks >= a.marks * c &&
                 (i === 0 || e.marks < a.marks * gradesCrit[i - 1]),
@@ -43,7 +40,7 @@ export default function FCARTable({activities}: P) {
           });
           const avg = (
             grades.map(g => g.total * g.weight).reduce((a, b) => a + b) /
-            evalsAboveF.length
+            a.evaluations!.length
           ).toFixed(2);
           totalAvg += parseFloat(avg);
           return (
