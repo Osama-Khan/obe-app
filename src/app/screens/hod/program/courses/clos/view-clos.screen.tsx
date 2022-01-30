@@ -16,6 +16,7 @@ export default function ViewClosScreen() {
   const navigation = useNavigation<any>();
   const course: CourseType = route.params!.course;
   const program: ProgramType = route.params!.program;
+  const onChanges: () => void = route.params!.onChanges;
   const height = useWindowDimensions().height - 92;
 
   useMemo(() => {
@@ -49,6 +50,7 @@ export default function ViewClosScreen() {
         const idx = clos.findIndex(c => c.id === clo.id);
         clos[idx] = clo;
         setClos(sortClos(clos));
+        if (onChanges) onChanges();
         setUpdates(new Date().getSeconds());
       },
     });
