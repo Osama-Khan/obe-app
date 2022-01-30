@@ -59,7 +59,7 @@ export default function ProgramCoursesScreen() {
           <CourseCard
             course={item}
             program={program}
-            onChanges={() => setChanges(changes + 1)}
+            onChanges={() => setChanges(new Date().getSeconds())}
             onEdit={() => {
               navigation.navigate(editCourseRoute.name, {
                 courseId: item.id,
