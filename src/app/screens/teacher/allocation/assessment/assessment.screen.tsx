@@ -6,6 +6,8 @@ import useAssessments from '@app/hooks/useAssessments';
 import {AssessmentTable} from '@app/components/Assessment';
 import {manageAssessmentRoute} from '@app/routes/shared.routes';
 import {colors} from '@app/styles';
+import {CourseType, SectionType} from '@app/types';
+import {IconMessageView} from '@app/components/icon-message-view';
 
 export const AssessmentScreen = () => {
   const navigation = useNavigation<any>();
@@ -13,8 +15,17 @@ export const AssessmentScreen = () => {
   const [updates, setUpdates] = useState(0);
   const update = () => setUpdates(updates + 1);
 
-  const course = route.params.course;
+  const course: CourseType = route.params.allocation.course;
+  const section: SectionType = route.params.allocation.section;
+  const hasModPerm = section.name.toUpperCase() === 'A';
   const {assessments, types, clos} = useAssessments(course.id, [updates]);
+
+  const gotoAssess = () => {
+    navigation.navigate(manageAssessmentRoute.name, {
+      course,
+      onChange: update,
+    });
+  };
 
   const isLoaded = assessments && clos && types;
   const isAssessed = isLoaded && assessments.length > 0;
@@ -43,30 +54,35 @@ export const AssessmentScreen = () => {
         ) : (
           <IconMessageView
             icon="clipboard-multiple-outline"
-            caption={'No Assessment Data. Start by adding one.'}
+            caption={
+              hasModPerm
+                ? 'No Assessment Data. Start by adding one.'
+                : 'Please ask the teacher of section A to add Assessments.'
+            }
             title="No Assessment"
-            btnProps={{
-              icon: 'plus',
-              text: 'Add Assessment',
-              action: gotoAssess,
-            }}
+            btnProps={
+              hasModPerm
+                ? {
+                    icon: 'plus',
+                    text: 'Add Assessment',
+                    action: gotoAssess,
+                  }
+                : undefined
+            }
           />
         )
       ) : (
         <ActivityIndicator />
       )}
-      <FAB
-        icon={isAssessed ? 'pencil' : 'plus'}
-        disabled={!isLoaded || isApproved}
-        loading={!isLoaded}
-        style={{position: 'absolute', bottom: 16, right: 16}}
-        onPress={() => {
-          navigation.navigate(manageAssessmentRoute.name, {
-            course,
-            onChange: update,
-          });
-        }}
-      />
+      {hasModPerm && (
+        <FAB
+          icon={isAssessed ? 'pencil' : 'plus'}
+          disabled={!isLoaded || isApproved}
+          loading={!isLoaded}
+          style={{position: 'absolute', bottom: 16, right: 16}}
+          onPress={gotoAssess}
+        />
+      )}
     </View>
   );
 };

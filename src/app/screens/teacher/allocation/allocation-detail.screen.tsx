@@ -58,15 +58,12 @@ export default function AllocationDetail() {
         name="Assessment"
         options={() => ({tabBarLabelStyle: {fontSize: 10}})}
         component={AssessmentScreen}
-        initialParams={{course: allocation.course!}}
+        initialParams={{allocation}}
       />
       <Screen
         name="CLOs"
         component={ViewClosScreen}
-        initialParams={{
-          course: allocation.course!,
-          program: allocation.program!,
-        }}
+        initialParams={{allocation}}
       />
       <Screen
         name="Students"
