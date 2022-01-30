@@ -4,7 +4,7 @@ import {ActivityIndicator, View} from 'react-native';
 import {Caption, FAB, Text} from 'react-native-paper';
 import useAssessments from '@app/hooks/useAssessments';
 import {AssessmentTable} from '@app/components/Assessment';
-import {manageAssessmentRoute} from '@app/routes/teacher.routes';
+import {manageAssessmentRoute} from '@app/routes/shared.routes';
 import {colors} from '@app/styles';
 
 export const AssessmentScreen = () => {
