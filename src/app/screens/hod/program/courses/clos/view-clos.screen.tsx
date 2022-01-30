@@ -11,6 +11,7 @@ import {ActivityIndicator} from 'react-native-paper';
 
 export default function ViewClosScreen() {
   const [clos, setClos] = useState<CLOType[]>();
+  const [updates, setUpdates] = useState(0);
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
   const course: CourseType = route.params!.course;
@@ -48,6 +49,7 @@ export default function ViewClosScreen() {
         const idx = clos.findIndex(c => c.id === clo.id);
         clos[idx] = clo;
         setClos(sortClos(clos));
+        setUpdates(new Date().getSeconds());
       },
     });
   };
@@ -55,6 +57,7 @@ export default function ViewClosScreen() {
   return clos ? (
     <>
       <CLOList
+        key={updates}
         clos={clos}
         onEdit={gotoEdit}
         ListEmptyComponent={
