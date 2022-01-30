@@ -76,6 +76,7 @@ export default function SectionsScreen() {
             })
             .catch(() => uiService.toastError('Could not add Section!'));
         }}
+        sections={sections!}
         onDismiss={hideModal}
         visible={shown}
       />
