@@ -41,9 +41,16 @@ export const AssessmentScreen = () => {
             </View>
           </>
         ) : (
-          <Caption style={{alignSelf: 'center', marginTop: 16}}>
-            No Assessment Data
-          </Caption>
+          <IconMessageView
+            icon="clipboard-multiple-outline"
+            caption={'No Assessment Data. Start by adding one.'}
+            title="No Assessment"
+            btnProps={{
+              icon: 'plus',
+              text: 'Add Assessment',
+              action: gotoAssess,
+            }}
+          />
         )
       ) : (
         <ActivityIndicator />
