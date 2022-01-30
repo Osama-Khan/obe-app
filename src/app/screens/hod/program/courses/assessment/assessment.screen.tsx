@@ -14,6 +14,10 @@ export const AssessmentScreen = () => {
   const navigation = useNavigation<any>();
   const [saving, setSaving] = useState(0);
   const [updates, setUpdates] = useState(0);
+  const update = () => {
+    if (route.params?.onChanges) route.params.onChanges();
+    setUpdates(new Date().getSeconds());
+  };
 
   const course = route.params.course;
   const {assessments, types, clos} = useAssessments(course.id, [updates]);
@@ -64,7 +68,7 @@ export const AssessmentScreen = () => {
                         uiService.toastError('Failed to approve assessment!');
                       } finally {
                         setSaving(0);
-                        setUpdates(updates + 1);
+                        update();
                       }
                     }}>
                     Approve
@@ -78,7 +82,7 @@ export const AssessmentScreen = () => {
                     onPress={() => {
                       navigation.navigate(manageAssessmentRoute.name, {
                         course,
-                        onChange: () => setUpdates(updates + 1),
+                        onChange: update,
                       });
                     }}>
                     Edit
@@ -101,7 +105,8 @@ export const AssessmentScreen = () => {
                         uiService.toastError('Failed to reject assessment!');
                       } finally {
                         setSaving(0);
-                        setUpdates(updates + 1);
+                        if (onChanges) onChanges();
+                        update();
                       }
                     }}>
                     Reject
