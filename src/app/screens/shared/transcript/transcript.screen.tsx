@@ -21,6 +21,7 @@ export default function TranscriptScreen() {
   const userId: string = route.params!.id;
 
   const t = useTranscript(userId);
+  const ploTotals: number[] = [];
 
   return t ? (
     <ScrollView>
@@ -40,15 +41,28 @@ export default function TranscriptScreen() {
                 <DataTable.Title style={cellStyle}>
                   {c.titleShort}
                 </DataTable.Title>
-                {t.plos.map(p => (
-                  <DataTable.Cell style={cellStyle}>
-                    {t.achieved
-                      .find(a => a.plo.id === p.id && a.course.id === c.id)
-                      ?.achieved.toFixed(1) || '—'}
-                  </DataTable.Cell>
-                ))}
+                {t.plos.map((p, i) => {
+                  const ach = t.achieved.find(
+                    a => a.plo.id === p.id && a.course.id === c.id,
+                  )?.achieved;
+                  if (ploTotals.length <= i) ploTotals.push(0);
+                  ploTotals[i] += ach ? ach : 0;
+                  return (
+                    <DataTable.Cell style={cellStyle}>
+                      {ach?.toFixed(1) || '—'}
+                    </DataTable.Cell>
+                  );
+                })}
               </DataTable.Row>
             ))}
+            <DataTable.Row>
+              <DataTable.Title style={cellStyle}>Total</DataTable.Title>
+              {ploTotals.map(t => (
+                <DataTable.Cell style={cellStyle}>
+                  {t.toFixed(1)}%
+                </DataTable.Cell>
+              ))}
+            </DataTable.Row>
           </DataTable>
         </ScrollView>
       </Card>
