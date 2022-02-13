@@ -8,6 +8,7 @@ import {
   TextInput,
   Button,
   Text,
+  useTheme,
 } from 'react-native-paper';
 import uiService from '@app/services/ui.service';
 import authService from '@app/services/auth.service';
@@ -18,6 +19,8 @@ export const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [focus, setFocus] = useState(-1);
+  const theme = useTheme();
 
   return (
     <ScrollView>
@@ -53,11 +56,31 @@ export const LoginScreen = () => {
           mode="outlined"
           label="Username"
           onChangeText={setUsername}
+          onBlur={() => setFocus(-1)}
+          onFocus={() => setFocus(0)}
+          left={
+            <TextInput.Icon
+              name="account"
+              color={
+                focus === 0 ? theme.colors.primary : theme.colors.placeholder
+              }
+            />
+          }
         />
         <TextInput
           mode="outlined"
           label="Password"
           onChangeText={setPassword}
+          onBlur={() => setFocus(-1)}
+          onFocus={() => setFocus(1)}
+          left={
+            <TextInput.Icon
+              name="lock"
+              color={
+                focus === 1 ? theme.colors.primary : theme.colors.placeholder
+              }
+            />
+          }
           secureTextEntry
         />
         <View
