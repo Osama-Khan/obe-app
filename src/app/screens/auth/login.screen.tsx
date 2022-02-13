@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Image, ScrollView, Switch, View} from 'react-native';
+import {Image, ScrollView, View} from 'react-native';
 import {
   Caption,
   Card,
@@ -7,6 +7,7 @@ import {
   Title,
   TextInput,
   Button,
+  Switch,
   Text,
   useTheme,
 } from 'react-native-paper';
