@@ -16,12 +16,7 @@ type P = Omit<ModalProps, 'children'> & {
   onAdd: (question: Partial<QuestionType>) => void;
 };
 
-export default function AddQuestionModal({
-  onAdd,
-  clos,
-  onDismiss,
-  ...props
-}: P) {
+export default function AddQuestionModal({onAdd, clos, ...props}: P) {
   const [title, setTitle] = useState('');
   const [added, setAdded] = useState<Pick<CLOType, 'id'>[]>([]);
   return (
@@ -60,7 +55,7 @@ export default function AddQuestionModal({
           disabled={!title || added.length === 0}
           onPress={() => {
             onAdd({title, clos});
-            if (onDismiss) onDismiss();
+            if (props.onDismiss) props.onDismiss();
           }}>
           Add
         </Button>
