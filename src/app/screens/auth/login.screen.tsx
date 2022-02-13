@@ -19,6 +19,7 @@ export const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [peek, setPeek] = useState(false);
   const [focus, setFocus] = useState(-1);
   const theme = useTheme();
 
@@ -73,6 +74,13 @@ export const LoginScreen = () => {
           onChangeText={setPassword}
           onBlur={() => setFocus(-1)}
           onFocus={() => setFocus(1)}
+          right={
+            <TextInput.Icon
+              name={peek ? 'eye' : 'eye-outline'}
+              color={peek ? theme.colors.primary : theme.colors.placeholder}
+              onPress={() => setPeek(!peek)}
+            />
+          }
           left={
             <TextInput.Icon
               name="lock"
@@ -81,7 +89,7 @@ export const LoginScreen = () => {
               }
             />
           }
-          secureTextEntry
+          secureTextEntry={!peek}
         />
         <View
           style={{
