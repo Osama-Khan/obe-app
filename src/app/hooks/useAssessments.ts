@@ -3,7 +3,10 @@ import assessmentService from '@app/services/assessment.service';
 import {AssessmentType, ActivityTypeType, CLOType} from '@app/types';
 import {useState, useEffect} from 'react';
 
-/** Hook that provides assessment details for the given course */
+/** Hook that provides assessment details for the given course
+ * @param courseId ID of the course to fetch assessments for
+ * @param deps Dependency list
+ */
 export default function useAssessments(
   courseId: string,
   deps?: Array<unknown>,
