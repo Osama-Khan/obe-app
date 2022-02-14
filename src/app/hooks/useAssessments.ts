@@ -9,7 +9,7 @@ import {useState, useEffect} from 'react';
  */
 export default function useAssessments(
   courseId: string,
-  deps?: Array<unknown>,
+  deps: Array<unknown> = [],
 ) {
   const [assessments, setAssessments] = useState<AssessmentType[]>();
   const [types, setTypes] = useState<ActivityTypeType[]>();
@@ -34,6 +34,6 @@ export default function useAssessments(
       setClos(c.sort((a, b) => a.number - b.number));
       setAssessments(r.data);
     });
-  }, deps || []);
+  }, deps);
   return {assessments, types, clos};
 }
