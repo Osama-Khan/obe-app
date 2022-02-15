@@ -1,13 +1,13 @@
 import {NavigationProp} from '@react-navigation/core';
 import React, {useEffect} from 'react';
 import {View} from 'react-native';
-import {Card, FAB, Title} from 'react-native-paper';
+import {Card, Title} from 'react-native-paper';
 import {viewUsersRoute} from '@app/routes/admin.routes';
 import Icon from '@app/components/icon';
 import {useSelector} from 'react-redux';
 import {AppStateType} from '@app/store/state';
 import {colors} from '@app/styles';
-import authService from '@app/services/auth.service';
+import {LogoutFAB} from '@app/components/FAB';
 
 type P = {navigation: NavigationProp<any>};
 
@@ -29,16 +29,7 @@ export const Home = (props: P) => {
           onPress={() => goto(viewUsersRoute.name)}
         />
       </View>
-      <FAB
-        style={{
-          position: 'absolute',
-          bottom: 16,
-          right: 16,
-          backgroundColor: colors.red,
-        }}
-        onPress={authService.logout}
-        icon="logout"
-      />
+      <LogoutFAB />
     </>
   ) : (
     <></>

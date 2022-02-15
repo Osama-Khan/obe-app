@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/core';
 import React, {useEffect} from 'react';
 import {View} from 'react-native';
-import {Card, FAB, Title} from 'react-native-paper';
+import {Card, Title} from 'react-native-paper';
 import {
   allocationRoute,
   sectionsRoute,
@@ -11,7 +11,7 @@ import Icon from '@app/components/icon';
 import {useSelector} from 'react-redux';
 import {AppStateType} from '@app/store/state';
 import {colors} from '@app/styles';
-import authService from '@app/services/auth.service';
+import {LogoutFAB} from '@app/components/FAB';
 
 export const Home = () => {
   const user = useSelector((state: AppStateType) => state.user.userData);
@@ -42,16 +42,7 @@ export const Home = () => {
           onPress={() => goto(sectionsRoute.name)}
         />
       </View>
-      <FAB
-        style={{
-          position: 'absolute',
-          bottom: 16,
-          right: 16,
-          backgroundColor: colors.red,
-        }}
-        onPress={authService.logout}
-        icon="logout"
-      />
+      <LogoutFAB />
     </>
   ) : (
     <></>

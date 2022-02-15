@@ -3,7 +3,6 @@ import {
   ActivityIndicator,
   Caption,
   Card,
-  FAB,
   IconButton,
   Title,
 } from 'react-native-paper';
@@ -15,10 +14,10 @@ import uiService from '@app/services/ui.service';
 import sectionService from '@app/services/section.service';
 import {AllocationType, ProgramType, SectionType} from '@app/types';
 import {colors} from '@app/styles';
-import authService from '@app/services/auth.service';
 import {FlatList, View} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 import {allocationDetailRoute} from '@app/routes/teacher.routes';
+import {LogoutFAB} from '@app/components/FAB';
 
 type AllocationProgramType = AllocationType & {program?: ProgramType};
 
@@ -111,16 +110,7 @@ export const Home = () => {
       ) : (
         <ActivityIndicator />
       )}
-      <FAB
-        style={{
-          position: 'absolute',
-          bottom: 16,
-          right: 16,
-          backgroundColor: colors.red,
-        }}
-        onPress={() => authService.logout()}
-        icon="logout"
-      />
+      <LogoutFAB />
     </>
   );
 };
