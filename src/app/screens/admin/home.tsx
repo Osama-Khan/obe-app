@@ -1,18 +1,10 @@
 import {NavigationProp} from '@react-navigation/core';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {View} from 'react-native';
-import {
-  Caption,
-  Card,
-  Divider,
-  IconButton,
-  List,
-  Title,
-} from 'react-native-paper';
+import {Card, FAB, Title} from 'react-native-paper';
 import {viewUsersRoute} from '@app/routes/admin.routes';
 import Icon from '@app/components/icon';
-import Modal from '@app/components/modal';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {AppStateType} from '@app/store/state';
 import {colors} from '@app/styles';
 import authService from '@app/services/auth.service';
@@ -21,19 +13,10 @@ type P = {navigation: NavigationProp<any>};
 
 export const Home = (props: P) => {
   const user = useSelector((state: AppStateType) => state.user.userData);
-  const dispatch = useDispatch();
-  const [visible, setVisible] = useState(false);
   useEffect(() => {
     props.navigation.setOptions({
       headerTitleAlign: 'center',
       headerTitleAllowFontScaling: true,
-      headerRight: () => (
-        <IconButton
-          icon="account"
-          onPress={() => setVisible(true)}
-          color="#fff"
-        />
-      ),
     });
   }, []);
   const goto = (r: string) => props.navigation.navigate(r);
@@ -46,21 +29,16 @@ export const Home = (props: P) => {
           onPress={() => goto(viewUsersRoute.name)}
         />
       </View>
-      <Modal visible={visible} onDismiss={() => setVisible(false)}>
-        <View style={{padding: 8}}>
-          <Title>{user.username}</Title>
-          <Caption>{user.role?.name}</Caption>
-          <Divider style={{marginVertical: 8}} />
-          <List.Item
-            title="Log out"
-            titleStyle={{color: colors.red}}
-            left={() => <List.Icon icon="logout" color={colors.red} />}
-            onPress={() => {
-              authService.logout();
-            }}
-          />
-        </View>
-      </Modal>
+      <FAB
+        style={{
+          position: 'absolute',
+          bottom: 16,
+          right: 16,
+          backgroundColor: colors.red,
+        }}
+        onPress={authService.logout}
+        icon="logout"
+      />
     </>
   ) : (
     <></>
