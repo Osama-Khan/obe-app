@@ -15,10 +15,15 @@ import Icon from '@app/components/icon';
 import {CLOType} from '@app/types';
 
 type P = Omit<FlatListProps<CLOType>, 'data' | 'renderItem'> & {
+  /** List of CLOs to show */
   clos: CLOType[];
+  /** Action on deletion of item */
   onDelete?: (item: CLOType) => void;
+  /** Action on editing of item */
   onEdit?: (item: CLOType) => void;
 };
+
+/** Shows a list of CLOs with delete and edit support */
 export const CLOList = ({clos, onDelete, onEdit, ...props}: P) => (
   <FlatList
     {...props}
