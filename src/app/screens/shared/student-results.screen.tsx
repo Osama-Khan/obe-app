@@ -15,9 +15,7 @@ export const StudentResultsScreen = () => {
       headerRight: () => (
         <IconButton
           icon="file-table"
-          onPress={() =>
-            navigation.navigate(transcriptRoute.name, {id: user.id})
-          }
+          onPress={() => navigation.navigate(transcriptRoute.name, {user})}
           color="white"
         />
       ),

@@ -11,6 +11,8 @@ import {
   evaluationDetailRoute,
   manageAssessmentRoute,
   studentResultsRoute,
+  transcriptCourseRoute,
+  transcriptPLORoute,
   transcriptRoute,
 } from './shared.routes';
 
@@ -60,5 +62,7 @@ export default [
   studentResultsRoute,
   evaluationDetailRoute,
   transcriptRoute,
+  transcriptPLORoute,
+  transcriptCourseRoute,
   fcarRoute,
 ];

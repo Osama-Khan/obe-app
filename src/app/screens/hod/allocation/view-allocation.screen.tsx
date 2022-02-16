@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, View} from 'react-native';
+import {ActivityIndicator, ScrollView, View} from 'react-native';
 import {Button, Card, Text} from 'react-native-paper';
 import uiService from '@app/services/ui.service';
 import allocationService from '@app/services/allocation.service';
@@ -45,7 +45,7 @@ export function AllocationScreen() {
   return (
     <View>
       {allocs ? (
-        <>
+        <ScrollView>
           <View
             style={{
               flexDirection: 'row',
@@ -84,7 +84,7 @@ export function AllocationScreen() {
               ]}
             />
           </Card>
-        </>
+        </ScrollView>
       ) : (
         <ActivityIndicator style={{margin: 16, alignSelf: 'center'}} />
       )}

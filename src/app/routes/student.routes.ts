@@ -1,6 +1,11 @@
 import {Home} from '@app/screens/student';
 import {RouteType} from '@app/types/route.type';
-import {evaluationDetailRoute, transcriptRoute} from './shared.routes';
+import {
+  evaluationDetailRoute,
+  transcriptCourseRoute,
+  transcriptPLORoute,
+  transcriptRoute,
+} from './shared.routes';
 
 export const homeRoute: RouteType = {
   id: 'home',
@@ -11,4 +16,10 @@ export const homeRoute: RouteType = {
   },
 };
 
-export default [homeRoute, evaluationDetailRoute, transcriptRoute];
+export default [
+  homeRoute,
+  evaluationDetailRoute,
+  transcriptRoute,
+  transcriptCourseRoute,
+  transcriptPLORoute,
+];

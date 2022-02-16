@@ -1,9 +1,22 @@
 import userService from '@app/services/user.service';
 import TranscriptType from '@app/types/transcript.type';
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {ScrollView, StyleProp, ViewStyle} from 'react-native';
-import {ActivityIndicator, Card, DataTable} from 'react-native-paper';
+import {ScrollView} from 'react-native';
+import {
+  ActivityIndicator,
+  Caption,
+  Card,
+  DataTable,
+  Text,
+  Title,
+} from 'react-native-paper';
+import {colors} from '@app/styles';
+import {
+  transcriptCourseRoute,
+  transcriptPLORoute,
+} from '@app/routes/shared.routes';
+import {ResultType} from '@app/types';
 
 const useTranscript = (id: string) => {
   const [t, set] = useState<TranscriptType>();
@@ -16,55 +29,24 @@ const useTranscript = (id: string) => {
   return t;
 };
 
+let t: TranscriptType | undefined;
+
+let id: any;
+
 export default function TranscriptScreen() {
   const route = useRoute<any>();
-  const userId: string = route.params!.id;
+  const {user} = route.params;
+  id = route.params!.user.id;
 
-  const t = useTranscript(userId);
-  const ploTotals: number[] = [];
+  t = useTranscript(user.id);
 
   return t ? (
     <ScrollView>
       <Card style={{margin: 8}}>
-        <ScrollView horizontal>
-          <DataTable>
-            <DataTable.Header>
-              <DataTable.Title style={cellStyle}>Courses</DataTable.Title>
-              {t.plos.map(p => (
-                <DataTable.Title style={cellStyle}>
-                  PLO {p.number}
-                </DataTable.Title>
-              ))}
-            </DataTable.Header>
-            {t.courses.map(c => (
-              <DataTable.Row>
-                <DataTable.Title style={cellStyle}>
-                  {c.titleShort}
-                </DataTable.Title>
-                {t.plos.map((p, i) => {
-                  const ach = t.achieved.find(
-                    a => a.plo.id === p.id && a.course.id === c.id,
-                  )?.achieved;
-                  if (ploTotals.length <= i) ploTotals.push(0);
-                  ploTotals[i] += ach ? ach : 0;
-                  return (
-                    <DataTable.Cell style={cellStyle}>
-                      {ach?.toFixed(1) || '—'}
-                    </DataTable.Cell>
-                  );
-                })}
-              </DataTable.Row>
-            ))}
-            <DataTable.Row>
-              <DataTable.Title style={cellStyle}>Total</DataTable.Title>
-              {ploTotals.map(t => (
-                <DataTable.Cell style={cellStyle}>
-                  {t.toFixed(1)}%
-                </DataTable.Cell>
-              ))}
-            </DataTable.Row>
-          </DataTable>
-        </ScrollView>
+        <Text style={{textAlign: 'center'}}>{user.username}</Text>
+        <Caption style={{textAlign: 'center'}}>{user.id}</Caption>
+        <CoursesTable />
+        <PLOsTable />
       </Card>
     </ScrollView>
   ) : (
@@ -72,4 +54,106 @@ export default function TranscriptScreen() {
   );
 }
 
-const cellStyle: StyleProp<ViewStyle> = {width: 64, justifyContent: 'center'};
+const CoursesTable = () => {
+  const nav = useNavigation();
+  return (
+    <Card style={{margin: 8, overflow: 'hidden'}}>
+      <DataTable>
+        <DataTable.Header style={{backgroundColor: colors.primarySubtle}}>
+          <DataTable.Title>Course</DataTable.Title>
+          <DataTable.Title>Grade</DataTable.Title>
+        </DataTable.Header>
+        {t!.courses.map(c => {
+          const p = c.achieved / c.total;
+          const g =
+            p >= 0.8
+              ? 'A'
+              : p >= 0.65
+              ? 'B'
+              : p >= 0.5
+              ? 'C'
+              : p >= 0.4
+              ? 'D'
+              : 'F';
+          return (
+            <DataTable.Row
+              onPress={() => {
+                nav.navigate(transcriptCourseRoute.name, {
+                  course: c,
+                  transcript: t,
+                  userId: id,
+                });
+              }}>
+              <DataTable.Cell>{c.titleShort}</DataTable.Cell>
+              <DataTable.Cell>{g}</DataTable.Cell>
+            </DataTable.Row>
+          );
+        })}
+      </DataTable>
+    </Card>
+  );
+};
+
+const PLOsTable = () => {
+  const [res, setRes] = useState<ResultType[]>();
+  useEffect(() => {
+    userService.getResults(id).then(r => {
+      setRes(r.data);
+    });
+  }, []);
+  const nav = useNavigation();
+  return (
+    <Card style={{margin: 8, overflow: 'hidden'}}>
+      {res ? (
+        <DataTable>
+          <DataTable.Header style={{backgroundColor: colors.primarySubtle}}>
+            <DataTable.Title>PLO</DataTable.Title>
+            <DataTable.Title>Result</DataTable.Title>
+          </DataTable.Header>
+          {t!.plos.map(p => {
+            const prog =
+              isPassed(res.find(r => r.plo.id === p.id)!) === undefined;
+            const ach = t!.achieved.filter(a => a.plo.id === p.id);
+            const tot =
+              ach.length > 0
+                ? ach.map(a => a.achieved).reduce((a, b) => a + b)
+                : 0;
+            const pass = tot > p.passing;
+            const color = pass ? colors.green : colors.red;
+            return (
+              <DataTable.Row
+                style={{backgroundColor: color + '22'}}
+                onPress={() =>
+                  nav.navigate(transcriptPLORoute.name, {plo: p, transcript: t})
+                }>
+                <DataTable.Cell>PLO {p.number}</DataTable.Cell>
+                <DataTable.Cell>
+                  <Text
+                    style={{
+                      fontWeight: 'bold',
+                      color,
+                    }}>
+                    {pass ? 'P' : 'F'}
+                  </Text>
+                </DataTable.Cell>
+              </DataTable.Row>
+            );
+          })}
+        </DataTable>
+      ) : (
+        <ActivityIndicator style={{alignSelf: 'center', margin: 16}} />
+      )}
+    </Card>
+  );
+};
+
+const isPassed = (item: ResultType) => {
+  const {achieved, evaluated} = item;
+  const passing = item.plo!.passing!;
+  const maxAchievable = 100 - evaluated;
+  if (achieved < passing) {
+    if (maxAchievable + achieved < passing) return false;
+    return undefined;
+  }
+  return true;
+};

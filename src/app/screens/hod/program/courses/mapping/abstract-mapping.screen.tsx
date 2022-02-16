@@ -67,6 +67,27 @@ export default function AbstractMappingScreen() {
   }, []);
 
   const mappedPlos = plos?.filter(p => mapped?.includes(p.id));
+  if (plos && !saving && !locked) {
+    let mapped = plos.map(p => p.id);
+    const rands = [...Array(3).keys()].map(() =>
+      parseInt((Math.random() * 9).toString()),
+    );
+    mapped = mapped.filter((m, i) => !rands.includes(i));
+    setSaving(true);
+    courseService
+      .addAbstractMapping(course.id, mapped)
+      .then(r => {
+        uiService.toastSuccess('Successfully created mappings!');
+        onChanges && onChanges();
+        setLocked(true);
+      })
+      .catch(e => {
+        uiService.toastError('Failed to create mapping!');
+      })
+      .finally(() => {
+        setSaving(false);
+      });
+  }
 
   return plos && mapped ? (
     <ScrollView>

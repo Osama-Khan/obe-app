@@ -21,10 +21,11 @@ type P = Omit<FlatListProps<CLOType>, 'data' | 'renderItem'> & {
   onDelete?: (item: CLOType) => void;
   /** Action on editing of item */
   onEdit?: (item: CLOType) => void;
+  onPress?: () => void;
 };
 
 /** Shows a list of CLOs with delete and edit support */
-export const CLOList = ({clos, onDelete, onEdit, ...props}: P) => (
+export const CLOList = ({clos, onDelete, onEdit, onPress, ...props}: P) => (
   <FlatList
     {...props}
     data={clos}
@@ -32,6 +33,7 @@ export const CLOList = ({clos, onDelete, onEdit, ...props}: P) => (
       const needsWeights = item.maps![0].weight === 0;
       return (
         <Card
+          onPress={onPress}
           style={{
             borderWidth: needsWeights ? 2 : undefined,
             borderTopWidth: 2,
