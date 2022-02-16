@@ -1,1 +1,1 @@
-export {default as LogoutFAB} from './LogoutFab';
+export {default as LogoutFAB} from './LogoutFAB';
