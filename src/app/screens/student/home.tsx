@@ -1,13 +1,13 @@
 import React from 'react';
-import {Caption, Card, FAB, IconButton, Title} from 'react-native-paper';
+import {Caption, Card, IconButton, Title} from 'react-native-paper';
 import {useSelector} from 'react-redux';
 import {AppStateType} from '@app/store/state';
 import {colors} from '@app/styles';
-import authService from '@app/services/auth.service';
 import {ScrollView, View} from 'react-native';
 import StudentResultTable from '@app/components/StudentResultTable';
 import {useNavigation} from '@react-navigation/native';
 import {transcriptRoute} from '@app/routes/shared.routes';
+import {LogoutFAB} from '@app/components/FAB';
 
 export const Home = () => {
   const user = useSelector((state: AppStateType) => state.user.userData);
@@ -34,16 +34,7 @@ export const Home = () => {
           <StudentResultTable id={user?.id} />
         </Card>
       </ScrollView>
-      <FAB
-        style={{
-          position: 'absolute',
-          right: 16,
-          bottom: 16,
-          backgroundColor: colors.red,
-        }}
-        icon="logout"
-        onPress={authService.logout}
-      />
+      <LogoutFAB />
     </>
   );
 };
